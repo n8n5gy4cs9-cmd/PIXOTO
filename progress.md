@@ -759,3 +759,6 @@ Remaining: test on the real shared host; real-browser pass for visual details (t
 - What: service worker is now network-first with revalidation (cache only offline), registers on any secure context (localhost too; before it only ran on https, so plain http dev relied on the HTTP cache) and reloads open pages once when a new worker activates. Compute worker no longer transfers its buffer, so a worker that fails to load falls back to the main thread; preview errors are shown instead of swallowed. Help page generated from the tool and command registries. Shortcuts dialog moved to Ctrl+K (F1 is Help).
 - Filters: algorithms verified in node (all 33 run and change pixels); the cause of "nothing happens" could not be reproduced by reading, most likely stale cached code or a silent worker failure, both addressed. If it persists, an error toast now names the cause.
 - Note: after the first load of this version one more manual reload may be needed once, to replace the old service worker.
+
+## 2026-10-06 — About panel
+- app/app.js: About text now "Made by Crowelian 2026." and the October update note.

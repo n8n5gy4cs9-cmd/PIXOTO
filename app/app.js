@@ -348,7 +348,7 @@ toggle('view.lock', 'Lock Guides', ['Ctrl+Alt+;'], 'lockGuides');
 toggle('view.snapguides', 'Snap To Guides', [], 'snapGuides'); toggle('view.snapgrid', 'Snap To Grid', [], 'snapGrid'); toggle('view.snaplayers', 'Snap To Layers', [], 'snapLayers'); toggle('view.snapbounds', 'Snap To Document Bounds', [], 'snapBounds');
 C_('view.clearguides', 'Clear Guides', [], () => G.clearGuides(doc()), { enabled: () => !!app.doc?.guides.length });
 C_('help.guide', 'Pixoto Help', ['F1'], () => showHelp(() => showShortcuts()), { needsDoc: false, group: 'Help' });
-C_('help.about', 'About Pixoto', [], () => alertBox('Pixoto', 'A browser clone of Composa: a layer-based compositing and retouching editor. Everything stays in your browser.'), { needsDoc: false });
+C_('help.about', 'About Pixoto', [], () => alertBox('About Pixoto', el('div', {}, el('p', {}, 'Made by Crowelian 2026.'), el('p', {}, 'In the October update, more features from Composa were added.'))), { needsDoc: false });
 
 for (const t of TOOLS) C_('tool.' + t.id, t.name, [t.key.toUpperCase()], () => { if (state.tool === t.id && t.cycle) cycleMode(t.id); else { if (t.id === 'brush') app.setMode('brush', 0); app.selectTool(t.id); } }, { group: 'Tools', needsDoc: false });
 C_('tool.erase', 'Eraser', ['E'], () => { app.setMode('brush', 1); app.selectTool('brush'); }, { group: 'Tools', needsDoc: false });
