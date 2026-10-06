@@ -17,7 +17,11 @@ function spawn() {
       pending.delete(e.data.id);
       if (e.data.error) p.reject(new Error(e.data.error)); else p.resolve({ result: e.data.result, buffer: e.data.buffer });
     };
-    worker.onerror = () => { failed = true; worker = null; for (const [, p] of pending) p.reject(new Error('The worker stopped.')); pending.clear(); };
+    worker.onerror = () => {
+      failed = true; worker = null;
+      const jobs = [...pending.values()]; pending.clear();
+      for (const p of jobs) p.rerun();
+    };
   } catch { failed = true; worker = null; }
   return worker;
 }
@@ -40,7 +44,8 @@ export function compute(op, args, buffer) {
     const run = () => setTimeout(() => { try { resolve(inline(op, args, buffer)); } catch (e) { reject(e); } }, 0);
     if (!w) { run(); return; }
     const id = nextId++;
-    pending.set(id, { resolve, reject });
-    w.postMessage({ id, op, args, buffer }, [buffer]);
+    // The buffer is copied (not transferred) so the main thread can still run the job if the worker cannot load.
+    pending.set(id, { resolve, reject, rerun: run });
+    w.postMessage({ id, op, args, buffer });
   });
 }

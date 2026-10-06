@@ -208,3 +208,53 @@ canvas.expprev { max-width: 100%; }
 @media (max-width: 860px) { .floatdlg { right: 8px; left: 8px; width: auto !important; top: 60px; } .cp-main { flex-wrap: wrap; } }
 
 .blocker { position: fixed; inset: 0; z-index: 140; background: transparent; }
+
+/* ---- Help page ---- */
+.helppage { position: fixed; inset: 0; z-index: 300; background: var(--window); display: grid; grid-template-rows: auto 1fr; -webkit-user-select: text; user-select: text; }
+.helppage .hbar { display: flex; align-items: center; gap: 8px; padding: 8px 14px; background: var(--panel); border-bottom: 1px solid var(--divider); }
+.helppage .grow { flex: 1; }
+.hwrap { display: grid; grid-template-columns: 230px 1fr; min-height: 0; }
+.hnav { display: flex; flex-direction: column; gap: 2px; padding: 14px 10px; background: var(--panel); border-right: 1px solid var(--divider); overflow: auto; }
+.hlink { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: var(--radius); text-align: left; color: var(--secondary); min-height: 40px; }
+.hlink:hover { background: var(--hover); color: var(--fg); }
+.hlink.on { background: var(--selected); color: var(--fg); }
+.hscroll { overflow: auto; scroll-behavior: smooth; }
+.hhero { display: flex; align-items: center; gap: 18px; padding: 36px 40px 28px; background: linear-gradient(135deg, #1f3a5c 0%, var(--window) 70%); border-bottom: 1px solid var(--divider); }
+.hhero img { width: 64px; height: 64px; }
+.hhero h1 { margin: 0 0 4px; font-size: 30px; letter-spacing: -.5px; }
+.hhero p { margin: 0; color: var(--secondary); font-size: 14px; }
+.hmain { max-width: 1040px; padding: 8px 40px 80px; font-size: 14px; line-height: 1.55; }
+.hmain section { padding-top: 30px; }
+.hmain h2 { display: flex; align-items: center; gap: 12px; margin: 0 0 14px; font-size: 21px; }
+.hmain p { margin: 0 0 12px; color: #cfcfcf; }
+.hmain ul { margin: 0 0 12px; padding-left: 20px; color: #cfcfcf; }
+.hmain li { margin: 3px 0; }
+.hico { display: grid; place-items: center; width: 48px; height: 48px; flex: none; border-radius: 12px; background: linear-gradient(145deg, #3a5f8f, #2a3f5c); color: #fff; box-shadow: 0 2px 8px #0006, inset 0 1px 0 #ffffff25; }
+.hico svg.ic { width: 26px; height: 26px; }
+.hico.sm { width: 34px; height: 34px; border-radius: 9px; }
+.hico.sm svg.ic { width: 20px; height: 20px; }
+.hgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; margin-bottom: 14px; }
+.hcard { background: var(--panel); border: 1px solid var(--divider); border-radius: 10px; padding: 14px 16px; }
+.hcard h4 { margin: 0 0 8px; font-size: 14px; color: var(--accent); }
+.hcard p, .hcard ul { margin-bottom: 0; }
+.htools { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 14px; margin-bottom: 14px; }
+.htool { display: flex; gap: 14px; background: var(--panel); border: 1px solid var(--divider); border-radius: 10px; padding: 14px; }
+.htool h4 { margin: 0 0 6px; font-size: 15px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.htool p { margin: 0; font-size: 13px; }
+.hmodes { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.hmode { display: inline-flex; align-items: center; gap: 6px; padding: 4px 9px 4px 6px; border-radius: 999px; background: var(--raised); font-size: 12px; color: var(--secondary); }
+.hmode i { font-style: normal; }
+kbd { display: inline-block; min-width: 22px; padding: 1px 6px; border-radius: 5px; border: 1px solid #555; border-bottom-width: 2px; background: var(--raised); color: var(--fg); font: 600 11.5px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; text-align: center; }
+.htip { margin: 14px 0; padding: 12px 16px; border-left: 3px solid var(--warn); background: #ffb45414; border-radius: 0 var(--radius) var(--radius) 0; color: #ddd; }
+.htip b { color: var(--warn); }
+.hkeys { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 14px; }
+.hrows { display: grid; gap: 4px; }
+.hrow { display: flex; justify-content: space-between; gap: 10px; align-items: center; padding: 3px 0; border-bottom: 1px solid #ffffff0d; font-size: 13px; }
+.hk { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+@media (max-width: 760px) {
+  .hwrap { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+  .hnav { flex-direction: row; overflow-x: auto; border-right: 0; border-bottom: 1px solid var(--divider); padding: 6px; }
+  .hlink { flex: none; padding: 8px 12px; }
+  .hhero { padding: 22px 18px; } .hmain { padding: 4px 16px 60px; }
+  .htools { grid-template-columns: 1fr; }
+}

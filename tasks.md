@@ -113,3 +113,6 @@
 - [x] docs/DEPLOY.md (upload steps, PHP 7.4 host)
 - [x] docs/FEATURES.md rewritten
 - [ ] Test on shared host
+- [x] Help page (F1)
+- [x] Network-first service worker, auto update
+- [x] Filter worker fallback and visible preview errors

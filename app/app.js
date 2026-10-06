@@ -27,6 +27,7 @@ import { Tabs } from './ui/tabs.js';
 import { popup } from './ui/popup.js';
 import { $, el, inTextField } from './ui/dom.js';
 import { newCanvasDialog, alertBox, confirmBox, modal, confirmSave, canvasSizeDialog, imageSizeDialog, trimDialog, exportDialog, psdReportDialog, recoveryDialog } from './ui/dialogs.js';
+import { showHelp } from './ui/help.js';
 import { runFilterDialog, adjustPixels, autoLevelsNow, newAdjustmentLayer, editAdjustmentLayer, editEffectDialog } from './ui/tool-dialogs.js';
 import { lastFilter } from './ui/last-filter.js';
 import { showShortcuts } from './ui/shortcuts-dialog.js';
@@ -270,7 +271,7 @@ function deleteTarget() { const d = doc(); if (layersPanel.selectedEffect) { lay
 C_('edit.cafill', 'Content-Aware Fill', ['Shift+Backspace'], () => contentAwareFill(doc()).catch((e) => app.problem(e.message)), { enabled: () => selecting() && editable() && !app.doc.isEditingMask });
 C_('edit.swap', 'Swap Colors', ['X'], () => app.swapColors(), { group: 'Tools and Canvas' });
 C_('edit.reset', 'Default Colors', ['D'], () => update({ fg: '#000000', bg: '#ffffff' }), { group: 'Tools and Canvas' });
-C_('edit.shortcuts', 'Keyboard Shortcuts…', ['F1'], () => showShortcuts(), { needsDoc: false });
+C_('edit.shortcuts', 'Keyboard Shortcuts…', ['Ctrl+K'], () => showShortcuts(), { needsDoc: false });
 
 C_('sel.all', 'All', ['Ctrl+A'], () => S.selectAll(doc()), { enabled: has });
 C_('sel.none', 'Deselect', ['Ctrl+D'], () => S.deselect(doc()), { enabled: selecting });
@@ -346,6 +347,7 @@ toggle('view.snap', 'Snap', ['Ctrl+Shift+;'], 'snap');
 toggle('view.lock', 'Lock Guides', ['Ctrl+Alt+;'], 'lockGuides');
 toggle('view.snapguides', 'Snap To Guides', [], 'snapGuides'); toggle('view.snapgrid', 'Snap To Grid', [], 'snapGrid'); toggle('view.snaplayers', 'Snap To Layers', [], 'snapLayers'); toggle('view.snapbounds', 'Snap To Document Bounds', [], 'snapBounds');
 C_('view.clearguides', 'Clear Guides', [], () => G.clearGuides(doc()), { enabled: () => !!app.doc?.guides.length });
+C_('help.guide', 'Pixoto Help', ['F1'], () => showHelp(() => showShortcuts()), { needsDoc: false, group: 'Help' });
 C_('help.about', 'About Pixoto', [], () => alertBox('Pixoto', 'A browser clone of Composa: a layer-based compositing and retouching editor. Everything stays in your browser.'), { needsDoc: false });
 
 for (const t of TOOLS) C_('tool.' + t.id, t.name, [t.key.toUpperCase()], () => { if (state.tool === t.id && t.cycle) cycleMode(t.id); else { if (t.id === 'brush') app.setMode('brush', 0); app.selectTool(t.id); } }, { group: 'Tools', needsDoc: false });
@@ -368,7 +370,7 @@ new MenuBar($('#menubar'), [
     { label: 'Rotate / Flip Layer', items: ['layer.rotcw', 'layer.rotccw', 'layer.rot180', 'layer.fliph', 'layer.flipv'] }, '-', 'layer.up', 'layer.down', '-', 'layer.merge', 'layer.flatten'] },
   { label: 'Filter', items: ['filter.repeat', '-', ...filterMenu] },
   { label: 'View', items: ['view.fit', 'view.actual', 'view.in', 'view.out', 'view.rotcw', 'view.rotccw', 'view.rotreset', '-', 'view.controls', 'view.pixelgrid', '-', 'view.rulers', 'view.grid', 'view.guides', 'view.clearguides', 'view.lock', '-', 'view.snap', { label: 'Snap To', items: ['view.snapguides', 'view.snapgrid', 'view.snaplayers', 'view.snapbounds'] }] },
-  { label: 'Help', items: ['edit.shortcuts', 'help.about'] },
+  { label: 'Help', items: ['help.guide', 'edit.shortcuts', 'help.about'] },
 ]);
 $('#menubar').insertAdjacentHTML('beforeend', '<div class="spacer"></div>');
 
@@ -428,7 +430,13 @@ window.addEventListener('error', (e) => app.problem(e.message));
 window.addEventListener('unhandledrejection', (e) => app.problem(String(e.reason?.message || e.reason)));
 window.addEventListener('pagehide', () => { for (const d of app.docs) if (!d.modified) dropRecovery(d.id); });
 
-if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});
+if ('serviceWorker' in navigator && window.isSecureContext) {
+  navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then((reg) => {
+    const check = () => reg.update().catch(() => {});
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) check(); });
+    setInterval(check, 60 * 60 * 1000);
+  }).catch(() => {});
+}
 installGuidesUi(app);
 
 // ---- start ---------------------------------------------------------------------------------------------------------

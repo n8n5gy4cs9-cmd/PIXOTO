@@ -753,3 +753,9 @@ Ported Composa's editing core to `app/`: model/history/renderer (`core/model.js`
 Decisions: no fflate (native streams); text uses Canvas fillText per character with kerning corrections; Camera Raw filter and AI control not ported; extra filters added beyond Composa (see tasks.md); defaults for font family Arial.
 Verification: syntax and import checks, plus node smoke tests with a software canvas shim covering painting, selections, transforms, layer ops, filters, history (undo-all/redo-all hashes match). Found and fixed: temporary Ctrl-move flag, mask stroke source copy.
 Remaining: test on the real shared host; real-browser pass for visual details (text kerning, transforms with rotation, PSD edge cases).
+
+## 2026-10-06 — Auto-update, filter robustness, Help page
+- Files: app/sw.js (generated), tools/make-sw.py, app/app.js, app/core/compute.js, app/ui/tool-dialogs.js, app/ui/help.js (new), app/css/app.css, docs/FEATURES.md, tasks.md.
+- What: service worker is now network-first with revalidation (cache only offline), registers on any secure context (localhost too; before it only ran on https, so plain http dev relied on the HTTP cache) and reloads open pages once when a new worker activates. Compute worker no longer transfers its buffer, so a worker that fails to load falls back to the main thread; preview errors are shown instead of swallowed. Help page generated from the tool and command registries. Shortcuts dialog moved to Ctrl+K (F1 is Help).
+- Filters: algorithms verified in node (all 33 run and change pixels); the cause of "nothing happens" could not be reproduced by reading, most likely stale cached code or a silent worker failure, both addressed. If it persists, an error toast now names the cause.
+- Note: after the first load of this version one more manual reload may be needed once, to replace the old service worker.

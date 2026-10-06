@@ -24,10 +24,13 @@ Folders, 24 blend modes (8 composited per pixel), opacity, layer masks (paint, i
 - Filters (Filter menu, Ctrl+F repeats): Blur (Gaussian, Motion, Box, Radial, Surface, Tilt-Shift), Sharpen (Sharpen, Unsharp Mask, High Pass), Noise (Add Noise, Median, Diffuse), Light (Vignette, Bloom/Glow, Tonal Contrast), Distort (Lens Correction, Wave, Ripple, Twirl, Spherize/Pinch, Chromatic Aberration, Glitch), Stylize (Pixelate, Emboss, Find Edges, Oil Paint, Halftone, Crystallize, Minimum, Maximum, Outline, Painterly), Other (Remove Background).
 
 ## Image and view
-Canvas Size (anchor), Image Size, Trim, Crop, rotate/flip canvas and layers. Zoom 1–6400 %, fit, pixel grid, rulers, guides (drag out, move, drop on ruler to delete, lock, clear), layout grid, Snap To (guides, grid, layers, document), rotate view, remappable keyboard shortcuts (F1; Alt variants for browser-reserved keys).
+Canvas Size (anchor), Image Size, Trim, Crop, rotate/flip canvas and layers. Zoom 1–6400 %, fit, pixel grid, rulers, guides (drag out, move, drop on ruler to delete, lock, clear), layout grid, Snap To (guides, grid, layers, document), rotate view, remappable keyboard shortcuts (Ctrl+K; Alt variants for browser-reserved keys).
 
 ## Files
 Save/Save As `.cmps` (zip with PNG layers; Composa-compatible JSON), Export PNG / JPEG / WebP with live preview and file size, Copy / Cut / Copy Merged / Paste (also from the system clipboard), paste layers across tabs, PSD import with a conversion report, File System Access API with download fallback.
 
 ## Platform
 Static folder, relative paths, offline service worker, installable PWA (PNG icons), optional `.htaccess`. See `DEPLOY.md`.
+
+## Help and updates
+Help page (F1 or Help ▸ Pixoto Help): full-screen guide with every tool and its icon and modes, selections, painting, layers, adjustments, filters, view, files, touch and a live shortcut table. The service worker is network-first, so uploaded code loads on the next visit and open pages reload once when a new worker takes over; it works on https and localhost and falls back to the cache offline.

@@ -32,7 +32,7 @@ export async function runFilterDialog(app, id, { repeat = false } = {}) {
   let on = true;
   const run = debounce(() => { if (on) s.filter(id, holder.p).catch((e) => app.problem(e.message)); }, f.slow ? 250 : 60);
   if (repeat) { await s.filter(id, holder.p); if (isIdentityFilter(f, holder.p)) s.cancel(); else { await s.commit(); } return true; }
-  s.filter(id, holder.p).catch(() => {});
+  s.filter(id, holder.p).catch((e) => app.problem(e.message));
   const ok = await liveDialog({
     title: f.name, fields: () => paramFields(f, holder), onInput: run,
     onPreviewToggle: (v) => { on = v; if (v) run(); else s.showOriginal(); },
