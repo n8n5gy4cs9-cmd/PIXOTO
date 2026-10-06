@@ -2,6 +2,7 @@ import { el, icon, iconBtn } from './dom.js';
 import { TOOLS, toolIcon } from '../core/tools.js';
 import { state, update } from '../core/state.js';
 import { keysOf, commands, prettyKey } from '../core/commands.js';
+import { pickColor } from './color-picker.js';
 
 // Left tool rail (Composa BuildToolRail): the tools, then foreground/background swatches and the swap button.
 export class Toolbar {
@@ -12,10 +13,9 @@ export class Toolbar {
       this.buttons.set(t.id, b); root.append(b);
     }
     const mk = (cls, which) => {
-      const input = el('input', { type: 'color', style: 'position:absolute;opacity:0;pointer-events:none;width:0;height:0' });
-      input.addEventListener('input', () => update({ [which]: input.value }));
-      const b = el('button', { class: 'sw ' + cls, 'aria-label': which === 'fg' ? 'Foreground color' : 'Background color', title: which === 'fg' ? 'Foreground color' : 'Background color', onClick: () => input.click() }, input);
-      return { b, input };
+      const label = which === 'fg' ? 'Foreground color' : 'Background color';
+      const b = el('button', { class: 'sw ' + cls, 'aria-label': label, title: label, onClick: async () => { const initial = state[which]; const v = await pickColor(label, initial, (c) => update({ [which]: c })); if (v) update({ [which]: v }); } });
+      return { b };
     };
     this.fg = mk('fg', 'fg'); this.bg = mk('bg', 'bg');
     root.append(el('div', { class: 'swatches' }, this.bg.b, this.fg.b),
@@ -30,7 +30,7 @@ export class Toolbar {
       const cmd = commands.get('tool.' + t.id), key = cmd && keysOf(cmd)[0];
       b.title = `${t.name}${key ? ' (' + prettyKey(key) + ')' : ''}`;
     }
-    this.fg.b.style.background = this.fg.input.value = state.fg;
-    this.bg.b.style.background = this.bg.input.value = state.bg;
+    this.fg.b.style.background = state.fg;
+    this.bg.b.style.background = state.bg;
   }
 }

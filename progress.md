@@ -743,3 +743,13 @@ All toolbar and UI chrome SVG symbols replaced with Lucide 0.462 icon paths (MIT
 - Decisions: Composa's toolbar has 15 tools (Eraser is the Brush's Erase mode, E key); Filter menu dropped (Composa has none); canvas max 16384 px (4096 on iOS) until the Phase 9 probe; dropping files onto an open doc places them as layers.
 - Not verified by running (user tests in a browser): everything was syntax-checked with `node --check` and import/export names cross-checked, nothing else.
 - Remaining: Phase 2 onward (see tasks.md). Open items: PNG app icons (Phase 9), blend modes needing pixel pass (Phase 6), `.htaccess`, recent files.
+
+---
+
+# Pixoto 2 rewrite log
+
+## 2026-10-06 — Phases 2–7 (+ most of 8–9)
+Ported Composa's editing core to `app/`: model/history/renderer (`core/model.js`, `history.js`, `render.js`, `effects.js`, `sepblend.js`), painting (`core/paint/*`, `core/ops/paint.js`, `gradient.js`), selections (`core/mask.js`, `select/wand.js`, `ops/selection.js`), transform/canvas/guides/clipboard/layers ops (`core/ops/*`), text and shapes (`core/text/*`, `shape.js`, `ops/live.js`), adjustments and filters (`core/filters/*`, worker `workers/compute.worker.js`, `core/compute.js`, `ops/preview.js`), files (`io/zip.js`, `project.js`, `psd.js`, `files.js`, `store.js`), UI (`ui/*`: canvas view with tool handlers in `ui/tools/`, layers panel, options bar, colour picker, live dialogs, rulers/guides, shortcut remapping), PWA icons/service worker/`.htaccess`.
+Decisions: no fflate (native streams); text uses Canvas fillText per character with kerning corrections; Camera Raw filter and AI control not ported; extra filters added beyond Composa (see tasks.md); defaults for font family Arial.
+Verification: syntax and import checks, plus node smoke tests with a software canvas shim covering painting, selections, transforms, layer ops, filters, history (undo-all/redo-all hashes match). Found and fixed: temporary Ctrl-move flag, mask stroke source copy.
+Remaining: test on the real shared host; real-browser pass for visual details (text kerning, transforms with rotation, PSD edge cases).

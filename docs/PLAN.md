@@ -76,7 +76,7 @@ The current tool icons are replaced entirely.
 
 | Lib | Why | Needed |
 |---|---|---|
-| `fflate` (~30 KB) | ZIP for `.cmps`/`.comp` project files and zip-compressed PSD layers | Phase 7 |
+| ~~`fflate`~~ | Not used: `app/io/zip.js` reads and writes ZIP with the browser's native `CompressionStream` / `DecompressionStream` (also inflates PSD zip channels) | n/a |
 | `ag-psd` (only if needed) | PSD read if a direct port of `Psd/*.cs` is too large | Phase 7 |
 | (none else) | Everything else is browser-native | |
 

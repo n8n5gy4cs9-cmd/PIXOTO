@@ -30,82 +30,86 @@
 - [x] Welcome screen
 
 ## Phase 2 — Painting
-- [ ] Brush + Erase mode
-- [ ] Eraser
-- [ ] Smoothing, pressure, Shift-line, Alt-pick
-- [ ] Color picker + swatches, X / D
-- [ ] Eyedropper
-- [ ] Gradient (adjustable, Enter applies)
-- [ ] Hand, Zoom
-- [ ] Clone Stamp
-- [ ] Spot Healing (inpaint port)
-- [ ] Smear: Liquify, Blur, Smudge, Dodge, Burn
-- [ ] Brush keys: `[ ]`, `{ }`, digits
+- [x] Brush + Erase mode
+- [x] Eraser
+- [x] Smoothing, pressure, Shift-line, Alt-pick
+- [x] Color picker + swatches, X / D
+- [x] Eyedropper
+- [x] Gradient (adjustable, Enter applies)
+- [x] Hand, Zoom
+- [x] Clone Stamp
+- [x] Spot Healing (inpaint port)
+- [x] Smear: Liquify, Blur, Smudge, Dodge, Burn
+- [x] Brush keys: `[ ]`, `{ }`, digits
 
 ## Phase 3 — Selections
-- [ ] Selection mask + marching ants
-- [ ] Marquee rect / ellipse
-- [ ] Lasso free / polygonal
-- [ ] Magic Wand
-- [ ] Object select + Select Subject
-- [ ] Add / subtract / intersect
-- [ ] Move outline, move / copy pixels
-- [ ] Expand, Contract, Feather
-- [ ] Select All, Deselect, Inverse
-- [ ] Content-Aware Fill
+- [x] Selection mask + marching ants
+- [x] Marquee rect / ellipse
+- [x] Lasso free / polygonal
+- [x] Magic Wand
+- [x] Object select + Select Subject
+- [x] Add / subtract / intersect
+- [x] Move outline, move / copy pixels
+- [x] Expand, Contract, Feather
+- [x] Select All, Deselect, Inverse
+- [x] Content-Aware Fill
 
 ## Phase 4 — Transform
-- [ ] Move tool + auto select
-- [ ] Transform handles (scale, rotate, flip)
-- [ ] Free distort
-- [ ] Multi-layer transform
-- [ ] Numeric X Y W H angle
-- [ ] Arrow nudge, Ctrl-drag temp Move
-- [ ] Crop (ratios, symmetric, trim)
-- [ ] Canvas Size, Image Size, Flip Layer / Canvas
+- [x] Move tool + auto select
+- [x] Transform handles (scale, rotate, flip)
+- [x] Free distort
+- [x] Multi-layer transform
+- [x] Numeric X Y W H angle
+- [x] Arrow nudge, Ctrl-drag temp Move
+- [x] Crop (ratios, symmetric, trim)
+- [x] Canvas Size, Image Size, Flip Layer / Canvas
 
 ## Phase 5 — Text and shapes
-- [ ] Type tool (point + paragraph)
-- [ ] Text options (font, size, style, color, align, tracking, leading)
-- [ ] Live shape layers (rect, rounded, ellipse, line)
-- [ ] Rasterize layer
+- [x] Type tool (point + paragraph)
+- [x] Text options (font, size, style, color, align, tracking, leading)
+- [x] Live shape layers (rect, rounded, ellipse, line)
+- [x] Rasterize layer
 
 ## Phase 6 — Layers advanced
-- [ ] Folders (group / ungroup)
-- [ ] 24 blend modes (8 via pixel pass)
-- [ ] Layer masks
-- [ ] Clipping masks
-- [ ] Layer effects (6 types) + dialog
-- [ ] Adjustment layers
-- [ ] Levels, Curves
-- [ ] Hue/Sat, Exposure, Gradient Map, Grain, Brightness/Contrast, B&W, Color Balance, Invert
-- [ ] Blur, Motion Blur, Noise, Sharpen, Vignette, Bloom, Tonal Contrast
-- [ ] Merge down / layers / group, Flatten
-- [ ] Layer right-click menu, inline rename, drag nest, Alt-solo
+- [x] Folders (group / ungroup)
+- [x] 24 blend modes (8 via pixel pass)
+- [x] Layer masks
+- [x] Clipping masks
+- [x] Layer effects (6 types) + dialog
+- [x] Adjustment layers
+- [x] Levels, Curves
+- [x] Hue/Sat, Exposure, Gradient Map, Grain, Brightness/Contrast, B&W, Color Balance, Invert
+- [x] Blur, Motion Blur, Noise, Sharpen, Vignette, Bloom, Tonal Contrast
+- [x] Painterly, Lens Correction, Remove Background (Composa filters)
+- [x] Keep the old Pixoto filters: Grayscale, Sepia, Posterize, Threshold, Vibrance, Unsharp Mask, Outline, Solarize
+- [x] More filters Composa has no menu item for: Box Blur, Radial Blur, Surface Blur, Tilt-Shift, High Pass, Median, Diffuse, Wave, Ripple, Twirl, Spherize/Pinch, Chromatic Aberration, Glitch, Pixelate, Emboss, Find Edges, Oil Paint, Halftone, Crystallize, Minimum, Maximum
+- [x] Repeat Last Filter (Ctrl+F)
+- [x] Merge down / layers / group, Flatten
+- [x] Layer right-click menu, inline rename, drag nest, Alt-solo
 
 ## Phase 7 — Files
-- [ ] Save / open `.cmps` (fflate vendored)
-- [ ] Export PNG, JPEG (live preview), WebP
-- [ ] Copy / paste, Copy Merged, paste layers across tabs
-- [ ] PSD import + conversion report
-- [ ] File System Access API + download fallback
-- [ ] Autosave + recovery
-- [ ] Recent files
+- [x] Save / open `.cmps` (own zip on native streams, no fflate)
+- [x] Export PNG, JPEG (live preview), WebP
+- [x] Copy / paste, Copy Merged, paste layers across tabs
+- [x] PSD import + conversion report
+- [x] File System Access API + download fallback
+- [x] Autosave + recovery
+- [x] Recent files
 
 ## Phase 8 — View and shortcuts
-- [ ] Rulers, guides, grid
-- [ ] Snap To
-- [ ] Canvas rotation
-- [ ] Shortcut dialog + remapping
-- [ ] Browser-reserved key workarounds
+- [x] Rulers, guides, grid
+- [x] Snap To
+- [x] Canvas rotation
+- [x] Shortcut dialog + remapping
+- [x] Browser-reserved key workarounds
 
 ## Phase 9 — PWA and deploy
-- [ ] New app icon (SVG + PNG 192/512/maskable/180/32)
-- [ ] Tool cursors
-- [ ] Service worker (offline)
-- [ ] Tablet / phone layout, touch gestures
-- [ ] Canvas size limit probe
-- [ ] `.htaccess` (MIME, cache)
-- [ ] docs/DEPLOY.md (upload steps, PHP 7.4 host)
-- [ ] docs/FEATURES.md rewritten
+- [x] New app icon (SVG + PNG 192/512/maskable/180/32)
+- [x] Tool cursors
+- [x] Service worker (offline)
+- [x] Tablet / phone layout, touch gestures
+- [x] Canvas size limit probe
+- [x] `.htaccess` (MIME, cache)
+- [x] docs/DEPLOY.md (upload steps, PHP 7.4 host)
+- [x] docs/FEATURES.md rewritten
 - [ ] Test on shared host

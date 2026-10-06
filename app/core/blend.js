@@ -15,13 +15,12 @@ const NAMES = {
 };
 export const blendName = (m) => NAMES[m] || m[0].toUpperCase() + m.slice(1);
 
-// Canvas 2D composite operations. Linear Dodge is 'lighter' (additive). Modes missing here are
-// composited per pixel (Phase 6); until then they draw as normal.
+// Canvas 2D composite operations. The 8 modes missing here are composited per pixel (sepblend.js).
 const CANVAS_OP = {
   normal: 'source-over', multiply: 'multiply', screen: 'screen', overlay: 'overlay', darken: 'darken', lighten: 'lighten',
   difference: 'difference', colorDodge: 'color-dodge', colorBurn: 'color-burn', softLight: 'soft-light',
   hardLight: 'hard-light', exclusion: 'exclusion', hue: 'hue', saturation: 'saturation', color: 'color',
-  luminosity: 'luminosity', linearDodge: 'lighter',
+  luminosity: 'luminosity',
 };
 export const canvasOp = (m) => CANVAS_OP[m] || 'source-over';
 export const isCustomBlend = (m) => !(m in CANVAS_OP);

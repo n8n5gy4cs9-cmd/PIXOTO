@@ -26,9 +26,15 @@ export class MenuBar {
     const menu = el('div', { class: 'menu', role: 'menu' });
     for (const it of items) {
       if (it === '-') { menu.append(el('hr')); continue; }
+      if (typeof it === 'object' && it.run) {
+        const row = el('div', { class: 'item' + (it.disabled ? ' disabled' : '') }, el('span', { class: 'tick' }), it.label, el('span', { class: 'key' }, ''));
+        row.addEventListener('pointerenter', () => this.closeFrom(depth + 1));
+        row.addEventListener('pointerup', (e) => { e.preventDefault(); if (it.disabled) return; this.closeAll(); it.run(); });
+        menu.append(row); continue;
+      }
       if (typeof it === 'object') {
         const row = el('div', { class: 'item' }, el('span', { class: 'tick' }), it.label, el('span', { class: 'key' }, '▸'));
-        const openSub = () => { const rr = row.getBoundingClientRect(); this.show(it.items, rr.right - 4, rr.top, depth + 1); };
+        const openSub = () => { const rr = row.getBoundingClientRect(); this.show(typeof it.items === 'function' ? it.items() : it.items, rr.right - 4, rr.top, depth + 1); };
         row.addEventListener('pointerenter', openSub); row.addEventListener('pointerup', openSub);
         menu.append(row); continue;
       }

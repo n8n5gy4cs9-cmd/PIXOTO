@@ -1,30 +1,33 @@
 # Pixoto 2 — Features (what exists now)
 
-Updated per phase. Reference: Composa (`TEMP_TO_BE_REMOVED/Composa-main/docs`). Old Pixoto feature list lives in `BACKUP/`.
+Reference: Composa (`TEMP_TO_BE_REMOVED/Composa-main/docs`). Everything runs in the browser; nothing is uploaded.
 
-## Phase 1 — Shell (done)
+## Window and documents
+Menu bar, options bar, tool rail with FG/BG swatches, tabs (unsaved dot, close, middle-click), canvas, Layers panel, status bar. Dark Composa palette; phone/tablet layout with a bottom tool bar, slide-over Layers panel, pinch/two-finger gestures and on-screen Shift/Alt/Ctrl toggles. New Canvas presets, Open (images, `.cmps`, `.psd`/`.psb`), Place as Layers, drag and drop, Recent files, 100-step undo/redo named in the menu, autosave every 2 minutes with "Recover Unsaved Work".
 
-**Window** (Composa layout): menu bar, options bar, tool rail with FG/BG swatches, document tabs, canvas, Layers panel, status bar. Dark Composa palette. Phone/tablet: tool rail moves to the bottom, Layers panel is a slide-over (button at the left of the tabs).
+## Tools (all 15)
+- **Brush / Eraser**: size, hardness, stroke-level opacity, smoothing, pen pressure, Shift-click lines, Alt-click picks a colour, works on masks, limited to the selection. `[ ]` size, `{ }` hardness, 1–0 opacity. E selects Erase mode.
+- **Spot Healing** (content-aware inpaint), **Clone Stamp** (Alt source, aligned, sample all layers, crosshair), **Smear**: Liquify, Blur, Smudge, Dodge, Burn.
+- **Gradient**: linear/radial, foreground→background or →transparent, adjustable ends, Enter applies, works on masks.
+- **Marquee** (rect/ellipse), **Lasso** (free/polygonal), **Magic** (Wand with tolerance/contiguous/sample all; Object with edge), Shift add, Alt subtract, both intersect; move outline, Ctrl-drag moves pixels (Alt copies); Expand, Contract, Feather, All, Deselect, Inverse, Subject, layer pixels/mask as selection; marching ants.
+- **Move / Transform**: Auto Select, handles to scale, rotate, flip, Ctrl-corner distort, multi-layer, numeric X/Y/W/H/angle, arrow nudge, snapping with magenta guides, Ctrl-drag temporary Move with any tool, drag inside a selection moves its pixels.
+- **Crop**: ratios, Shift proportions, Alt symmetric, thirds, Trim transparent edges, Enter/Escape.
+- **Type**: point and paragraph text, live editing with caret and selection, per-letter colour, font, size, Bold, Italic, align, tracking, leading, box handles; text stays sharp when scaled.
+- **Shape**: rectangle, rounded, ellipse, line as live layers; Rasterize Layer.
+- **Eyedropper**, **Hand**, **Zoom** (generated SVG cursors).
 
-**Documents**
-- File > New Canvas (presets HD, 4K, 2048², Instagram, A4@300, 6000×4000, custom size, transparent / white / background colour)
-- File > Open (images become new tabs), Place Images as Layers (scaled to fit, centred), drag & drop (opens when empty, places as layers otherwise)
-- Tabs with unsaved dot, close button, middle-click close
-- Export PNG / JPEG / WebP (File menu; live-preview dialog comes in Phase 7)
-- Undo / redo, 100 steps, named in the menu
+## Layers
+Folders, 24 blend modes (8 composited per pixel), opacity, layer masks (paint, invert, apply, disable, load as selection), clipping masks, six layer effects (Stroke, Drop Shadow, Color Overlay, Inner Shadow, Outer/Inner Glow), adjustment layers (all adjustments, editable, take the selection as mask), merge down/layers/group, flatten, duplicate, Layer via Copy, drag reorder/nest, Alt-click clip, eye swipe, Alt-click solo, inline rename, right-click menu, multi-select.
 
-**Canvas view**
-- Zoom 1–6400 %, Fit (never above 100 %), Actual Pixels, zoom in/out stops
-- Pan: Space+drag, middle button, Hand tool, two-finger touch; wheel scrolls, Shift+wheel sideways, Ctrl/Alt+wheel (and pinch) zooms around the pointer
-- Smoothing when zoomed out, crisp pixels and a pixel grid when zoomed in (View > Pixel Grid)
-- Zoom tool (click in, Alt-click out, drag to scrub), Eyedropper (Alt-click sets background)
+## Adjustments and filters (live preview, selection-limited, in a worker)
+- Adjustments (Image menu or adjustment layer): Levels (histogram, Auto), Curves, Hue/Saturation (ranges, colorize), Brightness/Contrast, Exposure, Black & White (tint), Color Balance, Gradient Map, Grain, Invert, Vibrance, Threshold, Posterize, Desaturate, Sepia, Solarize; Gaussian Blur, Motion Blur, Add Noise as layers too.
+- Filters (Filter menu, Ctrl+F repeats): Blur (Gaussian, Motion, Box, Radial, Surface, Tilt-Shift), Sharpen (Sharpen, Unsharp Mask, High Pass), Noise (Add Noise, Median, Diffuse), Light (Vignette, Bloom/Glow, Tonal Contrast), Distort (Lens Correction, Wave, Ripple, Twirl, Spherize/Pinch, Chromatic Aberration, Glitch), Stylize (Pixelate, Emboss, Find Edges, Oil Paint, Halftone, Crystallize, Minimum, Maximum, Outline, Painterly), Other (Remove Background).
 
-**Layers panel**: add, delete, duplicate, rename (double-click or F2), reorder by dragging or Ctrl+[ / Ctrl+], eye toggle with swipe and Alt-click solo, blend mode (all 24 listed; 17 render now, the other 7 render as Normal until Phase 6), opacity, thumbnails. Move tool + digits 1–0 set layer opacity.
+## Image and view
+Canvas Size (anchor), Image Size, Trim, Crop, rotate/flip canvas and layers. Zoom 1–6400 %, fit, pixel grid, rulers, guides (drag out, move, drop on ruler to delete, lock, clear), layout grid, Snap To (guides, grid, layers, document), rotate view, remappable keyboard shortcuts (F1; Alt variants for browser-reserved keys).
 
-**Tools / options bar**: all 15 Composa tools, keys, mode cycling (press the key again or Tab), per-tool option controls. Tools that do nothing yet are marked "Not available yet (phase N)".
+## Files
+Save/Save As `.cmps` (zip with PNG layers; Composa-compatible JSON), Export PNG / JPEG / WebP with live preview and file size, Copy / Cut / Copy Merged / Paste (also from the system clipboard), paste layers across tabs, PSD import with a conversion report, File System Access API with download fallback.
 
-**Shortcuts**: command registry with the Composa default keys (Help > Keyboard Shortcuts, F1, read-only for now). Alt-variants for browser-reserved Ctrl+N / W / T.
-
-**Icons**: all tool and UI icons are Composa's own path data in one SVG sprite (`app/assets/icons.svg`, generated by `tools/make-icons.py`), plus a new app icon.
-
-**Deploy**: static folder, relative paths, no build. Service worker registers on HTTPS.
+## Platform
+Static folder, relative paths, offline service worker, installable PWA (PNG icons), optional `.htaccess`. See `DEPLOY.md`.

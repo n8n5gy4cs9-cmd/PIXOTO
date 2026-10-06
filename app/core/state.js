@@ -4,17 +4,21 @@ const defaults = {
   tool: 'move',
   modes: { marquee: 0, lasso: 0, wand: 0, brush: 0, smear: 0, shape: 0 },
   fg: '#000000', bg: '#ffffff',
-  brush: { size: 20, hardness: 0.8, opacity: 1, smoothing: 0 },
-  wandTolerance: 32, wandContiguous: true, wandAllLayers: false, feather: 0,
+  brush: { size: 20, hardness: 0.8, opacity: 1, smoothing: 0, spacing: 0.08 },
+  wandTolerance: 32, objectEdge: 0, cropRatio: 'Free', textDefaults: { fontFamily: 'Inter', size: 72, bold: false, italic: false, alignment: 'left', tracking: 0, leading: 0 }, wandContiguous: true, wandAllLayers: false, feather: 0,
   gradientToTransparent: false, gradientRadial: false, gradientOpacity: 1,
   shapeCornerRadius: 24, shapeLineWidth: 4,
   cloneAligned: true, cloneAllLayers: false, autoSelect: true, transformControls: true,
-  view: { rulers: false, grid: false, guides: true, snap: true, lockGuides: false, pixelGrid: true },
+  view: { rulers: false, grid: false, guides: true, snap: true, snapGuides: true, snapGrid: false, snapLayers: true, snapBounds: true, lockGuides: false, pixelGrid: true },
   shortcuts: {},
 };
 
 const load = () => {
-  try { return structuredClone({ ...defaults, ...JSON.parse(localStorage.getItem(KEY) || '{}') }); } catch { return structuredClone(defaults); }
+  try {
+    const saved = JSON.parse(localStorage.getItem(KEY) || '{}'), out = structuredClone(defaults);
+    for (const [k, v] of Object.entries(saved)) out[k] = v && typeof v === 'object' && !Array.isArray(v) && k in defaults && k !== 'shortcuts' ? { ...defaults[k], ...v } : v;
+    return out;
+  } catch { return structuredClone(defaults); }
 };
 export const state = load();
 const listeners = new Set();
