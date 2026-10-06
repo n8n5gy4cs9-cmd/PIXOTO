@@ -1,0 +1,2177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#141418">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="description" content="Pixoto — Professional Photo &amp; Pixel Art Editor">
+    <title>Pixoto</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- SVG ICON SPRITE SHEET                                   -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!--
+        SVG Icon Sprite Sheet — Lucide Icons (MIT License)
+        https://lucide.dev  |  Version 0.462.0
+        All tool icons use authentic Lucide paths vendored inline.
+        Non-tool icons (UI chrome) also use Lucide for consistency.
+    -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="svg-sprites">
+
+        <!-- ── Pixoto Logo — Pixel "P" mark (custom) ── -->
+        <symbol id="icon-logo" viewBox="0 0 16 20">
+            <rect x="0" y="0" width="3.5" height="3.5"/>
+            <rect x="4" y="0" width="3.5" height="3.5"/>
+            <rect x="8" y="0" width="3.5" height="3.5"/>
+            <rect x="12" y="0" width="3.5" height="3.5"/>
+            <rect x="0" y="4" width="3.5" height="3.5"/>
+            <rect x="12" y="4" width="3.5" height="3.5"/>
+            <rect x="0" y="8" width="3.5" height="3.5"/>
+            <rect x="4" y="8" width="3.5" height="3.5"/>
+            <rect x="8" y="8" width="3.5" height="3.5"/>
+            <rect x="12" y="8" width="3.5" height="3.5"/>
+            <rect x="0" y="12" width="3.5" height="3.5"/>
+            <rect x="0" y="16" width="3.5" height="3.5"/>
+        </symbol>
+
+        <!-- ══════════════════════════════════════════════
+             TOOL ICONS — Lucide 0.462 (MIT)
+             ══════════════════════════════════════════════ -->
+
+        <!-- Brush Tool — lucide:paintbrush -->
+        <symbol id="icon-brush" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18.37 2.63 14 7l-1.59-1.59a2 2 0 0 0-2.82 0L8 7l9 9 1.59-1.59a2 2 0 0 0 0-2.82L17 10l4.37-4.37a2.12 2.12 0 1 0-3-3Z"/>
+            <path d="M9 8c-2 3-4 3.5-7 4l8 10c2-1 6-5 6-7"/>
+            <path d="M14.5 17.5 4.5 15"/>
+        </symbol>
+
+        <!-- Eraser Tool — lucide:eraser -->
+        <symbol id="icon-eraser" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21"/>
+            <path d="M22 21H7"/>
+            <path d="m5 11 9 9"/>
+        </symbol>
+
+        <!-- Fill Bucket — lucide:paint-bucket -->
+        <symbol id="icon-fill" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m19 11-8-8-8.5 8.5a5.5 5.5 0 0 0 7.78 7.78Z"/>
+            <path d="m3.5 11.5 1.4 1.4"/>
+            <path d="M13 6.1 11 4"/>
+            <path d="M21.378 12.626a1 1 0 0 0-3.004-3.004l-4.01 4.012a2 2 0 0 0-.506.854l-.837 3.184a.5.5 0 0 0 .62.62l3.184-.837a2 2 0 0 0 .854-.506Z"/>
+        </symbol>
+
+        <!-- Rectangle Select — lucide:rectangle-select (dashed) -->
+        <symbol id="icon-select-rect" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 3a2 2 0 0 0-2 2" stroke-dasharray="3 3"/>
+            <path d="M19 3a2 2 0 0 1 2 2" stroke-dasharray="3 3"/>
+            <path d="M21 19a2 2 0 0 1-2 2" stroke-dasharray="3 3"/>
+            <path d="M5 21a2 2 0 0 1-2-2" stroke-dasharray="3 3"/>
+            <path d="M9 3h1" stroke-dasharray="3 3"/>
+            <path d="M14 3h1" stroke-dasharray="3 3"/>
+            <path d="M21 9v1" stroke-dasharray="3 3"/>
+            <path d="M21 14v1" stroke-dasharray="3 3"/>
+            <path d="M15 21h-1" stroke-dasharray="3 3"/>
+            <path d="M10 21H9" stroke-dasharray="3 3"/>
+            <path d="M3 15v-1" stroke-dasharray="3 3"/>
+            <path d="M3 10V9" stroke-dasharray="3 3"/>
+        </symbol>
+
+        <!-- Lasso Select — lucide:lasso -->
+        <symbol id="icon-lasso" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 22a5 5 0 0 1-2-4"/>
+            <path d="M3.3 14A6.8 6.8 0 0 1 2 10c0-4.4 4.5-8 10-8s10 3.6 10 8-4.5 8-10 8a12 12 0 0 1-5-1"/>
+            <path d="M5 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>
+        </symbol>
+
+        <!-- Magic Wand — lucide:wand-sparkles -->
+        <symbol id="icon-magic-wand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72Z"/>
+            <path d="m14 7 3 3"/>
+            <path d="M5 6v4"/>
+            <path d="M19 14v4"/>
+            <path d="M10 2v2"/>
+            <path d="M7 8H3"/>
+            <path d="M21 16h-4"/>
+            <path d="M11 3H9"/>
+        </symbol>
+
+        <!-- Crop Tool — lucide:crop -->
+        <symbol id="icon-crop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2v14a2 2 0 0 0 2 2h14"/>
+            <path d="M18 22V8a2 2 0 0 0-2-2H2"/>
+        </symbol>
+
+        <!-- Pixel Pen — lucide:pen-tool (custom pixel variant) -->
+        <symbol id="icon-pixel-pen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15.707 21.293a1 1 0 0 1-1.414 0l-1.586-1.586a1 1 0 0 1 0-1.414l5.586-5.586a1 1 0 0 1 1.414 0l1.586 1.586a1 1 0 0 1 0 1.414z"/>
+            <path d="m18 13-1.375-6.874a1 1 0 0 0-.746-.776L3.235 2.028a1 1 0 0 0-1.207 1.207L5.35 16.249a1 1 0 0 0 .776.746L13 18.35"/>
+            <path d="m2.3 2.3 7.286 7.286"/>
+            <circle cx="11" cy="11" r="2"/>
+        </symbol>
+
+        <!-- Eyedropper — lucide:pipette -->
+        <symbol id="icon-eyedropper" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m2 22 1-1h3l9-9"/>
+            <path d="M3 21v-3l9-9"/>
+            <path d="m15 6 3.4-3.4a2.1 2.1 0 1 1 3 3L18 9l.4.4a2.1 2.1 0 1 1-3 3l-3.8-3.8a2.1 2.1 0 1 1 3-3l.4.4Z"/>
+        </symbol>
+
+        <!-- Pixelate — lucide:grid-3x3 (with opacity variation) -->
+        <symbol id="icon-pixelate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="18" height="18" x="3" y="3" rx="2"/>
+            <path d="M3 9h18"/>
+            <path d="M3 15h18"/>
+            <path d="M9 3v18"/>
+            <path d="M15 3v18"/>
+        </symbol>
+
+        <!-- Move / Pan — lucide:move -->
+        <symbol id="icon-move" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 9 2 12l3 3"/>
+            <path d="M9 5l3-3 3 3"/>
+            <path d="M15 19l-3 3-3-3"/>
+            <path d="M19 9l3 3-3 3"/>
+            <path d="M2 12h20"/>
+            <path d="M12 2v20"/>
+        </symbol>
+
+        <!-- Free Transform — lucide:transform (bounding box with handles) -->
+        <symbol id="icon-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 6a1 1 0 1 0 2 0 1 1 0 0 0-2 0z" fill="currentColor" stroke="none"/>
+            <path d="M17 6a1 1 0 1 0 2 0 1 1 0 0 0-2 0z" fill="currentColor" stroke="none"/>
+            <path d="M5 18a1 1 0 1 0 2 0 1 1 0 0 0-2 0z" fill="currentColor" stroke="none"/>
+            <path d="M17 18a1 1 0 1 0 2 0 1 1 0 0 0-2 0z" fill="currentColor" stroke="none"/>
+            <path d="M11 6a1 1 0 1 0 2 0 1 1 0 0 0-2 0z" fill="currentColor" stroke="none"/>
+            <path d="M11 18a1 1 0 1 0 2 0 1 1 0 0 0-2 0z" fill="currentColor" stroke="none"/>
+            <path d="M6 11a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" fill="currentColor" stroke="none"/>
+            <path d="M18 11a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" fill="currentColor" stroke="none"/>
+            <path d="M7 6h10M7 18h10M6 7v10M18 7v10" stroke-dasharray="2 2"/>
+        </symbol>
+
+        <!-- Pixel Line — lucide:minus (diagonal) -->
+        <symbol id="icon-line" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="5" y1="19" x2="19" y2="5"/>
+        </symbol>
+
+        <!-- Rectangle Shape — lucide:square -->
+        <symbol id="icon-rect-shape" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="18" height="14" x="3" y="5" rx="2"/>
+        </symbol>
+
+        <!-- Ellipse Shape — lucide:circle -->
+        <symbol id="icon-ellipse-shape" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <ellipse cx="12" cy="12" rx="9" ry="7"/>
+        </symbol>
+
+        <!-- Text Tool — lucide:type -->
+        <symbol id="icon-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="4 7 4 4 20 4 20 7"/>
+            <line x1="9" y1="20" x2="15" y2="20"/>
+            <line x1="12" y1="4" x2="12" y2="20"/>
+        </symbol>
+
+        <!-- Smudge Tool — lucide:blend (finger smear) -->
+        <symbol id="icon-smudge" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22C6.5 22 2 17.5 2 12S6.5 2 12 2"/>
+            <path d="M13.5 2c-.5 3-2 5.5-3.5 8s-3 5-3.5 8"/>
+            <path d="M22 12c0 5.5-4.5 10-10 10"/>
+            <path d="M22 12c-1-1-2.5-1.5-4-2s-3-1-4-2"/>
+        </symbol>
+
+        <!-- Dodge Tool — lucide:sun (dodge = brighten) -->
+        <symbol id="icon-dodge" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2"/>
+            <path d="M12 20v2"/>
+            <path d="m4.93 4.93 1.41 1.41"/>
+            <path d="m17.66 17.66 1.41 1.41"/>
+            <path d="M2 12h2"/>
+            <path d="M20 12h2"/>
+            <path d="m6.34 17.66-1.41 1.41"/>
+            <path d="m19.07 4.93-1.41 1.41"/>
+        </symbol>
+
+        <!-- Burn Tool — lucide:moon (burn = darken) -->
+        <symbol id="icon-burn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+        </symbol>
+
+        <!-- Clone Stamp — lucide:stamp -->
+        <symbol id="icon-clone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v3"/>
+            <path d="M7 20h10"/>
+            <path d="M12 4v16"/>
+            <rect width="6" height="4" x="9" y="16" rx="1"/>
+        </symbol>
+
+        <!-- ══════════════════════════════════════════════
+             UI CHROME ICONS — Lucide 0.462 (MIT)
+             ══════════════════════════════════════════════ -->
+
+        <!-- Undo — lucide:undo-2 -->
+        <symbol id="icon-undo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 14 4 9l5-5"/>
+            <path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11"/>
+        </symbol>
+
+        <!-- Redo — lucide:redo-2 -->
+        <symbol id="icon-redo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m15 14 5-5-5-5"/>
+            <path d="M20 9H9.5A5.5 5.5 0 0 0 4 14.5v0A5.5 5.5 0 0 0 9.5 20H13"/>
+        </symbol>
+
+        <!-- Hamburger Menu — lucide:menu -->
+        <symbol id="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="4" y1="6" x2="20" y2="6"/>
+            <line x1="4" y1="12" x2="20" y2="12"/>
+            <line x1="4" y1="18" x2="20" y2="18"/>
+        </symbol>
+
+        <!-- Close — lucide:x -->
+        <symbol id="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M18 6 6 18"/>
+            <path d="m6 6 12 12"/>
+        </symbol>
+
+        <!-- Checkmark — lucide:check -->
+        <symbol id="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 6 9 17l-5-5"/>
+        </symbol>
+
+        <!-- Eye — lucide:eye -->
+        <symbol id="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+            <circle cx="12" cy="12" r="3"/>
+        </symbol>
+
+        <!-- Eye Off — lucide:eye-off -->
+        <symbol id="icon-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/>
+            <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/>
+            <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/>
+            <line x1="2" y1="2" x2="22" y2="22"/>
+        </symbol>
+
+        <!-- Lock — lucide:lock -->
+        <symbol id="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="18" height="11" x="3" y="11" rx="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </symbol>
+
+        <!-- Unlock — lucide:lock-open -->
+        <symbol id="icon-unlock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="18" height="11" x="3" y="11" rx="2"/>
+            <path d="M7 11V7a5 5 0 0 1 9.9-1"/>
+        </symbol>
+
+        <!-- Grid — lucide:grid-3x3 -->
+        <symbol id="icon-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <rect width="18" height="18" x="3" y="3" rx="2"/>
+            <path d="M3 9h18"/>
+            <path d="M3 15h18"/>
+            <path d="M9 3v18"/>
+            <path d="M15 3v18"/>
+        </symbol>
+
+        <!-- Ruler — lucide:ruler -->
+        <symbol id="icon-ruler" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"/>
+            <path d="m14.5 12.5 2-2"/>
+            <path d="m11.5 9.5 2-2"/>
+            <path d="m8.5 6.5 2-2"/>
+            <path d="m17.5 15.5 2-2"/>
+        </symbol>
+
+        <!-- Plus — lucide:plus -->
+        <symbol id="icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M5 12h14"/>
+            <path d="M12 5v14"/>
+        </symbol>
+
+        <!-- Trash — lucide:trash-2 -->
+        <symbol id="icon-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 6h18"/>
+            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
+            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+            <line x1="10" y1="11" x2="10" y2="17"/>
+            <line x1="14" y1="11" x2="14" y2="17"/>
+        </symbol>
+
+        <!-- Duplicate — lucide:copy -->
+        <symbol id="icon-duplicate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="14" height="14" x="8" y="8" rx="2"/>
+            <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+        </symbol>
+
+        <!-- Merge Down — lucide:merge -->
+        <symbol id="icon-merge" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m8 6 4-4 4 4"/>
+            <path d="M12 2v10.3a4 4 0 0 1-1.172 2.872L4 22"/>
+            <path d="m20 22-5-5.172A4 4 0 0 1 14 14"/>
+        </symbol>
+
+        <!-- Chevron Down — lucide:chevron-down -->
+        <symbol id="icon-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m6 9 6 6 6-6"/>
+        </symbol>
+
+        <!-- Chevron Right — lucide:chevron-right -->
+        <symbol id="icon-chevron-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m9 18 6-6-6-6"/>
+        </symbol>
+
+        <!-- Layers — lucide:layers -->
+        <symbol id="icon-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/>
+            <path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/>
+            <path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/>
+        </symbol>
+
+        <!-- Download — lucide:download -->
+        <symbol id="icon-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+        </symbol>
+
+        <!-- Upload — lucide:upload -->
+        <symbol id="icon-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+        </symbol>
+
+        <!-- Zoom In — lucide:zoom-in -->
+        <symbol id="icon-zoom-in" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            <line x1="11" y1="8" x2="11" y2="14"/>
+            <line x1="8" y1="11" x2="14" y2="11"/>
+        </symbol>
+
+        <!-- Zoom Out — lucide:zoom-out -->
+        <symbol id="icon-zoom-out" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            <line x1="8" y1="11" x2="14" y2="11"/>
+        </symbol>
+
+        <!-- Symmetry — lucide:flip-horizontal-2 -->
+        <symbol id="icon-symmetry" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m3 7 5 5-5 5V7"/>
+            <path d="m21 7-5 5 5 5V7"/>
+            <path d="M12 20V4"/>
+        </symbol>
+
+        <!-- Color Palette — lucide:palette -->
+        <symbol id="icon-palette" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/>
+            <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/>
+            <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/>
+            <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/>
+            <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
+        </symbol>
+
+        <!-- Settings — lucide:settings -->
+        <symbol id="icon-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+            <circle cx="12" cy="12" r="3"/>
+        </symbol>
+
+        <!-- History — lucide:history -->
+        <symbol id="icon-history" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+            <path d="M3 3v5h5"/>
+            <path d="M12 7v5l4 2"/>
+        </symbol>
+
+        <!-- Arrow Up — lucide:arrow-up -->
+        <symbol id="icon-arrow-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m5 12 7-7 7 7"/>
+            <path d="M12 19V5"/>
+        </symbol>
+
+        <!-- Arrow Down — lucide:arrow-down -->
+        <symbol id="icon-arrow-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 5v14"/>
+            <path d="m19 12-7 7-7-7"/>
+        </symbol>
+
+        <!-- Image — lucide:image -->
+        <symbol id="icon-image" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/>
+            <circle cx="9" cy="9" r="2"/>
+            <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
+        </symbol>
+
+        <!-- New File — lucide:file-plus -->
+        <symbol id="icon-file-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+            <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+            <path d="M9 15h6"/>
+            <path d="M12 18v-6"/>
+        </symbol>
+
+        <!-- Save — lucide:save -->
+        <symbol id="icon-save" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/>
+            <path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/>
+            <path d="M7 3v4a1 1 0 0 0 1 1h7"/>
+        </symbol>
+
+        <!-- Layer Mask — lucide:circle-half (custom) -->
+        <symbol id="icon-mask" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <path d="M12 7a5 5 0 0 1 0 10z" fill="currentColor" opacity=".5"/>
+            <circle cx="12" cy="12" r="5"/>
+        </symbol>
+
+        <!-- Alpha Lock — lucide:lock + α -->
+        <symbol id="icon-alpha-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="18" height="11" x="3" y="11" rx="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            <text x="9" y="20" font-size="7" fill="currentColor" stroke="none" font-family="monospace">α</text>
+        </symbol>
+
+        <!-- Clip to Below — lucide:arrow-down-to-line -->
+        <symbol id="icon-clip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="5" y="3" width="14" height="9" rx="1"/>
+            <rect x="3" y="12" width="18" height="9" rx="1" fill="currentColor" opacity=".15"/>
+            <path d="M12 12v3"/>
+            <path d="m9 14 3 3 3-3"/>
+        </symbol>
+
+        <!-- Group / Folder — lucide:folder -->
+        <symbol id="icon-group" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>
+        </symbol>
+
+        <!-- Fit Screen — lucide:maximize-2 -->
+        <symbol id="icon-fit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 3 21 3 21 9"/>
+            <polyline points="9 21 3 21 3 15"/>
+            <line x1="21" y1="3" x2="14" y2="10"/>
+            <line x1="3" y1="21" x2="10" y2="14"/>
+        </symbol>
+
+        <!-- Info — lucide:info -->
+        <symbol id="icon-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 16v-4"/>
+            <path d="M12 8h.01"/>
+        </symbol>
+    </svg>
+
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOP BAR                                                 -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <header id="top-bar">
+        <div class="top-bar-left">
+            <div class="logo" aria-label="Pixoto">
+                <svg class="icon logo-icon" aria-hidden="true"><use href="#icon-logo"/></svg>
+            </div>
+            <span class="app-name">Pixoto</span>
+
+            <!-- Desktop Menu Bar -->
+            <nav class="menu-bar desktop-only" aria-label="Main menu">
+                <button class="menu-trigger" data-menu="file">File</button>
+                <button class="menu-trigger" data-menu="edit">Edit</button>
+                <button class="menu-trigger" data-menu="image">Image</button>
+                <button class="menu-trigger" data-menu="layer">Layer</button>
+                <button class="menu-trigger" data-menu="select">Select</button>
+                <button class="menu-trigger" data-menu="view">View</button>
+                <button class="menu-trigger" data-menu="help">Help</button>
+            </nav>
+        </div>
+
+        <div class="top-bar-actions">
+            <button id="btn-undo" class="icon-btn" title="Undo (Ctrl+Z)" aria-label="Undo">
+                <svg class="icon"><use href="#icon-undo"/></svg>
+            </button>
+            <button id="btn-redo" class="icon-btn" title="Redo (Ctrl+Y)" aria-label="Redo">
+                <svg class="icon"><use href="#icon-redo"/></svg>
+            </button>
+        </div>
+
+        <div class="top-bar-right">
+            <button id="mode-toggle" class="mode-btn" title="Switch Photo / Pixel Art mode">
+                <span class="mode-label">Photo</span>
+                <svg class="icon icon-sm"><use href="#icon-chevron-down"/></svg>
+            </button>
+            <button id="btn-hamburger" class="icon-btn mobile-only" title="Menu" aria-label="Open menu">
+                <svg class="icon"><use href="#icon-menu"/></svg>
+            </button>
+        </div>
+    </header>
+
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- DESKTOP DROPDOWN MENUS                                  -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="menu-backdrop" class="menu-backdrop" hidden></div>
+
+    <nav id="dropdown-file" class="dropdown-menu" hidden>
+        <button class="dropdown-item" data-action="new"><span>New Canvas</span><kbd>Ctrl+N</kbd></button>
+        <button class="dropdown-item" data-action="open"><span>Open File…</span><kbd>Ctrl+O</kbd></button>
+        <button class="dropdown-item" data-action="place-image"><span>Place Image…</span><kbd>Ctrl+Shift+P</kbd></button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item" data-action="save-project"><span>Save Project</span><kbd>Ctrl+Shift+S</kbd></button>
+        <button class="dropdown-item" data-action="load-project"><span>Open Project…</span></button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item" data-action="export-png"><span>Export PNG</span><kbd>Ctrl+S</kbd></button>
+        <button class="dropdown-item" data-action="export-jpg"><span>Export JPG</span></button>
+        <button class="dropdown-item" data-action="export-webp"><span>Export WebP</span></button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item" data-action="restore-session"><span>Restore Last Session</span></button>
+    </nav>
+
+    <nav id="dropdown-edit" class="dropdown-menu" hidden>
+        <button class="dropdown-item" data-action="undo"><span>Undo</span><kbd>Ctrl+Z</kbd></button>
+        <button class="dropdown-item" data-action="redo"><span>Redo</span><kbd>Ctrl+Y</kbd></button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item" data-action="cut"><span>Cut</span><kbd>Ctrl+X</kbd></button>
+        <button class="dropdown-item" data-action="copy"><span>Copy</span><kbd>Ctrl+C</kbd></button>
+        <button class="dropdown-item" data-action="paste"><span>Paste</span><kbd>Ctrl+V</kbd></button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item" data-action="select-all"><span>Select All</span><kbd>Ctrl+A</kbd></button>
+        <button class="dropdown-item" data-action="deselect"><span>Deselect</span><kbd>Ctrl+D</kbd></button>
+    </nav>
+
+    <nav id="dropdown-image" class="dropdown-menu" hidden>
+        <button class="dropdown-item" data-action="resize-image"><span>Resize Image…</span></button>
+        <button class="dropdown-item" data-action="resize-canvas"><span>Resize Canvas…</span></button>
+        <button class="dropdown-item" data-action="crop-to-selection"><span>Crop to Selection</span></button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item" data-action="rotate-cw"><span>Rotate 90° CW</span></button>
+        <button class="dropdown-item" data-action="rotate-ccw"><span>Rotate 90° CCW</span></button>
+        <button class="dropdown-item" data-action="rotate-180"><span>Rotate 180°</span></button>
+        <button class="dropdown-item" data-action="rotate-arbitrary"><span>Rotate Arbitrary…</span></button>
+        <button class="dropdown-item" data-action="flip-h"><span>Flip Horizontal</span></button>
+        <button class="dropdown-item" data-action="flip-v"><span>Flip Vertical</span></button>
+        <button class="dropdown-item" data-action="trim"><span>Trim Transparent</span></button>
+        <button class="dropdown-item" data-action="crop-content"><span>Crop to Content</span></button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item" data-action="filter-gaussian-blur"><span>Gaussian Blur…</span></button>
+        <button class="dropdown-item" data-action="filter-sharpen"><span>Sharpen…</span></button>
+        <button class="dropdown-item" data-action="filter-unsharp-mask"><span>Unsharp Mask…</span></button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item" data-action="filter-invert"><span>Invert</span></button>
+        <button class="dropdown-item" data-action="filter-grayscale"><span>Grayscale</span></button>
+        <button class="dropdown-item" data-action="filter-sepia"><span>Sepia</span></button>
+        <button class="dropdown-item" data-action="filter-posterize"><span>Posterize…</span></button>
+        <button class="dropdown-item" data-action="filter-noise"><span>Noise…</span></button>
+        <button class="dropdown-item" data-action="filter-outline"><span>Outline/Glow…</span></button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item" data-action="adj-brightness-contrast"><span>Brightness/Contrast…</span></button>
+        <button class="dropdown-item" data-action="adj-hue-saturation"><span>Hue/Saturation…</span></button>
+        <button class="dropdown-item" data-action="adj-levels"><span>Levels…</span></button>
+        <button class="dropdown-item" data-action="adj-curves"><span>Curves…</span></button>
+        <button class="dropdown-item" data-action="adj-color-balance"><span>Color Balance…</span></button>
+        <button class="dropdown-item" data-action="adj-vibrance"><span>Vibrance…</span></button>
+        <button class="dropdown-item" data-action="adj-gradient-map"><span>Gradient Map…</span></button>
+        <button class="dropdown-item" data-action="adj-threshold"><span>Threshold…</span></button>
+    </nav>
+
+    <nav id="dropdown-layer" class="dropdown-menu" hidden>
+        <button class="dropdown-item" data-action="add-layer"><span>New Layer</span></button>
+        <button class="dropdown-item" data-action="duplicate-layer"><span>Duplicate Layer</span></button>
+        <button class="dropdown-item" data-action="delete-layer"><span>Delete Layer</span></button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item" data-action="add-mask-white"><span>Add Mask — Reveal All</span></button>
+        <button class="dropdown-item" data-action="add-mask-black"><span>Add Mask — Hide All</span></button>
+        <button class="dropdown-item" data-action="apply-mask"><span>Apply Mask</span></button>
+        <button class="dropdown-item" data-action="delete-mask"><span>Delete Mask</span></button>
+        <button class="dropdown-item" data-action="invert-mask"><span>Invert Mask</span></button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item" data-action="toggle-alpha-lock"><span>Alpha Lock</span></button>
+        <button class="dropdown-item" data-action="toggle-clip-to-below"><span>Clip to Below</span></button>
+        <button class="dropdown-item" data-action="layer-styles"><span>Layer Styles…</span></button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item" data-action="create-group"><span>Group Layer</span><kbd>Ctrl+G</kbd></button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item" data-action="merge-down"><span>Merge Down</span></button>
+        <button class="dropdown-item" data-action="merge-visible"><span>Merge Visible</span></button>
+        <button class="dropdown-item" data-action="flatten"><span>Flatten Image</span></button>
+    </nav>
+
+    <nav id="dropdown-select" class="dropdown-menu" hidden>
+        <button class="dropdown-item" data-action="select-all"><span>Select All</span><kbd>Ctrl+A</kbd></button>
+        <button class="dropdown-item" data-action="deselect"><span>Deselect</span><kbd>Ctrl+D</kbd></button>
+        <button class="dropdown-item" data-action="select-inverse"><span>Inverse</span><kbd>Ctrl+Shift+I</kbd></button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item" data-action="sel-grow"><span>Grow…</span></button>
+        <button class="dropdown-item" data-action="sel-shrink"><span>Shrink…</span></button>
+        <button class="dropdown-item" data-action="sel-feather"><span>Feather…</span></button>
+        <button class="dropdown-item" data-action="sel-border"><span>Border…</span></button>
+        <button class="dropdown-item" data-action="sel-smooth"><span>Smooth…</span></button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item" data-action="transform-selection"><span>Transform Selection</span></button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item" data-action="sel-save"><span>Save Selection</span></button>
+        <button class="dropdown-item" data-action="sel-load"><span>Load Selection</span></button>
+    </nav>
+
+    <nav id="dropdown-view" class="dropdown-menu" hidden>
+        <button class="dropdown-item" data-action="toggle-pixel-mode"><span>Pixel Art Mode</span><span class="menu-toggle-indicator" id="desktop-pixel-mode-indicator"></span></button>
+        <button class="dropdown-item" data-action="toggle-grid"><span>Pixel Grid</span><kbd>G</kbd><span class="menu-toggle-indicator" id="desktop-grid-indicator"></span></button>
+        <div class="dropdown-item dropdown-color-row">
+            <span>Grid Color</span>
+            <input type="color" id="desktop-grid-color-input" value="#ffffff" class="color-input-sm" title="Grid line color">
+        </div>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item" data-action="toggle-rulers"><span>Rulers</span><kbd>Ctrl+R</kbd><span class="menu-toggle-indicator" id="desktop-ruler-indicator"></span></button>
+        <button class="dropdown-item" data-action="toggle-guides"><span>Guides</span></button>
+        <button class="dropdown-item" data-action="guides-clear"><span>Clear Guides</span></button>
+        <button class="dropdown-item" data-action="reset-rotation"><span>Reset View Rotation</span></button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item" data-action="reference-import"><span>Import Reference…</span></button>
+        <button class="dropdown-item" data-action="reference-clear"><span>Clear Reference</span></button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item" data-action="toggle-tile-preview"><span>Tile Preview</span></button>
+        <button class="dropdown-item" data-action="toggle-animation"><span>Animation Timeline</span></button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item" data-action="fit-screen"><span>Fit to Screen</span></button>
+        <button class="dropdown-item" data-action="zoom-100"><span>Actual Pixels (100%)</span></button>
+        <button class="dropdown-item" data-action="zoom-200"><span>200%</span></button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item" data-action="toggle-history"><span>History Panel</span></button>
+    </nav>
+    <nav id="dropdown-help" class="dropdown-menu" hidden>
+        <button class="dropdown-item" data-action="about"><span>About Pixoto</span></button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item" data-action="clear-app-data"><span>Clear App Data…</span></button>
+    </nav>
+
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- MAIN WORKSPACE                                          -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <main id="workspace">
+
+        <!-- ─── Left Tool Sidebar (desktop/tablet) ─── -->
+        <aside id="tool-sidebar" aria-label="Tools">
+            <div class="tool-group">
+                <button class="tool-btn active" data-tool="brush" title="Brush (B)" aria-label="Brush">
+                    <svg class="icon"><use href="#icon-brush"/></svg>
+                </button>
+                <button class="tool-btn" data-tool="eraser" title="Eraser (E)" aria-label="Eraser">
+                    <svg class="icon"><use href="#icon-eraser"/></svg>
+                </button>
+                <button class="tool-btn" data-tool="fill" title="Fill Bucket (F)" aria-label="Fill Bucket">
+                    <svg class="icon"><use href="#icon-fill"/></svg>
+                </button>
+            </div>
+            <div class="tool-group">
+                <button class="tool-btn" data-tool="select-rect" title="Rectangle Select (M)" aria-label="Rectangle Select">
+                    <svg class="icon"><use href="#icon-select-rect"/></svg>
+                </button>
+                <button class="tool-btn" data-tool="select-ellipse" title="Ellipse Select" aria-label="Ellipse Select">
+                    <svg class="icon"><use href="#icon-ellipse-shape"/></svg>
+                </button>
+                <button class="tool-btn" data-tool="lasso" title="Lasso (L)" aria-label="Lasso">
+                    <svg class="icon"><use href="#icon-lasso"/></svg>
+                </button>
+                <button class="tool-btn" data-tool="magic-wand" title="Magic Wand (W)" aria-label="Magic Wand">
+                    <svg class="icon"><use href="#icon-magic-wand"/></svg>
+                </button>
+                <button class="tool-btn" data-tool="crop" title="Crop (C)" aria-label="Crop">
+                    <svg class="icon"><use href="#icon-crop"/></svg>
+                </button>
+                <button class="tool-btn" data-tool="move" title="Move (V)" aria-label="Move">
+                    <svg class="icon"><use href="#icon-move"/></svg>
+                </button>
+                <button class="tool-btn" data-tool="transform" title="Free Transform (T)" aria-label="Free Transform">
+                    <svg class="icon"><use href="#icon-transform"/></svg>
+                </button>
+            </div>
+            <div class="tool-group">
+                <button class="tool-btn" data-tool="pixel-pen" title="Pixel Pen (P)" aria-label="Pixel Pen">
+                    <svg class="icon"><use href="#icon-pixel-pen"/></svg>
+                </button>
+                <button class="tool-btn" data-tool="pixel-line" title="Pixel Line" aria-label="Pixel Line">
+                    <svg class="icon"><use href="#icon-line"/></svg>
+                </button>
+                <button class="tool-btn" data-tool="pixel-rect" title="Pixel Rectangle" aria-label="Pixel Rectangle">
+                    <svg class="icon"><use href="#icon-rect-shape"/></svg>
+                </button>
+                <button class="tool-btn" data-tool="pixel-ellipse" title="Pixel Ellipse" aria-label="Pixel Ellipse">
+                    <svg class="icon"><use href="#icon-ellipse-shape"/></svg>
+                </button>
+            </div>
+            <div class="tool-group">
+                <button class="tool-btn" data-tool="shape-rect" title="Rectangle Shape" aria-label="Rectangle Shape">
+                    <svg class="icon"><use href="#icon-rect-shape"/></svg>
+                </button>
+                <button class="tool-btn" data-tool="shape-ellipse" title="Ellipse Shape" aria-label="Ellipse Shape">
+                    <svg class="icon"><use href="#icon-ellipse-shape"/></svg>
+                </button>
+                <button class="tool-btn" data-tool="shape-line" title="Line Shape" aria-label="Line Shape">
+                    <svg class="icon"><use href="#icon-line"/></svg>
+                </button>
+                <button class="tool-btn" data-tool="shape-polygon" title="Polygon / Star" aria-label="Polygon / Star">
+                    <svg class="icon"><use href="#icon-rect-shape"/></svg>
+                </button>
+                <button class="tool-btn" data-tool="gradient" title="Gradient" aria-label="Gradient">
+                    <svg class="icon"><use href="#icon-fill"/></svg>
+                </button>
+            </div>
+            <div class="tool-group">
+                <button class="tool-btn" data-tool="eyedropper" title="Eyedropper (I)" aria-label="Eyedropper">
+                    <svg class="icon"><use href="#icon-eyedropper"/></svg>
+                </button>
+                <button class="tool-btn" data-tool="text" title="Text Tool (X)" aria-label="Text">
+                    <svg class="icon"><use href="#icon-text"/></svg>
+                </button>
+                <button class="tool-btn" data-tool="pixelate" title="Pixelate" aria-label="Pixelate">
+                    <svg class="icon"><use href="#icon-pixelate"/></svg>
+                </button>
+            </div>
+            <div class="tool-group">
+                <button class="tool-btn" data-tool="smudge" title="Smudge" aria-label="Smudge">
+                    <svg class="icon"><use href="#icon-smudge"/></svg>
+                </button>
+                <button class="tool-btn" data-tool="dodge" title="Dodge" aria-label="Dodge">
+                    <svg class="icon"><use href="#icon-dodge"/></svg>
+                </button>
+                <button class="tool-btn" data-tool="burn" title="Burn" aria-label="Burn">
+                    <svg class="icon"><use href="#icon-burn"/></svg>
+                </button>
+                <button class="tool-btn" data-tool="clone-stamp" title="Clone Stamp (S)" aria-label="Clone Stamp">
+                    <svg class="icon"><use href="#icon-clone"/></svg>
+                </button>
+            </div>
+
+            <!-- Color Swatch (bottom of sidebar) -->
+            <div class="sidebar-color">
+                <div id="sidebar-fg-color" class="color-swatch fg" title="Foreground Color" style="background:#ffffff"></div>
+                <div id="sidebar-bg-color" class="color-swatch bg" title="Background Color" style="background:#000000"></div>
+            </div>
+        </aside>
+
+
+        <!-- ─── Canvas Container ─── -->
+        <section id="canvas-container">
+            <!-- Rulers -->
+            <div id="ruler-corner" class="ruler-corner" hidden></div>
+            <canvas id="ruler-h" class="ruler ruler-h" hidden></canvas>
+            <canvas id="ruler-v" class="ruler ruler-v" hidden></canvas>
+
+            <!-- Mask Editing Banner -->
+            <div id="mask-editing-banner" class="mask-editing-banner" hidden>
+                <svg class="icon icon-sm"><use href="#icon-mask"/></svg>
+                <span>Editing Mask</span>
+                <button id="btn-exit-mask-edit" class="btn btn-sm btn-secondary">Exit</button>
+            </div>
+
+            <!-- Canvas Viewport (scrollable / pannable) -->
+            <!-- BH-12: inline touch-action:none guarantees browser gestures stay off regardless of CSS specificity -->
+            <div id="canvas-viewport" style="touch-action:none;">
+                <div id="canvas-wrapper" style="touch-action:none;">
+                    <!-- Checkerboard lives as CSS background on wrapper -->
+                    <canvas id="main-canvas" width="800" height="600" style="touch-action:none;"></canvas>
+                    <canvas id="guides-canvas" width="800" height="600" style="touch-action:none;pointer-events:none;"></canvas>
+                    <canvas id="ui-canvas" width="800" height="600" style="touch-action:none;"></canvas>
+                </div>
+                <!-- Grid canvas lives in viewport space (not transformed by wrapper) -->
+                <canvas id="grid-canvas" width="800" height="600" style="touch-action:none;"></canvas>
+            </div>
+        </section>
+
+
+        <!-- ─── Right Panel (desktop/tablet) ─── -->
+        <aside id="right-panel">
+
+            <!-- Layers Section -->
+            <div class="panel-section" id="layers-panel-section">
+                <div class="panel-header">
+                    <h3 class="panel-title">Layers</h3>
+                    <div class="panel-actions">
+                        <button class="icon-btn-sm" id="btn-add-layer" title="Add Layer" aria-label="Add Layer">
+                            <svg class="icon"><use href="#icon-plus"/></svg>
+                        </button>
+                        <button class="icon-btn-sm" id="btn-duplicate-layer" title="Duplicate Layer" aria-label="Duplicate">
+                            <svg class="icon"><use href="#icon-duplicate"/></svg>
+                        </button>
+                        <button class="icon-btn-sm" id="btn-add-mask" title="Add Mask (Reveal All)" aria-label="Add Mask">
+                            <svg class="icon"><use href="#icon-mask"/></svg>
+                        </button>
+                        <button class="icon-btn-sm" id="btn-create-group" title="Group Layer (Ctrl+G)" aria-label="Create Group">
+                            <svg class="icon"><use href="#icon-group"/></svg>
+                        </button>
+                        <button class="icon-btn-sm" id="btn-merge-down" title="Merge Down" aria-label="Merge Down">
+                            <svg class="icon"><use href="#icon-merge"/></svg>
+                        </button>
+                        <button class="icon-btn-sm" id="btn-delete-layer" title="Delete Layer" aria-label="Delete Layer">
+                            <svg class="icon"><use href="#icon-trash"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Blend Mode & Opacity -->
+                <div class="layer-controls">
+                    <select id="blend-mode" class="select-sm" aria-label="Blend mode">
+                        <option value="source-over">Normal</option>
+                        <option value="multiply">Multiply</option>
+                        <option value="screen">Screen</option>
+                        <option value="overlay">Overlay</option>
+                        <option value="darken">Darken</option>
+                        <option value="lighten">Lighten</option>
+                        <option value="color-dodge">Color Dodge</option>
+                        <option value="color-burn">Color Burn</option>
+                        <option value="hard-light">Hard Light</option>
+                        <option value="soft-light">Soft Light</option>
+                        <option value="difference">Difference</option>
+                        <option value="exclusion">Exclusion</option>
+                    </select>
+                    <div class="slider-row">
+                        <label for="layer-opacity">Opacity</label>
+                        <input type="range" id="layer-opacity" min="0" max="100" value="100" class="slider">
+                        <span id="layer-opacity-val" class="slider-val">100%</span>
+                    </div>
+                </div>
+
+                <!-- Layer List -->
+                <div id="layers-list" class="layers-list">
+                    <!-- Layers will be populated by JS -->
+                    <div class="layer-item active" data-layer-id="0">
+                        <button class="layer-visibility" title="Toggle visibility" aria-label="Toggle visibility">
+                            <svg class="icon"><use href="#icon-eye"/></svg>
+                        </button>
+                        <canvas class="layer-thumb" width="40" height="40"></canvas>
+                        <span class="layer-name">Background</span>
+                        <button class="layer-lock" title="Lock layer" aria-label="Lock layer">
+                            <svg class="icon"><use href="#icon-unlock"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tool Options Section -->
+            <div class="panel-section" id="tool-options-section">
+                <div class="panel-header">
+                    <h3 class="panel-title">Tool Options</h3>
+                </div>
+                <div id="tool-options-content" class="tool-options-content">
+                    <!-- Brush options (default) -->
+                    <div class="tool-option-group" data-for="brush">
+                        <div class="option-row">
+                            <label>Mode</label>
+                            <div class="btn-group">
+                                <button class="btn-sm active" data-brush-mode="soft">Soft Brush</button>
+                                <button class="btn-sm" data-brush-mode="pixel">Pixel Pen</button>
+                            </div>
+                        </div>
+                        <div class="option-row" id="pixel-perfect-row" hidden>
+                            <label>
+                                <input type="checkbox" id="pixel-perfect-toggle"> Pixel Perfect
+                            </label>
+                        </div>
+                        <div class="slider-row">
+                            <label for="brush-size">Size</label>
+                            <input type="range" id="brush-size" min="1" max="500" value="10" class="slider">
+                            <span class="slider-val">10px</span>
+                        </div>
+                        <div class="slider-row">
+                            <label for="brush-opacity">Opacity</label>
+                            <input type="range" id="brush-opacity" min="1" max="100" value="100" class="slider">
+                            <span class="slider-val">100%</span>
+                        </div>
+                        <div class="slider-row">
+                            <label for="brush-hardness">Hardness</label>
+                            <input type="range" id="brush-hardness" min="0" max="100" value="80" class="slider">
+                            <span class="slider-val">80%</span>
+                        </div>
+                    </div>
+                    <!-- Eraser options (shares brush settings) -->
+                    <div class="tool-option-group" data-for="eraser" hidden>
+                        <div class="option-row">
+                            <label>Mode</label>
+                            <div class="btn-group">
+                                <button class="btn-sm active" data-eraser-mode="soft">Soft</button>
+                                <button class="btn-sm" data-eraser-mode="pixel">Pixel</button>
+                            </div>
+                        </div>
+                        <div class="slider-row">
+                            <label for="eraser-size">Size</label>
+                            <input type="range" id="eraser-size" min="1" max="500" value="10" class="slider">
+                            <span class="slider-val">10px</span>
+                        </div>
+                        <div class="slider-row">
+                            <label for="eraser-opacity">Opacity</label>
+                            <input type="range" id="eraser-opacity" min="1" max="100" value="100" class="slider">
+                            <span class="slider-val">100%</span>
+                        </div>
+                    </div>
+
+                    <!-- Fill options -->
+                    <div class="tool-option-group" data-for="fill" hidden>
+                        <div class="slider-row">
+                            <label for="fill-tolerance">Tolerance</label>
+                            <input type="range" id="fill-tolerance" min="0" max="255" value="0" class="slider">
+                            <span class="slider-val">0</span>
+                        </div>
+                        <div class="option-row">
+                            <label>
+                                <input type="checkbox" id="fill-contiguous" checked> Contiguous
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Eyedropper options -->
+                    <div class="tool-option-group" data-for="eyedropper" hidden>
+                        <div class="option-row">
+                            <span class="option-hint">Click on the canvas to sample a color</span>
+                        </div>
+                    </div>
+
+                    <!-- Rectangle Select options -->
+                    <div class="tool-option-group" data-for="select-rect" hidden>
+                        <div class="option-row">
+                            <span class="option-hint">Drag to select. Shift+drag to add. Alt+drag to subtract.</span>
+                        </div>
+                        <div class="option-row">
+                            <button class="btn-sm" id="btn-select-all">Select All</button>
+                            <button class="btn-sm" id="btn-deselect">Deselect</button>
+                        </div>
+                    </div>
+
+                    <!-- Lasso options -->
+                    <div class="tool-option-group" data-for="lasso" hidden>
+                        <div class="option-row">
+                            <span class="option-hint">Draw freehand to select. Shift to add. Alt to subtract.</span>
+                        </div>
+                        <div class="option-row">
+                            <button class="btn-sm" id="btn-lasso-select-all">Select All</button>
+                            <button class="btn-sm" id="btn-lasso-deselect">Deselect</button>
+                        </div>
+                    </div>
+
+                    <!-- Magic Wand options -->
+                    <div class="tool-option-group" data-for="magic-wand" hidden>
+                        <div class="option-row">
+                            <span class="option-hint">Click to select by color. Shift to add. Alt to subtract.</span>
+                        </div>
+                        <div class="option-row">
+                            <label for="wand-tolerance">Tolerance</label>
+                            <input type="range" id="wand-tolerance" class="slider" min="0" max="255" value="32">
+                            <span class="slider-val">32</span>
+                        </div>
+                        <div class="option-row">
+                            <label>
+                                <input type="checkbox" id="wand-contiguous" checked>
+                                Contiguous
+                            </label>
+                        </div>
+                        <div class="option-row">
+                            <button class="btn-sm" id="btn-wand-select-all">Select All</button>
+                            <button class="btn-sm" id="btn-wand-deselect">Deselect</button>
+                        </div>
+                    </div>
+
+                    <!-- Crop tool options -->
+                    <div class="tool-option-group" data-for="crop" hidden>
+                        <div class="option-row">
+                            <span class="option-hint">Drag handles to adjust crop. Enter to apply, Esc to cancel.</span>
+                        </div>
+                        <div class="option-row">
+                            <label>Aspect Ratio</label>
+                            <div class="btn-group btn-group-wrap">
+                                <button class="btn-sm active" data-crop-aspect="free">Free</button>
+                                <button class="btn-sm" data-crop-aspect="1:1">1:1</button>
+                                <button class="btn-sm" data-crop-aspect="4:3">4:3</button>
+                                <button class="btn-sm" data-crop-aspect="3:2">3:2</button>
+                                <button class="btn-sm" data-crop-aspect="16:9">16:9</button>
+                            </div>
+                        </div>
+                        <div class="option-row crop-actions">
+                            <button class="btn btn-primary btn-sm" id="btn-crop-confirm">
+                                <svg class="icon icon-xs"><use href="#icon-check"/></svg> Apply
+                            </button>
+                            <button class="btn btn-secondary btn-sm" id="btn-crop-cancel">Cancel</button>
+                        </div>
+                    </div>
+
+                    <!-- Transform tool options -->
+                    <div class="tool-option-group" data-for="transform" hidden>
+                        <div class="option-row">
+                            <span class="option-hint">Drag handles to transform. Enter to apply, Esc to cancel.</span>
+                        </div>
+                        <div class="transform-inputs-grid">
+                            <label class="ti-label">W</label>
+                            <input type="number" id="tf-w" class="tf-input" min="1" max="8192" step="1">
+                            <label class="ti-label">H</label>
+                            <input type="number" id="tf-h" class="tf-input" min="1" max="8192" step="1">
+                            <label class="ti-label">X</label>
+                            <input type="number" id="tf-x" class="tf-input" step="1">
+                            <label class="ti-label">Y</label>
+                            <input type="number" id="tf-y" class="tf-input" step="1">
+                            <label class="ti-label">°</label>
+                            <input type="number" id="tf-angle" class="tf-input" min="0" max="360" step="0.1">
+                        </div>
+                        <div class="option-row">
+                            <label>Flip</label>
+                            <div class="btn-group">
+                                <button class="btn-sm" id="btn-flip-h" title="Flip Horizontal">↔ H</button>
+                                <button class="btn-sm" id="btn-flip-v" title="Flip Vertical">↕ V</button>
+                            </div>
+                        </div>
+                        <div class="option-row transform-actions">
+                            <button class="btn btn-primary btn-sm" id="btn-transform-confirm">
+                                <svg class="icon icon-xs"><use href="#icon-check"/></svg> Apply
+                            </button>
+                            <button class="btn btn-secondary btn-sm" id="btn-transform-cancel">Cancel</button>
+                        </div>
+                    </div>
+
+                    <!-- Text tool options -->
+                    <div class="tool-option-group" data-for="text" hidden>
+                        <div class="option-row">
+                            <label for="text-font-family">Font</label>
+                            <select id="text-font-family" class="select-sm">
+                                <option value="Arial, sans-serif">Arial</option>
+                                <option value="'Times New Roman', serif">Times New Roman</option>
+                                <option value="'Courier New', monospace">Courier New</option>
+                                <option value="Georgia, serif">Georgia</option>
+                                <option value="Verdana, sans-serif">Verdana</option>
+                                <option value="Impact, sans-serif">Impact</option>
+                                <option value="'Comic Sans MS', cursive">Comic Sans</option>
+                            </select>
+                        </div>
+                        <div class="slider-row">
+                            <label for="text-font-size">Size</label>
+                            <input type="range" id="text-font-size" min="8" max="500" value="24" class="slider">
+                            <span class="slider-val" id="text-font-size-val">24px</span>
+                        </div>
+                        <div class="option-row">
+                            <label>Style</label>
+                            <div class="btn-group">
+                                <button class="btn-sm" id="btn-text-bold" title="Bold"><strong>B</strong></button>
+                                <button class="btn-sm" id="btn-text-italic" title="Italic"><em>I</em></button>
+                                <button class="btn-sm" id="btn-text-underline" title="Underline"><u>U</u></button>
+                            </div>
+                        </div>
+                        <div class="option-row">
+                            <label>Align</label>
+                            <div class="btn-group">
+                                <button class="btn-sm active" data-text-align="left">&#8676;</button>
+                                <button class="btn-sm" data-text-align="center">&#8677;</button>
+                                <button class="btn-sm" data-text-align="right">&#8677;</button>
+                            </div>
+                        </div>
+                        <div class="option-row">
+                            <span class="option-hint">Click canvas to place. Ctrl+Enter to confirm, Esc to cancel.</span>
+                        </div>
+                    </div>
+
+                    <!-- Smudge tool options -->
+                    <div class="tool-option-group" data-for="smudge" hidden>
+                        <div class="slider-row">
+                            <label for="smudge-size">Size</label>
+                            <input type="range" id="smudge-size" min="2" max="200" value="20" class="slider">
+                            <span class="slider-val" id="smudge-size-val">20px</span>
+                        </div>
+                        <div class="slider-row">
+                            <label for="smudge-strength">Strength</label>
+                            <input type="range" id="smudge-strength" min="1" max="100" value="50" class="slider">
+                            <span class="slider-val" id="smudge-strength-val">50%</span>
+                        </div>
+                    </div>
+
+                    <!-- Dodge/Burn tool options -->
+                    <div class="tool-option-group" data-for="dodge" hidden>
+                        <div class="slider-row">
+                            <label for="dodge-size">Size</label>
+                            <input type="range" id="dodge-size" min="2" max="300" value="30" class="slider">
+                            <span class="slider-val" id="dodge-size-val">30px</span>
+                        </div>
+                        <div class="slider-row">
+                            <label for="dodge-exposure">Exposure</label>
+                            <input type="range" id="dodge-exposure" min="1" max="100" value="30" class="slider">
+                            <span class="slider-val" id="dodge-exposure-val">30%</span>
+                        </div>
+                        <div class="option-row">
+                            <label>Range</label>
+                            <div class="btn-group">
+                                <button class="btn-sm" data-dodge-range="shadows">Shadows</button>
+                                <button class="btn-sm active" data-dodge-range="midtones">Midtones</button>
+                                <button class="btn-sm" data-dodge-range="highlights">Highlights</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Burn tool options (mirrors dodge) -->
+                    <div class="tool-option-group" data-for="burn" hidden>
+                        <div class="slider-row">
+                            <label for="burn-size">Size</label>
+                            <input type="range" id="burn-size" min="2" max="300" value="30" class="slider">
+                            <span class="slider-val" id="burn-size-val">30px</span>
+                        </div>
+                        <div class="slider-row">
+                            <label for="burn-exposure">Exposure</label>
+                            <input type="range" id="burn-exposure" min="1" max="100" value="30" class="slider">
+                            <span class="slider-val" id="burn-exposure-val">30%</span>
+                        </div>
+                        <div class="option-row">
+                            <label>Range</label>
+                            <div class="btn-group">
+                                <button class="btn-sm" data-burn-range="shadows">Shadows</button>
+                                <button class="btn-sm active" data-burn-range="midtones">Midtones</button>
+                                <button class="btn-sm" data-burn-range="highlights">Highlights</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Clone Stamp tool options -->
+                    <div class="tool-option-group" data-for="clone-stamp" hidden>
+                        <div class="option-row">
+                            <span class="option-hint">Alt+click (or long-press) to set source. Then paint to clone.</span>
+                        </div>
+                        <div class="slider-row">
+                            <label for="clone-size">Size</label>
+                            <input type="range" id="clone-size" min="2" max="300" value="30" class="slider">
+                            <span class="slider-val" id="clone-size-val">30px</span>
+                        </div>
+                        <div class="slider-row">
+                            <label for="clone-opacity">Opacity</label>
+                            <input type="range" id="clone-opacity" min="1" max="100" value="100" class="slider">
+                            <span class="slider-val" id="clone-opacity-val">100%</span>
+                        </div>
+                        <div class="option-row">
+                            <span id="clone-source-status" class="option-hint">No source set.</span>
+                        </div>
+                    </div>
+
+                    <!-- Pixelate tool options -->
+                    <div class="tool-option-group" data-for="pixelate" hidden>
+                        <div class="slider-row">
+                            <label for="pixelate-block-size">Block Size</label>
+                            <input type="range" id="pixelate-block-size" min="2" max="100" value="8" class="slider">
+                            <span class="slider-val">8px</span>
+                        </div>
+                        <div class="option-row">
+                            <label>Mode</label>
+                            <div class="btn-group">
+                                <button class="btn-sm active" data-pixelate-mode="brush">Brush</button>
+                                <button class="btn-sm" data-pixelate-mode="rect">Rectangle</button>
+                                <button class="btn-sm" data-pixelate-mode="sort">Pixel Sort</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Shape tool options (P2) -->
+                    <div class="tool-option-group" data-for="shape" hidden>
+                        <div class="option-row">
+                            <span class="option-hint">Drag to draw. Shift = constrain, Alt = from center.</span>
+                        </div>
+                        <div class="option-row">
+                            <label>Shape</label>
+                            <div class="btn-group btn-group-wrap">
+                                <button class="btn-sm active" data-shape="rect">Rect</button>
+                                <button class="btn-sm" data-shape="rounded-rect">Round</button>
+                                <button class="btn-sm" data-shape="ellipse">Ellipse</button>
+                                <button class="btn-sm" data-shape="line">Line</button>
+                                <button class="btn-sm" data-shape="polygon">Polygon</button>
+                            </div>
+                        </div>
+                        <div class="option-row">
+                            <label><input type="checkbox" id="shape-fill" checked> Fill</label>
+                            <label><input type="checkbox" id="shape-stroke"> Stroke</label>
+                            <label><input type="checkbox" id="shape-pixel"> Pixel-perfect</label>
+                        </div>
+                        <div class="slider-row">
+                            <label for="shape-stroke-width">Stroke Width</label>
+                            <input type="range" id="shape-stroke-width" min="1" max="64" value="2" class="slider">
+                            <span class="slider-val">2px</span>
+                        </div>
+                        <div class="slider-row">
+                            <label for="shape-corner-radius">Corner Radius</label>
+                            <input type="range" id="shape-corner-radius" min="0" max="200" value="12" class="slider">
+                            <span class="slider-val">12px</span>
+                        </div>
+                        <div class="slider-row">
+                            <label for="shape-sides">Polygon Sides</label>
+                            <input type="range" id="shape-sides" min="3" max="12" value="5" class="slider">
+                            <span class="slider-val">5</span>
+                        </div>
+                        <div class="option-row">
+                            <label><input type="checkbox" id="shape-star"> Star</label>
+                        </div>
+                    </div>
+
+                    <!-- Gradient tool options (P2) -->
+                    <div class="tool-option-group" data-for="gradient" hidden>
+                        <div class="option-row">
+                            <span class="option-hint">Drag across the canvas. Shift = constrain to 45°.</span>
+                        </div>
+                        <div class="option-row">
+                            <label>Type</label>
+                            <div class="btn-group btn-group-wrap">
+                                <button class="btn-sm active" data-gradient-type="linear">Linear</button>
+                                <button class="btn-sm" data-gradient-type="radial">Radial</button>
+                                <button class="btn-sm" data-gradient-type="angular">Angular</button>
+                                <button class="btn-sm" data-gradient-type="reflected">Reflected</button>
+                            </div>
+                        </div>
+                        <div class="slider-row">
+                            <label for="gradient-opacity">Opacity</label>
+                            <input type="range" id="gradient-opacity" min="0" max="100" value="100" class="slider">
+                            <span class="slider-val">100%</span>
+                        </div>
+                        <div class="option-row">
+                            <button class="btn-sm" id="btn-gradient-from-colors">Use FG → BG</button>
+                        </div>
+                        <div id="gradient-editor-container"></div>
+                    </div>
+                </div>
+            </div>
+
+             <!-- Color Section (Phase J upgrade) -->
+             <div class="panel-section" id="color-section">
+                 <div class="panel-header">
+                     <h3 class="panel-title">Color</h3>
+                     <div class="panel-actions">
+                         <button class="icon-btn-sm" id="btn-palette-import" title="Import Palette…" aria-label="Import Palette">
+                             <svg class="icon"><use href="#icon-upload"/></svg>
+                         </button>
+                         <button class="icon-btn-sm" id="btn-palette-sort-hue" title="Sort by Hue" aria-label="Sort Hue">
+                             <svg class="icon"><use href="#icon-palette"/></svg>
+                         </button>
+                     </div>
+                 </div>
+
+                 <!-- FG/BG swatches + hex input -->
+                 <div class="color-preview-row">
+                     <div class="color-swatch-pair">
+                         <div id="color-preview-fg" class="color-preview" style="background:#ffffff" title="Foreground — click to pick"></div>
+                         <div id="color-preview-bg" class="color-preview color-preview-bg" style="background:#000000" title="Background — click to pick"></div>
+                     </div>
+                     <input type="text" id="color-hex-input" class="hex-input" value="#ffffff" maxlength="7" spellcheck="false" aria-label="Hex color">
+                 </div>
+
+                 <!-- Color history strip (last 10 used colors) -->
+                 <div class="color-history-label">Recent</div>
+                 <div id="color-history" class="color-history"></div>
+
+                 <!-- Palette swatches -->
+                 <div class="palette-header-row">
+                     <span class="palette-label">Palette</span>
+                     <button class="btn-xs btn-secondary" id="btn-add-swatch" title="Add current color to palette">+</button>
+                 </div>
+                 <div id="color-swatches" class="color-swatches">
+                     <div class="swatch" style="background:#ffffff" data-color="#ffffff" title="#ffffff"></div>
+                     <div class="swatch" style="background:#000000" data-color="#000000" title="#000000"></div>
+                     <div class="swatch" style="background:#ff0000" data-color="#ff0000" title="#ff0000"></div>
+                     <div class="swatch" style="background:#00ff00" data-color="#00ff00" title="#00ff00"></div>
+                     <div class="swatch" style="background:#0000ff" data-color="#0000ff" title="#0000ff"></div>
+                     <div class="swatch" style="background:#ffff00" data-color="#ffff00" title="#ffff00"></div>
+                     <div class="swatch" style="background:#ff00ff" data-color="#ff00ff" title="#ff00ff"></div>
+                     <div class="swatch" style="background:#00ffff" data-color="#00ffff" title="#00ffff"></div>
+                     <div class="swatch" style="background:#ff6b35" data-color="#ff6b35" title="#ff6b35"></div>
+                     <div class="swatch" style="background:#00d4ff" data-color="#00d4ff" title="#00d4ff"></div>
+                 </div>
+
+                 <!-- Hidden file input for palette import -->
+                 <input type="file" id="palette-import-input" accept=".gpl,.hex,.txt,.png,image/png" hidden>
+             </div>
+        </aside>
+    </main>
+
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- MOBILE BOTTOM TOOLBAR                                   -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="bottom-toolbar" class="mobile-only">
+        <div class="toolbar-scroll">
+            <button class="tool-btn active" data-tool="brush" aria-label="Brush">
+                <svg class="icon"><use href="#icon-brush"/></svg>
+            </button>
+            <button class="tool-btn" data-tool="eraser" aria-label="Eraser">
+                <svg class="icon"><use href="#icon-eraser"/></svg>
+            </button>
+            <button class="tool-btn" data-tool="fill" aria-label="Fill Bucket">
+                <svg class="icon"><use href="#icon-fill"/></svg>
+            </button>
+            <button class="tool-btn" data-tool="select-rect" aria-label="Rectangle Select">
+                <svg class="icon"><use href="#icon-select-rect"/></svg>
+            </button>
+            <button class="tool-btn" data-tool="magic-wand" aria-label="Magic Wand">
+                <svg class="icon"><use href="#icon-magic-wand"/></svg>
+            </button>
+            <button class="tool-btn" data-tool="pixel-pen" aria-label="Pixel Pen">
+                <svg class="icon"><use href="#icon-pixel-pen"/></svg>
+            </button>
+            <button class="tool-btn" data-tool="eyedropper" aria-label="Eyedropper">
+                <svg class="icon"><use href="#icon-eyedropper"/></svg>
+            </button>
+            <button class="tool-btn" data-tool="pixelate" aria-label="Pixelate">
+                <svg class="icon"><use href="#icon-pixelate"/></svg>
+            </button>
+            <button class="tool-btn" data-tool="crop" aria-label="Crop">
+                <svg class="icon"><use href="#icon-crop"/></svg>
+            </button>
+            <button class="tool-btn" data-tool="move" aria-label="Move">
+                <svg class="icon"><use href="#icon-move"/></svg>
+            </button>
+            <button class="tool-btn" data-tool="transform" aria-label="Free Transform">
+                <svg class="icon"><use href="#icon-transform"/></svg>
+            </button>
+            <button class="tool-btn" data-tool="text" aria-label="Text">
+                <svg class="icon"><use href="#icon-text"/></svg>
+            </button>
+            <button class="tool-btn" data-tool="smudge" aria-label="Smudge">
+                <svg class="icon"><use href="#icon-smudge"/></svg>
+            </button>
+            <button class="tool-btn" data-tool="dodge" aria-label="Dodge">
+                <svg class="icon"><use href="#icon-dodge"/></svg>
+            </button>
+            <button class="tool-btn" data-tool="burn" aria-label="Burn">
+                <svg class="icon"><use href="#icon-burn"/></svg>
+            </button>
+            <button class="tool-btn" data-tool="clone-stamp" aria-label="Clone Stamp">
+                <svg class="icon"><use href="#icon-clone"/></svg>
+            </button>
+            <button class="tool-btn" id="btn-layers-toggle" aria-label="Layers">
+                <svg class="icon"><use href="#icon-layers"/></svg>
+            </button>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TRANSFORM FLOATING CONFIRM / CANCEL BAR                 -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="transform-floating-bar" class="transform-floating-bar" hidden>
+        <button class="btn btn-secondary btn-sm" id="btn-transform-cancel-float">
+            <svg class="icon icon-xs"><use href="#icon-close"/></svg> Cancel
+        </button>
+        <button class="btn btn-primary btn-sm" id="btn-transform-confirm-float">
+            <svg class="icon icon-xs"><use href="#icon-check"/></svg> Apply
+        </button>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- REFERENCE LAYER PANEL (P9) — floating controls           -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="reference-panel" class="reference-panel" hidden>
+        <span class="reference-panel-title">Reference</span>
+        <label class="reference-field">Opacity
+            <input type="range" id="reference-opacity" min="0" max="100" value="50">
+        </label>
+        <label class="reference-field"><input type="checkbox" id="reference-visible" checked> Show</label>
+        <label class="reference-field"><input type="checkbox" id="reference-below"> Below art</label>
+        <label class="reference-field"><input type="checkbox" id="reference-move"> Move</label>
+        <button class="btn btn-secondary btn-xs" id="reference-scale-down">−</button>
+        <button class="btn btn-secondary btn-xs" id="reference-scale-up">+</button>
+        <button class="btn btn-secondary btn-xs" id="reference-fit">Fit</button>
+        <button class="btn btn-secondary btn-xs" id="reference-clear-btn">Clear</button>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TEXT TOOL OVERLAY                                        -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="text-overlay" class="text-overlay" hidden>
+        <div id="text-drag-handle" class="text-drag-handle" title="Drag to move">&#9776;</div>
+        <textarea id="text-textarea" class="text-textarea" rows="2" spellcheck="false" placeholder="Type here…"></textarea>
+        <div class="text-overlay-actions">
+            <button class="btn btn-secondary btn-xs" id="btn-text-cancel">
+                <svg class="icon icon-xs"><use href="#icon-close"/></svg>
+            </button>
+            <button class="btn btn-primary btn-xs" id="btn-text-confirm">
+                <svg class="icon icon-xs"><use href="#icon-check"/></svg>
+            </button>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- FILTER DIALOG MODAL                                     -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="filter-dialog" class="modal" hidden>
+        <div class="modal-overlay"></div>
+        <div class="modal-content filter-dialog-content">
+            <div class="modal-header">
+                <h3 id="filter-dialog-title">Filter</h3>
+                <button class="icon-btn-sm modal-close" aria-label="Close">
+                    <svg class="icon"><use href="#icon-close"/></svg>
+                </button>
+            </div>
+            <div class="modal-body filter-modal-body">
+                <!-- Preview canvas -->
+                <div class="filter-preview-wrap">
+                    <canvas id="filter-preview-canvas" class="filter-preview-canvas"></canvas>
+                </div>
+                <!-- Controls injected by JS -->
+                <div id="filter-controls" class="filter-controls"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="filter-cancel">Cancel</button>
+                <button class="btn btn-primary" id="filter-apply">Apply</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- LAYER STYLES DIALOG (live, non-destructive)             -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="layer-styles-dialog" class="modal" hidden>
+        <div class="modal-overlay"></div>
+        <div class="modal-content layer-styles-content">
+            <div class="modal-header">
+                <h3 id="layer-styles-title">Layer Styles</h3>
+                <button class="icon-btn-sm modal-close" aria-label="Close">
+                    <svg class="icon"><use href="#icon-close"/></svg>
+                </button>
+            </div>
+            <div class="modal-body layer-styles-body">
+                <div id="layer-styles-controls" class="layer-styles-controls"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="layer-styles-close">Done</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- MOBILE TOOL OPTIONS DRAWER (bottom sheet)               -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="tool-drawer" class="drawer mobile-only" hidden>
+        <div class="drawer-handle" aria-label="Drag to resize"></div>
+        <div class="drawer-header">
+            <h3 id="drawer-tool-name">Brush</h3>
+            <button class="icon-btn-sm" id="btn-close-drawer" aria-label="Close">
+                <svg class="icon"><use href="#icon-close"/></svg>
+            </button>
+        </div>
+        <div class="drawer-content" id="mobile-tool-options">
+            <!-- Populated by JS based on active tool -->
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- MOBILE LAYERS DRAWER (slide from right)                 -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="layers-drawer" class="side-drawer mobile-only">
+        <div class="side-drawer-header">
+            <h3>Layers</h3>
+            <button class="icon-btn-sm" id="btn-close-layers-drawer" aria-label="Close">
+                <svg class="icon"><use href="#icon-close"/></svg>
+            </button>
+        </div>
+        <div class="side-drawer-content" id="mobile-layers-list">
+            <!-- Populated by JS -->
+        </div>
+        <div class="side-drawer-actions">
+            <button class="icon-btn" id="mobile-add-layer" aria-label="Add Layer">
+                <svg class="icon"><use href="#icon-plus"/></svg>
+            </button>
+            <button class="icon-btn" id="mobile-duplicate-layer" aria-label="Duplicate">
+                <svg class="icon"><use href="#icon-duplicate"/></svg>
+            </button>
+            <button class="icon-btn" id="mobile-delete-layer" aria-label="Delete">
+                <svg class="icon"><use href="#icon-trash"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Drawer backdrop -->
+    <div id="drawer-backdrop" class="drawer-backdrop" hidden></div>
+
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- MOBILE HAMBURGER MENU                                   -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="hamburger-menu" class="side-drawer mobile-only">
+        <div class="side-drawer-header">
+            <h3>Menu</h3>
+            <button class="icon-btn-sm" id="btn-close-hamburger" aria-label="Close">
+                <svg class="icon"><use href="#icon-close"/></svg>
+            </button>
+        </div>
+        <div class="side-drawer-content">
+            <div class="menu-section">
+                <h4 class="menu-section-title">File</h4>
+                <button class="menu-action" data-action="new">
+                    <svg class="icon"><use href="#icon-file-plus"/></svg><span>New Canvas</span>
+                </button>
+                <button class="menu-action" data-action="open">
+                    <svg class="icon"><use href="#icon-upload"/></svg><span>Open File</span>
+                </button>
+                <button class="menu-action" data-action="place-image">
+                    <svg class="icon"><use href="#icon-upload"/></svg><span>Place Image…</span>
+                </button>
+                <button class="menu-action" data-action="save-project">
+                    <svg class="icon"><use href="#icon-save"/></svg><span>Save Project</span>
+                </button>
+                <button class="menu-action" data-action="export-png">
+                    <svg class="icon"><use href="#icon-download"/></svg><span>Export Image</span>
+                </button>
+            </div>
+            <div class="menu-section">
+                <h4 class="menu-section-title">View</h4>
+                <button class="menu-action" data-action="toggle-pixel-mode">
+                    <svg class="icon"><use href="#icon-grid"/></svg><span>Pixel Art Mode</span>
+                    <span class="menu-toggle-indicator" id="pixel-mode-indicator"></span>
+                </button>
+                <button class="menu-action" data-action="toggle-grid">
+                    <svg class="icon"><use href="#icon-grid"/></svg><span>Pixel Grid</span>
+                    <span class="menu-toggle-indicator" id="grid-indicator"></span>
+                </button>
+                <div class="menu-action menu-color-row">
+                    <svg class="icon"><use href="#icon-grid"/></svg><span>Grid Color</span>
+                    <input type="color" id="mobile-grid-color-input" value="#ffffff" class="color-input-sm" title="Grid line color">
+                </div>
+                <button class="menu-action" data-action="toggle-rulers">
+                    <svg class="icon"><use href="#icon-ruler"/></svg><span>Rulers</span>
+                    <span class="menu-toggle-indicator" id="ruler-indicator"></span>
+                </button>
+                <button class="menu-action" data-action="toggle-history">
+                    <svg class="icon"><use href="#icon-history"/></svg><span>History</span>
+                </button>
+                <button class="menu-action" data-action="toggle-animation">
+                    <svg class="icon"><use href="#icon-layers"/></svg><span>Animation Timeline</span>
+                </button>
+            </div>
+            <div class="menu-section">
+                <h4 class="menu-section-title">Image</h4>
+                <button class="menu-action" data-action="resize-image">
+                    <svg class="icon"><use href="#icon-image"/></svg><span>Resize Image…</span>
+                </button>
+                <button class="menu-action" data-action="resize-canvas">
+                    <svg class="icon"><use href="#icon-crop"/></svg><span>Resize Canvas…</span>
+                </button>
+                <button class="menu-action" data-action="crop-to-selection">
+                    <svg class="icon"><use href="#icon-crop"/></svg><span>Crop to Selection</span>
+                </button>
+                <button class="menu-action" data-action="rotate-cw">
+                    <svg class="icon"><use href="#icon-crop"/></svg><span>Rotate 90° CW</span>
+                </button>
+                <button class="menu-action" data-action="rotate-ccw">
+                    <svg class="icon"><use href="#icon-crop"/></svg><span>Rotate 90° CCW</span>
+                </button>
+                <button class="menu-action" data-action="flip-h">
+                    <svg class="icon"><use href="#icon-crop"/></svg><span>Flip Horizontal</span>
+                </button>
+                <button class="menu-action" data-action="flip-v">
+                    <svg class="icon"><use href="#icon-crop"/></svg><span>Flip Vertical</span>
+                </button>
+                <button class="menu-action" data-action="trim">
+                    <svg class="icon"><use href="#icon-crop"/></svg><span>Trim Transparent</span>
+                </button>
+            </div>
+            <div class="menu-section">
+                <h4 class="menu-section-title">Select</h4>
+                <button class="menu-action" data-action="select-all">
+                    <svg class="icon"><use href="#icon-select-rect"/></svg><span>Select All</span>
+                </button>
+                <button class="menu-action" data-action="deselect">
+                    <svg class="icon"><use href="#icon-select-rect"/></svg><span>Deselect</span>
+                </button>
+                <button class="menu-action" data-action="select-inverse">
+                    <svg class="icon"><use href="#icon-select-rect"/></svg><span>Inverse</span>
+                </button>
+                <button class="menu-action" data-action="sel-grow">
+                    <svg class="icon"><use href="#icon-select-rect"/></svg><span>Grow…</span>
+                </button>
+                <button class="menu-action" data-action="sel-shrink">
+                    <svg class="icon"><use href="#icon-select-rect"/></svg><span>Shrink…</span>
+                </button>
+                <button class="menu-action" data-action="sel-feather">
+                    <svg class="icon"><use href="#icon-select-rect"/></svg><span>Feather…</span>
+                </button>
+                <button class="menu-action" data-action="transform-selection">
+                    <svg class="icon"><use href="#icon-transform"/></svg><span>Transform Selection</span>
+                </button>
+            </div>
+            <div class="menu-section">
+                <h4 class="menu-section-title">Canvas</h4>
+                <button class="menu-action" data-action="fit-screen">
+                    <svg class="icon"><use href="#icon-fit"/></svg><span>Fit to Screen</span>
+                </button>
+                <button class="menu-action" data-action="zoom-100">
+                    <svg class="icon"><use href="#icon-zoom-in"/></svg><span>Actual Pixels (100%)</span>
+                </button>
+            </div>
+            <div class="menu-section">
+                <h4 class="menu-section-title">Help</h4>
+                <button class="menu-action" data-action="about">
+                    <svg class="icon"><use href="#icon-info"/></svg><span>About Pixoto</span>
+                </button>
+                <button class="menu-action" data-action="clear-app-data">
+                    <svg class="icon"><use href="#icon-trash"/></svg><span>Clear App Data…</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- COLOR PICKER MODAL (Phase J upgrade)                    -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="color-picker-modal" class="modal" hidden>
+        <div class="modal-overlay"></div>
+        <div class="modal-content color-picker-content">
+            <div class="modal-header">
+                <h3>Color Picker</h3>
+                <button class="icon-btn-sm modal-close" aria-label="Close">
+                    <svg class="icon"><use href="#icon-close"/></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Sat/Light Color Area -->
+                <div class="color-picker-area">
+                    <canvas id="color-picker-canvas" width="280" height="220"></canvas>
+                    <div id="color-picker-cursor" class="picker-cursor"></div>
+                </div>
+                <!-- Hue Slider -->
+                <div class="hue-slider-wrap">
+                    <canvas id="hue-slider-canvas" width="280" height="16"></canvas>
+                    <div id="hue-slider-thumb" class="slider-thumb"></div>
+                </div>
+                <!-- Alpha Slider -->
+                <div class="alpha-slider-wrap">
+                    <canvas id="alpha-slider-canvas" width="280" height="16"></canvas>
+                    <div id="alpha-slider-thumb" class="slider-thumb"></div>
+                </div>
+
+                <!-- Hex + Preview row -->
+                <div class="picker-hex-row">
+                    <div class="color-preview-compare">
+                        <div id="color-old" class="color-half" title="Previous color"></div>
+                        <div id="color-new" class="color-half" title="New color"></div>
+                    </div>
+                    <div class="picker-hex-wrap">
+                        <span class="picker-hex-hash">#</span>
+                        <input type="text" id="picker-hex" value="ffffff" maxlength="6" spellcheck="false" class="picker-hex-input" title="Hex value">
+                    </div>
+                </div>
+
+                <!-- Mode tabs: RGB / HSL / HSB / CMYK -->
+                <div class="picker-mode-tabs">
+                    <button class="picker-tab active" data-mode="rgb">RGB</button>
+                    <button class="picker-tab" data-mode="hsl">HSL</button>
+                    <button class="picker-tab" data-mode="hsb">HSB</button>
+                    <button class="picker-tab" data-mode="cmyk">CMYK</button>
+                </div>
+
+                <!-- RGB panel -->
+                <div class="picker-values-panel" id="picker-panel-rgb">
+                    <div class="picker-slider-row">
+                        <label>R</label>
+                        <input type="range" id="picker-rgb-r" min="0" max="255" value="255" class="picker-range picker-range-r">
+                        <input type="number" id="picker-r" min="0" max="255" value="255" class="picker-num">
+                    </div>
+                    <div class="picker-slider-row">
+                        <label>G</label>
+                        <input type="range" id="picker-rgb-g" min="0" max="255" value="255" class="picker-range picker-range-g">
+                        <input type="number" id="picker-g" min="0" max="255" value="255" class="picker-num">
+                    </div>
+                    <div class="picker-slider-row">
+                        <label>B</label>
+                        <input type="range" id="picker-rgb-b" min="0" max="255" value="255" class="picker-range picker-range-b">
+                        <input type="number" id="picker-b" min="0" max="255" value="255" class="picker-num">
+                    </div>
+                </div>
+
+                <!-- HSL panel -->
+                <div class="picker-values-panel" id="picker-panel-hsl" hidden>
+                    <div class="picker-slider-row">
+                        <label>H</label>
+                        <input type="range" id="picker-hsl-h" min="0" max="360" value="0" class="picker-range">
+                        <input type="number" id="picker-h" min="0" max="360" value="0" class="picker-num">
+                    </div>
+                    <div class="picker-slider-row">
+                        <label>S</label>
+                        <input type="range" id="picker-hsl-s" min="0" max="100" value="0" class="picker-range">
+                        <input type="number" id="picker-s" min="0" max="100" value="0" class="picker-num">
+                    </div>
+                    <div class="picker-slider-row">
+                        <label>L</label>
+                        <input type="range" id="picker-hsl-l" min="0" max="100" value="100" class="picker-range">
+                        <input type="number" id="picker-l" min="0" max="100" value="100" class="picker-num">
+                    </div>
+                </div>
+
+                <!-- HSB panel -->
+                <div class="picker-values-panel" id="picker-panel-hsb" hidden>
+                    <div class="picker-slider-row">
+                        <label>H</label>
+                        <input type="range" id="picker-hsb-h" min="0" max="360" value="0" class="picker-range">
+                        <input type="number" id="picker-hsb-hv" min="0" max="360" value="0" class="picker-num">
+                    </div>
+                    <div class="picker-slider-row">
+                        <label>S</label>
+                        <input type="range" id="picker-hsb-s" min="0" max="100" value="0" class="picker-range">
+                        <input type="number" id="picker-hsb-sv" min="0" max="100" value="0" class="picker-num">
+                    </div>
+                    <div class="picker-slider-row">
+                        <label>B</label>
+                        <input type="range" id="picker-hsb-b" min="0" max="100" value="100" class="picker-range">
+                        <input type="number" id="picker-hsb-bv" min="0" max="100" value="100" class="picker-num">
+                    </div>
+                </div>
+
+                <!-- CMYK panel (display only) -->
+                <div class="picker-values-panel" id="picker-panel-cmyk" hidden>
+                    <div class="picker-cmyk-grid">
+                        <span class="cmyk-label">C</span><span id="cmyk-c" class="cmyk-val">0</span>
+                        <span class="cmyk-label">M</span><span id="cmyk-m" class="cmyk-val">0</span>
+                        <span class="cmyk-label">Y</span><span id="cmyk-y" class="cmyk-val">0</span>
+                        <span class="cmyk-label">K</span><span id="cmyk-k" class="cmyk-val">0</span>
+                    </div>
+                    <p class="cmyk-note">Display only — approximate screen conversion</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="color-picker-cancel">Cancel</button>
+                <button class="btn btn-primary" id="color-picker-ok">OK</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- NEW CANVAS DIALOG (also serves as splash screen)        -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="new-canvas-dialog" class="modal" hidden>
+        <div class="modal-overlay"></div>
+        <div class="modal-content new-canvas-content">
+            <div class="modal-header">
+                <div class="splash-brand">
+                    <svg class="icon splash-logo" aria-hidden="true"><use href="#icon-logo"/></svg>
+                    <h2 class="splash-title">Pixoto</h2>
+                </div>
+                <button class="icon-btn-sm modal-close" aria-label="Close">
+                    <svg class="icon"><use href="#icon-close"/></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h3 class="dialog-subtitle">New Canvas</h3>
+                <div class="canvas-presets">
+                    <button class="preset-btn" data-w="800" data-h="600">800 × 600</button>
+                    <button class="preset-btn" data-w="1920" data-h="1080">1920 × 1080</button>
+                    <button class="preset-btn" data-w="1080" data-h="1080">1080 × 1080</button>
+                    <button class="preset-btn" data-w="32" data-h="32">32 × 32 <small>Sprite</small></button>
+                    <button class="preset-btn" data-w="64" data-h="64">64 × 64 <small>Sprite</small></button>
+                    <button class="preset-btn" data-w="128" data-h="128">128 × 128 <small>Icon</small></button>
+                    <button class="preset-btn" data-w="256" data-h="256">256 × 256 <small>Tile</small></button>
+                    <button class="preset-btn" data-w="16" data-h="16">16 × 16 <small>Pixel</small></button>
+                </div>
+                <div class="custom-size-row">
+                    <div class="input-group">
+                        <label for="canvas-width">Width</label>
+                        <input type="number" id="canvas-width" value="800" min="1" max="8192">
+                        <span class="input-suffix">px</span>
+                    </div>
+                    <span class="size-x">×</span>
+                    <div class="input-group">
+                        <label for="canvas-height">Height</label>
+                        <input type="number" id="canvas-height" value="600" min="1" max="8192">
+                        <span class="input-suffix">px</span>
+                    </div>
+                </div>
+                <div class="bg-options">
+                    <label>Background</label>
+                    <div class="btn-group">
+                        <button class="btn-sm active" data-bg="white">White</button>
+                        <button class="btn-sm" data-bg="transparent">Transparent</button>
+                        <button class="btn-sm" data-bg="black">Black</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="new-canvas-cancel">Cancel</button>
+                <button class="btn btn-primary" id="new-canvas-create">Create</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- EXPORT DIALOG                                           -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="export-dialog" class="modal" hidden>
+        <div class="modal-overlay"></div>
+        <div class="modal-content export-content">
+            <div class="modal-header">
+                <h3>Export Image</h3>
+                <button class="icon-btn-sm modal-close" aria-label="Close">
+                    <svg class="icon"><use href="#icon-close"/></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="export-filename-row">
+                    <label for="export-filename">Filename</label>
+                    <input type="text" id="export-filename" value="pixoto-export" spellcheck="false">
+                </div>
+                <div class="export-formats">
+                    <button class="format-btn active" data-format="png">PNG</button>
+                    <button class="format-btn" data-format="jpg">JPG</button>
+                    <button class="format-btn" data-format="webp">WebP</button>
+                </div>
+                <div id="export-quality-row" class="slider-row" hidden>
+                    <label for="export-quality">Quality</label>
+                    <input type="range" id="export-quality" min="1" max="100" value="92" class="slider">
+                    <span class="slider-val">92%</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="export-cancel">Cancel</button>
+                <button class="btn btn-primary" id="export-confirm">
+                    <svg class="icon"><use href="#icon-download"/></svg>
+                    Export
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- RESIZE IMAGE MODAL                                      -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="resize-image-modal" class="modal" hidden>
+        <div class="modal-overlay"></div>
+        <div class="modal-content resize-content">
+            <div class="modal-header">
+                <h3>Resize Image</h3>
+                <button class="icon-btn-sm modal-close" aria-label="Close">
+                    <svg class="icon"><use href="#icon-close"/></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="resize-current-size">Current: <span id="resize-img-current">800 × 600</span></p>
+                <div class="custom-size-row">
+                    <div class="input-group">
+                        <label for="resize-img-width">Width</label>
+                        <input type="number" id="resize-img-width" value="800" min="1" max="8192">
+                    </div>
+                    <button class="resize-lock-btn active" id="resize-img-lock" title="Lock aspect ratio" aria-label="Lock aspect ratio">
+                        <svg class="icon"><use href="#icon-lock"/></svg>
+                    </button>
+                    <div class="input-group">
+                        <label for="resize-img-height">Height</label>
+                        <input type="number" id="resize-img-height" value="600" min="1" max="8192">
+                    </div>
+                </div>
+                <div class="resize-option-row">
+                    <label>Resampling</label>
+                    <div class="btn-group">
+                        <button class="btn-sm active" data-resample="smooth">Smooth</button>
+                        <button class="btn-sm" data-resample="nearest">Nearest</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="resize-img-cancel">Cancel</button>
+                <button class="btn btn-primary" id="resize-img-apply">Apply</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- RESIZE CANVAS MODAL                                     -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="resize-canvas-modal" class="modal" hidden>
+        <div class="modal-overlay"></div>
+        <div class="modal-content resize-content">
+            <div class="modal-header">
+                <h3>Resize Canvas</h3>
+                <button class="icon-btn-sm modal-close" aria-label="Close">
+                    <svg class="icon"><use href="#icon-close"/></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="resize-current-size">Current: <span id="resize-cvs-current">800 × 600</span></p>
+                <div class="custom-size-row">
+                    <div class="input-group">
+                        <label for="resize-cvs-width">Width</label>
+                        <input type="number" id="resize-cvs-width" value="800" min="1" max="8192">
+                    </div>
+                    <span class="size-x">×</span>
+                    <div class="input-group">
+                        <label for="resize-cvs-height">Height</label>
+                        <input type="number" id="resize-cvs-height" value="600" min="1" max="8192">
+                    </div>
+                </div>
+                <div class="resize-option-row">
+                    <label>Anchor</label>
+                    <div class="anchor-grid" id="resize-anchor-grid">
+                        <button class="anchor-cell" data-ax="-1" data-ay="-1" title="Top Left"></button>
+                        <button class="anchor-cell" data-ax="0" data-ay="-1" title="Top Center"></button>
+                        <button class="anchor-cell" data-ax="1" data-ay="-1" title="Top Right"></button>
+                        <button class="anchor-cell" data-ax="-1" data-ay="0" title="Middle Left"></button>
+                        <button class="anchor-cell active" data-ax="0" data-ay="0" title="Center"></button>
+                        <button class="anchor-cell" data-ax="1" data-ay="0" title="Middle Right"></button>
+                        <button class="anchor-cell" data-ax="-1" data-ay="1" title="Bottom Left"></button>
+                        <button class="anchor-cell" data-ax="0" data-ay="1" title="Bottom Center"></button>
+                        <button class="anchor-cell" data-ax="1" data-ay="1" title="Bottom Right"></button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="resize-cvs-cancel">Cancel</button>
+                <button class="btn btn-primary" id="resize-cvs-apply">Apply</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- ABOUT MODAL                                             -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="about-modal" class="modal" hidden>
+        <div class="modal-overlay"></div>
+        <div class="modal-content about-content">
+            <div class="modal-header">
+                <h3>About</h3>
+                <button class="icon-btn-sm modal-close" aria-label="Close">
+                    <svg class="icon"><use href="#icon-close"/></svg>
+                </button>
+            </div>
+            <div class="modal-body about-body">
+                <div class="about-logo">
+                    <svg width="48" height="60" aria-hidden="true"><use href="#icon-logo"/></svg>
+                </div>
+                <h2 class="about-title">PIXOTO</h2>
+                <p class="about-subtitle">Simple photo editor by Crowelian</p>
+                <p class="about-year">© 2026</p>
+                <p class="about-version">v1.0.0</p>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- OPEN IMAGE CHOICE MODAL (P1)                            -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="open-choice-modal" class="modal" hidden>
+        <div class="modal-overlay"></div>
+        <div class="modal-content clear-data-content">
+            <div class="modal-header">
+                <h3>Open Image</h3>
+                <button class="icon-btn-sm modal-close" aria-label="Close">
+                    <svg class="icon"><use href="#icon-close"/></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="margin:0 0 12px; font-size:13px; color:var(--text-muted); line-height:1.5">
+                    How would you like to open this image?
+                </p>
+                <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text-muted)">
+                    <input type="checkbox" id="open-choice-remember"> Remember my choice
+                </label>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="open-choice-newproject">New Project</button>
+                <button class="btn btn-primary" id="open-choice-place">Place as Layer</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- ROTATE ARBITRARY MODAL (P3)                             -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="rotate-modal" class="modal" hidden>
+        <div class="modal-overlay"></div>
+        <div class="modal-content clear-data-content">
+            <div class="modal-header">
+                <h3>Rotate Image</h3>
+                <button class="icon-btn-sm modal-close" aria-label="Close">
+                    <svg class="icon"><use href="#icon-close"/></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text-muted)">
+                    Angle (degrees)
+                    <input type="number" id="rotate-angle" value="0" min="-360" max="360" step="1" style="flex:1; min-width:0">
+                </label>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="rotate-cancel">Cancel</button>
+                <button class="btn btn-primary" id="rotate-apply">Rotate</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- SELECTION AMOUNT MODAL (P4)                             -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="select-amount-modal" class="modal" hidden>
+        <div class="modal-overlay"></div>
+        <div class="modal-content clear-data-content">
+            <div class="modal-header">
+                <h3 id="select-amount-title">Modify Selection</h3>
+                <button class="icon-btn-sm modal-close" aria-label="Close">
+                    <svg class="icon"><use href="#icon-close"/></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text-muted)">
+                    Amount (px)
+                    <input type="number" id="select-amount-value" value="4" min="1" max="200" step="1" style="flex:1; min-width:0">
+                </label>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="select-amount-cancel">Cancel</button>
+                <button class="btn btn-primary" id="select-amount-apply">Apply</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- CLEAR DATA CONFIRM MODAL                                -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="clear-data-modal" class="modal" hidden>
+        <div class="modal-overlay"></div>
+        <div class="modal-content clear-data-content">
+            <div class="modal-header">
+                <h3>Clear App Data</h3>
+                <button class="icon-btn-sm modal-close" aria-label="Close">
+                    <svg class="icon"><use href="#icon-close"/></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="margin:0 0 8px; font-size:13px; color:var(--text-muted); line-height:1.5">
+                    This will remove all cached files, auto‑saved sessions, and local settings for Pixoto. The page will reload.
+                </p>
+                <p style="margin:0; font-size:13px; font-weight:600; color:var(--danger)">
+                    This cannot be undone.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="clear-data-cancel">Cancel</button>
+                <button class="btn btn-danger" id="clear-data-confirm">
+                    <svg class="icon"><use href="#icon-trash"/></svg>
+                    Clear Data
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- ANIMATION TIMELINE (P7) — docked strip / mobile sheet     -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="timeline-panel" class="timeline-panel" hidden></div>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- EXPORT / IMPORT ANIMATION DIALOG (P7)                     -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="export-anim-dialog" class="modal" hidden>
+        <div class="modal-overlay"></div>
+        <div class="modal-content layer-styles-content">
+            <div class="modal-header">
+                <h3 id="export-anim-title">Export Animation</h3>
+                <button class="icon-btn-sm modal-close" aria-label="Close">
+                    <svg class="icon"><use href="#icon-close"/></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="export-anim-controls" class="layer-styles-controls"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="export-anim-cancel">Cancel</button>
+                <button class="btn btn-primary" id="export-anim-go">Export</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- STATUS BAR                                              -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <footer id="status-bar">
+        <div class="status-left">
+            <button class="status-zoom" id="zoom-display" title="Click to set zoom">
+                <svg class="icon icon-xs"><use href="#icon-zoom-in"/></svg>
+                <span id="zoom-level">100%</span>
+            </button>
+            <div class="status-zoom-btns">
+                <button class="status-btn" id="btn-fit" title="Fit to screen">Fit</button>
+                <button class="status-btn" id="btn-zoom-100" title="100%">1:1</button>
+                <button class="status-btn" id="btn-zoom-200" title="200%">2:1</button>
+            </div>
+        </div>
+        <div class="status-center">
+            <span id="canvas-size">800 × 600</span>
+        </div>
+        <div class="status-right">
+            <button id="view-rotation-indicator" class="status-rotation" title="Reset view rotation" hidden>
+                <span id="view-rotation-value">0°</span>
+                <svg class="icon icon-xs"><use href="#icon-close"/></svg>
+            </button>
+            <span id="cursor-pos">x: 0 &nbsp; y: 0</span>
+            <span id="current-color-display" class="status-color" title="Current color">
+                <span class="status-color-swatch" id="status-swatch" style="background:#ffffff"></span>
+                <span id="status-color-hex">#ffffff</span>
+            </span>
+        </div>
+    </footer>
+
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- PWA INSTALL BANNER                                      -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="install-banner" class="banner" hidden>
+        <div class="banner-content">
+            <svg class="icon banner-icon"><use href="#icon-logo"/></svg>
+            <div class="banner-text">
+                <strong>Add Pixoto to Home Screen</strong>
+                <span>Install for full offline access</span>
+            </div>
+        </div>
+        <div class="banner-actions">
+            <button class="btn btn-secondary btn-sm" id="install-dismiss">Not now</button>
+            <button class="btn btn-primary btn-sm" id="install-accept">Install</button>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- SESSION RESTORE BANNER                                  -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="restore-banner" class="banner" hidden>
+        <div class="banner-content">
+            <svg class="icon banner-icon"><use href="#icon-history"/></svg>
+            <div class="banner-text">
+                <strong>Restore last session?</strong>
+                <span>Your previous work was auto-saved</span>
+            </div>
+        </div>
+        <div class="banner-actions">
+            <button class="btn btn-secondary btn-sm" id="restore-dismiss">Discard</button>
+            <button class="btn btn-primary btn-sm" id="restore-accept">Restore</button>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- HIDDEN FILE INPUT                                       -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <input type="file" id="file-input" accept="image/*,.pixoto" hidden>
+
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- SCRIPTS                                                 -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <script src="app.js" type="module"></script>
+
+</body>
+</html>

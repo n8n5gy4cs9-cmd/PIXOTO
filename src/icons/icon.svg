@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+    <!-- Pixoto Logo — Pixel "P" mark -->
+    <!-- Background circle -->
+    <rect width="512" height="512" rx="96" fill="#141418"/>
+
+    <!-- Pixel P glyph — made of pixel blocks -->
+    <!-- Using a 4-wide x 6-tall grid of 60px blocks, centered in 512px -->
+    <!-- Grid starts at x=116, y=76 with 70px step (60px block + 10px gap) -->
+
+    <!-- Row 0: top bar of P -->
+    <rect x="116" y="76" width="60" height="60" rx="6" fill="#00d4ff"/>
+    <rect x="186" y="76" width="60" height="60" rx="6" fill="#00d4ff"/>
+    <rect x="256" y="76" width="60" height="60" rx="6" fill="#00d4ff"/>
+    <rect x="326" y="76" width="60" height="60" rx="6" fill="#00d4ff"/>
+
+    <!-- Row 1: right arm of P -->
+    <rect x="116" y="146" width="60" height="60" rx="6" fill="#00d4ff"/>
+    <rect x="326" y="146" width="60" height="60" rx="6" fill="#00d4ff"/>
+
+    <!-- Row 2: middle bar of P -->
+    <rect x="116" y="216" width="60" height="60" rx="6" fill="#00d4ff"/>
+    <rect x="186" y="216" width="60" height="60" rx="6" fill="#00d4ff"/>
+    <rect x="256" y="216" width="60" height="60" rx="6" fill="#00d4ff"/>
+    <rect x="326" y="216" width="60" height="60" rx="6" fill="#00d4ff"/>
+
+    <!-- Row 3: stem -->
+    <rect x="116" y="286" width="60" height="60" rx="6" fill="#00d4ff"/>
+
+    <!-- Row 4: stem -->
+    <rect x="116" y="356" width="60" height="60" rx="6" fill="#00d4ff"/>
+
+    <!-- Row 5: stem base -->
+    <rect x="116" y="426" width="60" height="60" rx="6" fill="#00d4ff" opacity="0.7"/>
+</svg>
