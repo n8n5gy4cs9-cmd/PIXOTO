@@ -2,311 +2,79 @@
 
 ## Pixoto
 
-Professional PWA photo editor + pixel art studio.
+A browser clone of **Composa**: a layer-based compositing and retouching editor with Photoshop-style tools and shortcuts. It ships as a static folder (`app/`) that runs on any web host.
 
-### Goal
+Read `docs/PLAN.md` (architecture), `docs/PRD.md` (requirements, shortcuts) and `tasks.md` (what is done / left) before starting work.
 
-Pixoto must become a web equivalent of PixiEditor.
+## Autonomy
 
-Reference implementation:
+Work without asking for approval. Plan briefly in your head, then implement, finish whole phases, and keep going to the next unchecked task in `tasks.md`. Ask the user only when a decision is truly theirs and cannot be settled by the docs, Composa, or a sensible default; in that case pick the default, note it in `progress.md`, and continue. Large changes, deleting code, renaming, touching many files and architecture changes are all allowed when the task needs them. Never delete user data: move old code to `BACKUP/` instead of deleting it.
 
-```text
-TEMP_TO_BE_REMOVED/PixiEditor-master
-```
+## Reference sources
 
-Before designing a new feature, system, workflow, UI, shortcut, tool, behavior, or architecture:
+1. `TEMP_TO_BE_REMOVED/Composa-main` is the **source of truth** (C#, Avalonia + SkiaSharp). Its `docs/*.md` define behaviour; `src/Composa.Core` holds algorithms to port; `src/Composa.App` holds UI layout, icons (`Icons.cs`) and the palette (`Palette.cs`).
+2. `TEMP_TO_BE_REMOVED/Compositor-main` (Swift original) when Composa is unclear.
+3. `BACKUP/` holds the old Pixoto and PixiEditor-era code. Reuse snippets only when they fit; do not carry its architecture over.
 
-1. Search PixiEditor source first.
-2. Reuse PixiEditor behavior when applicable.
-3. Match PixiEditor UX when reasonable.
-4. Do not invent new systems if PixiEditor already solves the problem.
-5. If PixiEditor contains the feature, treat PixiEditor as the source of truth.
-6. Only design from scratch when PixiEditor has no equivalent implementation.
+Before writing any feature: search `app/` for existing code, then Composa for the behaviour. Port Composa's behaviour and defaults; do not invent new systems if Composa solves it. Design from scratch only when Composa has no equivalent (the web layer itself: input, storage, PWA).
 
-If PIXIEDITOR_AI_HELPER.md exists:
+## Hard constraints: hosting
 
-1. Read it first.
-2. Use it as PixiEditor reference.
-3. Only inspect PixiEditor source when information is missing.
-4. Prefer helper document over repository-wide searches.
+The target host is plain shared hosting: PHP 7.4 at most, no Node, no SSH, no terminal, no build.
 
-Only inspect PixiEditor source when information is missing:
-
-* Study all related files first.
-* Identify full execution flow.
-* Port behavior to web architecture.
-* Preserve user-facing behavior whenever practical.
-
----
+* Output is a **static folder**: `app/`. Upload it unchanged.
+* **No build step**, no bundler, no npm, no transpiler. Native ES modules (`<script type="module">`), `.js` extensions only.
+* **No PHP, no server logic.** Do not require rewrite rules; `.htaccess` may only add MIME types and caching.
+* **All paths relative** (`./`). The app must work from any sub-folder.
+* **No CDN, no runtime downloads, no remote dependencies.** Third-party code lives in `app/vendor/`, with a note on why in `docs/PLAN.md` §5.
+* All data stays in the browser (IndexedDB, localStorage, File System Access API with download fallback).
 
 ## Stack
 
-* HTML5
-* CSS3
-* JavaScript (ES2020+)
-* Canvas 2D API
-* Pointer Events API
-* Web Workers
-* OffscreenCanvas
-* Service Worker
+HTML5, CSS3, JavaScript (ES2020+), Canvas 2D, `OffscreenCanvas`, Pointer Events, Web Workers, Service Worker. No framework.
 
-Additional libraries allowed when necessary.
+## Architecture rules
 
-Rules:
+* **Layout:** `app/core` (model, rendering, painting, selection, filters; no DOM), `app/ui` (DOM, menus, panels, canvas view), `app/io` (files), `app/workers`, `app/assets`, `app/vendor`. Core must not import from `ui`.
+* **Commands:** every menu item, shortcut and button runs a command from the registry in `app/core/commands.js`. Shortcuts are data, remappable, never hard-coded in handlers.
+* **Coordinates:** convert with `view.screenToCanvas(clientX, clientY)` only. Never convert manually.
+* **Input:** Pointer Events only (`pointerdown/move/up/cancel`); never mouse or touch events. Canvas has `touch-action: none`. Use `getCoalescedEvents()` and `pressure` for painting.
+* **Rendering:** per-layer canvases composited into the document view. Smoothing on when zoomed out; nearest-neighbour and a pixel grid when zoomed in. Verify zoom, transforms, selection overlay and brush preview in both regimes.
+* **Undo:** every change is a history step with a name (Composa: 100 steps).
+* **Heavy work** (filters, blend passes, magic wand on big layers) runs in a worker or is chunked; never freeze the UI.
+* **Mobile first:** must work on desktop, tablet, phone and the installed PWA. Touch targets at least 40 px on coarse pointers.
+* **Icons:** use the SVG sprite `app/assets/icons.svg` (`<use href>`), `currentColor`. No emoji or text glyphs as icons.
 
-* Prefer existing project code.
-* Prefer browser-native APIs.
-* Prefer PixiEditor implementation.
-* Vendor all third-party code locally.
-* No CDN.
-* No runtime downloads.
-* No remote dependencies.
-* No dependency requiring a build pipeline.
-* Every dependency must exist inside the repository.
+## Code style
 
-Allowed example categories:
+Match the surrounding code: concise, no comment noise (comment only non-obvious "why"), small modules, descriptive names, no dead code. Prefer browser-native APIs. Do not add a dependency until the feature cannot reasonably be done natively.
 
-* image processing
-* color management
-* PSD import/export
-* file formats
-* compression
-* performance
-* canvas utilities
-* pixel-art utilities
+## Bug fixing
 
-Before adding a dependency:
+Trace the whole path: input, event, tool, state, render, output. A bug is fixed only when the full path is verified by reading the code.
 
-1. Verify feature cannot reasonably be implemented with existing code.
-2. Verify dependency solves a real problem.
-3. Vendor dependency locally.
-4. Document why it was added.
+## Testing
 
----
+Never start servers. The user tests manually in a browser. You may run non-server tooling for verification, such as `node --check file.js` for syntax. Check your own work by reading and tracing carefully, because nothing is run for you.
 
-## Build
-
-None.
-
-Run:
-
-```bash
-python3 -m http.server 8080
-
-# or
-
-npx serve .
-```
-
-Open:
-
-```text
-index.html
-```
-
-Rules:
-
-* No npm install requirements.
-* No bundlers.
-* No compile step.
-* Native ES modules.
-
-Never run servers for user.
-
-User performs all testing.
-
----
-
-## Read First
-
-Before creating:
-
-* function
-* class
-* manager
-* UI component
-* tool
-* utility
-
-Search project first.
-
-Search PixiEditor second.
-
-Do not duplicate existing functionality.
-
----
-
-## Architecture Rules
-
-### Coordinates
-
-Always use:
-
-```js
-engine.screenToCanvas(clientX, clientY)
-```
-
-Never perform manual coordinate conversion.
-
-### Pointer Events
-
-Always use:
-
-* pointerdown
-* pointermove
-* pointerup
-
-Never use:
-
-* mousedown
-* mousemove
-* mouseup
-
-Canvas requires:
-
-```css
-touch-action: none;
-```
-
-### Render Modes
-
-Every rendering change must work in:
-
-#### Photo Mode
-
-```js
-imageSmoothingEnabled = true
-```
-
-#### Pixel Mode
-
-```js
-imageSmoothingEnabled = false
-```
-
-Verify:
-
-* smoothing
-* transforms
-* zoom
-* grid
-* brush rendering
-* selection rendering
-
----
-
-## Workflow Rules
-
-### Plan First
-
-Before editing:
-
-State:
-
-* what changes
-* files touched
-* why
-* risks
-
-Ask:
-
-```text
-Does this plan look correct before I proceed?
-```
-
-Do not edit before approval.
-
-### Large Changes
-
-If task:
-
-* touches >2 files
-* adds new system
-* exceeds ~30 lines
-
-Split into phases.
-
-Require approval between phases.
-
-### Ask First
-
-Ask before:
-
-* deleting >20 lines
-* removing systems
-* removing functions
-* renaming shared symbols
-* architecture changes
-* dependency additions
-* touching >3 files
-
-### Read Before Write
-
-Always read target files before editing.
-
-Never assume architecture.
-
----
-
-## Quality Rules
-
-### Platform Support
-
-Must work on:
-
-* mobile
-* tablet
-* desktop
-* installed PWA
-
-Mobile first.
-
-### Bug Fix Standard
-
-Trace:
-
-```text
-Input
-→ Event
-→ Tool
-→ State
-→ Render
-→ Output
-```
-
-Bug not fixed until full path verified.
-
----
-
-## After Every Change
+## After every change
 
 Update:
 
-1. progress.md
-2. docs/FEATURES.md
+1. `tasks.md`: tick finished items (it holds only `[x]` / `[ ]` lines).
+2. `progress.md`: date, files changed, what and why, remaining work.
+3. `docs/FEATURES.md`: user-visible features that now exist.
 
-progress.md must contain:
-
-* date
-* files changed
-* what changed
-* why changed
-* remaining work
-
-End response with:
+End the final message with:
 
 ```text
 Files changed:
 - file: summary
 ```
 
----
+## User preferences
 
-## User Preferences
-
-* Greet user as "Crowelian"
-* Never run servers
-* User tests manually
-* Search existing code before creating new code
-* Search PixiEditor before designing new systems
-* Prefer PixiEditor behavior over invention
+* Greet the user as "Crowelian".
+* Never run servers; the user tests manually.
+* Search existing code, then Composa, before creating anything new.
+* Keep it simple. Clone Composa rather than reinventing it.

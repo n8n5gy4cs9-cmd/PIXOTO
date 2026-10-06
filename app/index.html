@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>Pixoto</title>
+<meta name="theme-color" content="#242424">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/icon.svg">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<div id="app">
+  <div id="menubar"><div class="brand"><img src="assets/icon.svg" alt="">Pixoto</div></div>
+  <div id="options"></div>
+  <div id="main">
+    <div id="toolbar" role="toolbar" aria-label="Tools"></div>
+    <div id="center">
+      <div id="tabs"></div>
+      <div id="viewport">
+        <canvas id="view"></canvas>
+        <div id="welcome">
+          <div>
+            <img src="assets/icon.svg" alt="">
+            <h1>Pixoto</h1>
+            <p>Create a canvas, open an image, or drop files here.</p>
+            <div class="row">
+              <button class="btn accent" id="w-new">New Canvas…</button>
+              <button class="btn" id="w-open">Open…</button>
+            </div>
+          </div>
+        </div>
+        <div id="dropmask" hidden>Drop images to open</div>
+      </div>
+    </div>
+    <div id="side"></div>
+  </div>
+  <div id="status"><span id="st-zoom"></span><span id="st-size"></span><span class="pos" id="st-pos"></span><span class="hint" id="st-hint">Ready when you are</span></div>
+</div>
+<input type="file" id="file" accept="image/*" multiple hidden>
+<script type="module" src="app.js"></script>
+</body>
+</html>

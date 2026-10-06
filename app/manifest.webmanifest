@@ -1,0 +1,14 @@
+{
+  "name": "Pixoto",
+  "short_name": "Pixoto",
+  "description": "Layer-based image editor for compositing and retouching",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#242424",
+  "theme_color": "#242424",
+  "icons": [
+    { "src": "assets/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
