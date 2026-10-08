@@ -782,3 +782,8 @@ Remaining: test on the real shared host; real-browser pass for visual details (t
 - Files: app/app.js, app/io/store.js, app/io/files.js.
 - Why: recents only kept a File System Access handle, so files opened by drop, file input, non-Chromium browsers, or a download-saved project had none and Open Recent showed the file picker. Now such files are stored as a copy (<= 40 MB) in IndexedDB and reopened from it; a failed handle (moved/denied) also falls back to the copy. Entries made before this fix still ask for the file once.
 - Note: untested (node --check only).
+
+## 2026-10-08 Performance plan written (no code yet)
+- Added docs/PERF_PLAN.md, docs/PERF_PRD.json, docs/ai/PERF_AGENT_BRIEF.md, docs/ai/PERF_GLSL_SPEC.md, docs/ai/PERF_API_CONTRACTS.md; added PERF tasks to tasks.md.
+- Why: live previews copy and process the full-res layer on the CPU per slider tick. Fix is GPU proxy preview plus full-res commit.
+- Remaining: all phases P0 to P6.

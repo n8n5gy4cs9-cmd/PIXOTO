@@ -1,0 +1,115 @@
+{
+  "project": "Pixoto performance refactor",
+  "version": "1.0.0",
+  "date": "2026-10-08",
+  "goal": "60 fps interactive adjustments/filters via WebGL2 proxy preview, with full-resolution work only on commit.",
+  "constraints": [
+    "Static folder app/, no build step, ES modules with .js extensions, relative paths",
+    "No CDN, no npm, no server, no SharedArrayBuffer",
+    "Core must not import from ui",
+    "Every change is a named history step; preview must not touch history until commit",
+    "Update tasks.md, progress.md, docs/FEATURES.md after each phase",
+    "Never start servers; verify by reading code and node --check"
+  ],
+  "decisions": {
+    "gpuApi": "WebGL2 (GLSL ES 3.00), not WebGPU",
+    "gpuThread": "main thread with OffscreenCanvas; CPU work stays in compute worker",
+    "previewMaxPixels": 2073600,
+    "previewSizeRule": "min(layerSize, viewportDevicePixels, previewMaxPixels area), never upscale",
+    "randomOpsCommit": "grain and addNoise preview on GPU, commit on CPU worker for identical saved output",
+    "parityTolerance": "max abs diff <= 1/255 per channel for deterministic ops",
+    "fallbackChain": ["gpu", "cpu-worker", "inline"],
+    "alpha": "straight (non-premultiplied); UNPACK_PREMULTIPLY_ALPHA_WEBGL=false",
+    "textureFormat": "RGBA8 default; RGBA16F only with EXT_color_buffer_half_float"
+  },
+  "rootCauses": [
+    {"id": "R1", "text": "Full-res processing every slider tick", "file": "app/core/ops/preview.js"},
+    {"id": "R2", "text": "Full buffer copy per tick", "file": "app/core/ops/preview.js"},
+    {"id": "R3", "text": "Worker postMessage clones buffer (no transfer)", "file": "app/core/compute.js"},
+    {"id": "R4", "text": "CPU per-pixel JS loops", "file": "app/core/filters/*.js"},
+    {"id": "R5", "text": "ImageData/canvas allocation and putData each tick; main-thread mixBySelection", "file": "app/core/ops/preview.js"},
+    {"id": "R6", "text": "layer.canvas swapped for a new canvas each tick", "file": "app/core/ops/preview.js"},
+    {"id": "R7", "text": "No coalescing of input events, worker backlog", "file": "app/ui/live-dialog.js"},
+    {"id": "R8", "text": "Camera Raw uses separate CPU path", "file": "app/ui/camera-raw-dialog.js"}
+  ],
+  "phases": [
+    {
+      "id": "P0", "name": "Plumbing",
+      "tasks": [
+        {"id": "P0.1", "title": "Create app/core/scheduler.js (createCoalescer, pickPreviewSize)", "files": ["app/core/scheduler.js"], "acceptance": "coalescer runs fn at most once per rAF with latest args; never overlaps an unresolved previous run; has flush() and cancel()"},
+        {"id": "P0.2", "title": "Create app/core/bufpool.js (acquire/release typed arrays + ImageData by size)", "files": ["app/core/bufpool.js"], "acceptance": "same-size acquire after release returns same object; no allocation in steady state"},
+        {"id": "P0.3", "title": "Add perf settings flag (localStorage pixoto.gpu = on|off, default on) in app/core/state.js or existing settings module", "files": ["app/core/state.js"], "acceptance": "isGpuEnabled() readable from core"}
+      ]
+    },
+    {
+      "id": "P1", "name": "GPU core",
+      "tasks": [
+        {"id": "P1.1", "title": "app/core/gpu/context.js: WebGL2 singleton, caps, contextlost handling, isGpuAvailable()", "files": ["app/core/gpu/context.js"], "acceptance": "returns null-safe API; sets MAX_TEXTURE_SIZE; no throw when WebGL2 missing"},
+        {"id": "P1.2", "title": "Program cache + fullscreen-triangle VAO + uniform helper", "files": ["app/core/gpu/context.js", "app/core/gpu/shaders.js"], "acceptance": "getProgram(name, fragSrc) compiles once; compile errors thrown with log"},
+        {"id": "P1.3", "title": "Texture pool and FBO pool (create/resize/reuse, delete on release)", "files": ["app/core/gpu/context.js"], "acceptance": "no texture/framebuffer creation in steady-state ticks"},
+        {"id": "P1.4", "title": "Upload (canvas/ImageData/typed array -> texture) and readback (texture -> canvas via drawImage of GL canvas, or readPixels into pooled buffer) helpers with straight alpha", "files": ["app/core/gpu/context.js"], "acceptance": "round trip of a semi-transparent image is lossless within 1/255"}
+      ]
+    },
+    {
+      "id": "P2", "name": "GPU adjustments",
+      "tasks": [
+        {"id": "P2.1", "title": "Shaders + uniforms: brightnessContrast, exposure, invert, threshold, posterize, desaturate, sepia, solarize", "files": ["app/core/gpu/shaders.js", "app/core/gpu/adjust-gpu.js"], "acceptance": "parity within 1/255 vs applyAdjustment"},
+        {"id": "P2.2", "title": "levels and curves via 256x4 RGBA8 LUT texture built from the same curveValue/levels maths as adjust.js", "files": ["app/core/gpu/adjust-gpu.js"], "acceptance": "LUT texture reused and re-uploaded with texSubImage2D, no new texture per tick"},
+        {"id": "P2.3", "title": "hueSaturation (7 ranges, colorize), vibrance, blackAndWhite, colorBalance, gradientMap", "files": ["app/core/gpu/shaders.js", "app/core/gpu/adjust-gpu.js"], "acceptance": "parity within 1/255"},
+        {"id": "P2.4", "title": "lut adjustment: 3D LUT packed into 2D texture with manual trilinear in shader; preset + .cube", "files": ["app/core/gpu/shaders.js", "app/core/gpu/adjust-gpu.js"], "acceptance": "matches applyLut in core/filters/lut.js within 1/255 incl. amount blend"},
+        {"id": "P2.5", "title": "grain and addNoise approximate GPU preview (hash noise); mark commit as CPU-only via gpuCommit:false", "files": ["app/core/gpu/adjust-gpu.js"], "acceptance": "canRunOnGpu(adj).commit === false for these"},
+        {"id": "P2.6", "title": "Export canRunOnGpu(adjustment) -> {preview:boolean, commit:boolean}", "files": ["app/core/gpu/adjust-gpu.js"], "acceptance": "every ADJUSTMENT_TYPES entry is classified"}
+      ]
+    },
+    {
+      "id": "P3", "name": "Proxy preview pipeline",
+      "tasks": [
+        {"id": "P3.1", "title": "GpuLayerPipeline (source tex, ping-pong FBOs, selection mask tex, output canvas)", "files": ["app/core/gpu/pipeline.js"], "acceptance": "constructed once per session; render(op,args) allocates nothing"},
+        {"id": "P3.2", "title": "Render override: layer.preview = {canvas, matrix} honoured by compositor", "files": ["app/core/render.js", "app/core/model.js"], "acceptance": "cancel leaves layer.canvas untouched; zoom-in and zoom-out both show preview correctly"},
+        {"id": "P3.3", "title": "Rewrite PreviewSession: begin builds proxy+pipeline; update() coalesced; commit() full-res pass then single history step; cancel() clears override", "files": ["app/core/ops/preview.js"], "acceptance": "public API (begin, filter, adjust, contentAwareFill, commit, cancel, idle, showOriginal, applyFilterNow, applyAdjustmentNow) unchanged for callers"},
+        {"id": "P3.4", "title": "Selection mix on GPU (R8 coverage texture) and on commit path", "files": ["app/core/gpu/pipeline.js", "app/core/ops/pixels.js"], "acceptance": "selected-area edit matches mixBySelection within 1/255"},
+        {"id": "P3.5", "title": "Full-res commit: tile when w or h > MAX_TEXTURE_SIZE, else single pass; blur overlap = samplingMargin", "files": ["app/core/gpu/pipeline.js"], "acceptance": "no visible seams on tiled blur"},
+        {"id": "P3.6", "title": "Wire dialogs to liveUpdater coalescer; Preview checkbox uses showOriginal on proxy", "files": ["app/ui/adjust-dialogs.js", "app/ui/tool-dialogs.js", "app/ui/live-dialog.js"], "acceptance": "one render per animation frame during drag"},
+        {"id": "P3.7", "title": "Adjustment layers (live) use the same GPU path for display where applicable", "files": ["app/core/render.js", "app/core/effects.js"], "acceptance": "toggle/edit of adjustment layer parameters is real-time"}
+      ]
+    },
+    {
+      "id": "P4", "name": "GPU filters",
+      "tasks": [
+        {"id": "P4.1", "title": "Separable Gaussian blur (2 passes, radius via kernel texture or loop with bound), motion blur", "files": ["app/core/gpu/filter-gpu.js", "app/core/gpu/shaders.js"], "acceptance": "within 2/255 of CPU blur; large radii use downsample chain"},
+        {"id": "P4.2", "title": "Audit app/core/filters/filters.js; port per-pixel and small-kernel filters (sharpen, pixelate, vignette, emboss, etc.)", "files": ["app/core/gpu/filter-gpu.js", "app/core/filters/filters.js"], "acceptance": "each filter flagged gpu:true|false in a table in docs/PERF_PLAN.md"},
+        {"id": "P4.3", "title": "Camera Raw: single combined shader (WB, exposure, contrast, highlights/shadows, tone curve, HSL, vibrance, grain) preview on proxy", "files": ["app/ui/camera-raw-dialog.js", "app/core/gpu/filter-gpu.js"], "acceptance": "dialog preview real-time; Apply uses CPU cameraraw.js for exactness unless parity proven"},
+        {"id": "P4.4", "title": "Heavy CPU-only filters (painterly, inpaint, wand) keep worker; preview them on the proxy and apply on release", "files": ["app/core/ops/preview.js"], "acceptance": "slider.releaseOnly respected"}
+      ]
+    },
+    {
+      "id": "P5", "name": "Worker hardening",
+      "tasks": [
+        {"id": "P5.1", "title": "compute(): latest-wins queue per op key, cancel stale, transfer buffers (no clone), reuse ring buffers", "files": ["app/core/compute.js", "app/workers/compute.worker.js"], "acceptance": "at most one in-flight + one pending job per session; stale results dropped before posting"},
+        {"id": "P5.2", "title": "Worker feature-detect OffscreenCanvas for decode/resize helpers; document GPU-in-worker as optional", "files": ["app/workers/compute.worker.js", "docs/PLAN.md"], "acceptance": "documented decision"},
+        {"id": "P5.3", "title": "ROI preview when zoom > 100%: proxy built from visible crop at device resolution, rebuilt on pan/zoom end", "files": ["app/core/ops/preview.js", "app/ui/canvas-view.js"], "acceptance": "no soft preview when zoomed in; no full-image work"}
+      ]
+    },
+    {
+      "id": "P6", "name": "Polish",
+      "tasks": [
+        {"id": "P6.1", "title": "Settings toggle Performance > GPU acceleration; console diagnostics once", "files": ["app/ui/dialogs.js", "app/core/state.js"], "acceptance": "toggle persists, applies to next session"},
+        {"id": "P6.2", "title": "Add new files to service-worker precache list", "files": ["app/sw.js"], "acceptance": "offline works"},
+        {"id": "P6.3", "title": "Docs: FEATURES.md, help page note, PLAN.md section on GPU pipeline, progress.md", "files": ["docs/FEATURES.md", "docs/PLAN.md", "app/ui/help.js", "progress.md"], "acceptance": "complete"},
+        {"id": "P6.4", "title": "Dev-only parity helper window.__gpuParity(adjustment) logs max/mean diff", "files": ["app/core/gpu/adjust-gpu.js"], "acceptance": "usable from console"}
+      ]
+    }
+  ],
+  "slider": {
+    "default": "coalesced per animation frame, GPU proxy render",
+    "releaseOnly": "CPU-only filters whose proxy cost exceeds 50 ms render on change/pointerup, with a spinner",
+    "api": "session.liveUpdater(op) returns a function(args) to call from onInput"
+  },
+  "acceptance": [
+    "60 fps slider drag on 24 MP layer, M1 Max, GPU path",
+    "Commit parity within 1/255 for deterministic ops",
+    "Fallback works with GPU disabled",
+    "Undo/redo/cancel/selection/mask/adjustment layers unchanged",
+    "No new ImageData/typed arrays in tick path"
+  ]
+}
