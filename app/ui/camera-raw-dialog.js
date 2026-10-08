@@ -5,7 +5,6 @@ import { el, icon } from './dom.js';
 import { fieldRow } from './live-dialog.js';
 import { curvesEditor } from './adjust-dialogs.js';
 import { PreviewSession } from '../core/ops/preview.js';
-import { getData } from '../core/pixels.js';
 import { histogramOf } from '../core/filters/adjust.js';
 import { FILTER_BY_ID } from '../core/filters/filters.js';
 import { lastFilter } from './last-filter.js';
@@ -16,7 +15,6 @@ import {
 
 const TITLES = { light: 'Light', color: 'Color', grading: 'Color Grading', effects: 'Effects', curve: 'Curve', mixer: 'Color Mixer', detail: 'Detail', optics: 'Optics', calibration: 'Calibration' };
 const OPEN = new Set(['light', 'color']);
-const debounce = (fn, ms) => { let t = 0; return () => { clearTimeout(t); t = setTimeout(fn, ms); }; };
 
 function drawHistogram(canvas, hist) {
   const ctx = canvas.getContext('2d'), { width: w, height: h } = canvas;
@@ -43,11 +41,8 @@ export async function runCameraRawDialog(app) {
   const refreshEyes = () => { for (const [group, eye] of eyes) eye.style.display = adjustsGroup(cur, group) ? '' : 'none'; };
 
   const histBox = el('canvas', { width: 300, height: 80, class: 'histo' });
-  const drawHist = () => { try { drawHistogram(histBox, histogramOf(s.mask ? s.image.data : getData(s.layer.canvas).data)); } catch { /* layer replaced while closing */ } };
-  const run = debounce(() => {
-    if (!on) return;
-    s.filter('cameraRaw', { settings: rendered() }).then(drawHist).catch((e) => app.problem(e.message));
-  }, 120);
+  const preview = s.liveUpdater('filter');
+  const run = () => { if (on) preview('cameraRaw', { settings: rendered() }); };
   const changed = () => { refreshEyes(); run(); };
 
   const refreshAll = () => {
@@ -183,6 +178,7 @@ export async function runCameraRawDialog(app) {
   const final = rendered();
   if (!result) { s.cancel(); return false; }
   if (isIdentitySettings(final)) { s.cancel(); return true; }
+  preview.cancel();
   await s.filter('cameraRaw', { settings: final });
   await s.commit();
   lastFilter.id = 'cameraRaw'; lastFilter.params = { settings: final };

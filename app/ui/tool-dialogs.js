@@ -12,8 +12,6 @@ import { state } from '../core/state.js';
 import { lastFilter } from './last-filter.js';
 import { runCameraRawDialog } from './camera-raw-dialog.js';
 
-const debounce = (fn, ms) => { let t = 0; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
-
 // ---- filters ----------------------------------------------------------------------------------------------
 function paramFields(f, holder) {
   return f.params.map((q) => {
@@ -32,9 +30,10 @@ export async function runFilterDialog(app, id, { repeat = false } = {}) {
   s.fillsClear = fills;
   const holder = { p: { ...defaultParams(f), ...(repeat && lastFilter.id === id ? lastFilter.params : {}) } };
   let on = true;
-  const run = debounce(() => { if (on) s.filter(id, holder.p).catch((e) => app.problem(e.message)); }, f.slow ? 250 : 60);
+  const preview = s.liveUpdater('filter');
+  const run = () => { if (on) preview(id, { ...holder.p }); };
   if (repeat) { await s.filter(id, holder.p); if (isIdentityFilter(f, holder.p)) s.cancel(); else { await s.commit(); } return true; }
-  s.filter(id, holder.p).catch((e) => app.problem(e.message));
+  run();
   const ok = await liveDialog({
     title: f.name, fields: () => paramFields(f, holder), onInput: run,
     onPreviewToggle: (v) => { on = v; if (v) run(); else s.showOriginal(); },
@@ -42,6 +41,7 @@ export async function runFilterDialog(app, id, { repeat = false } = {}) {
   });
   if (!ok) { s.cancel(); return false; }
   if (isIdentityFilter(f, holder.p)) { s.cancel(); return true; }
+  preview.cancel();
   await s.filter(id, holder.p);
   await s.commit();
   lastFilter.id = id; lastFilter.params = { ...holder.p };
@@ -56,8 +56,10 @@ export async function adjustPixels(app, type) {
   const s = PreviewSession.begin(doc, adjustmentName(createAdjustment(type)));
   if (!s) { app.problem('Select a pixel layer or a mask to adjust.'); return; }
   const hist = histogramOf(s.image.data);
-  const adj = await runAdjustmentDialog(createAdjustment(type), { hist, preview: (a) => (a ? s.adjust(a) : s.showOriginal()) });
+  const preview = s.liveUpdater('adjust');
+  const adj = await runAdjustmentDialog(createAdjustment(type), { hist, preview: (a) => (a ? preview(a) : s.showOriginal()) });
   if (!adj || isIdentity(adj)) { s.cancel(); return; }
+  preview.cancel();
   await s.adjust(adj);
   await s.commit();
 }

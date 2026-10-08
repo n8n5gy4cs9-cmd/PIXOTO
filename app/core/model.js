@@ -57,6 +57,7 @@ export class Layer {
     this.effects = null;              // Stroke, shadows, glows, overlay
     this.children = [];
     this.collapsed = false;
+    this.preview = null;              // live-preview override { canvas, matrix } (never serialized)
   }
   static raster(name, canvas, x = 0, y = 0) {
     const l = new Layer('raster', name);

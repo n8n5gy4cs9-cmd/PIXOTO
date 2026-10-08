@@ -122,13 +122,13 @@
 - [x] PERF P0: scheduler.js (coalescer, pickPreviewSize), bufpool.js, GPU setting flag
 - [x] PERF P1: gpu/context.js (WebGL2, programs, texture/FBO pools, upload/readback)
 - [x] PERF P2.1: shaders + uniforms for brightnessContrast, exposure, invert, threshold, posterize, desaturate, sepia, solarize
-- [ ] PERF P2.2: levels/curves via 256x4 LUT texture
-- [ ] PERF P2.3: hueSaturation, vibrance, blackAndWhite, colorBalance, gradientMap
-- [ ] PERF P2.4: lut 3D LUT (trilinear)
-- [ ] PERF P2.5: grain/addNoise GPU preview (commit CPU-only)
-- [ ] PERF P2.6: canRunOnGpu classification
-- [ ] PERF P3: GpuLayerPipeline, render override layer.preview, PreviewSession rewrite (proxy + full-res commit)
-- [ ] PERF P3: GPU selection mix, tiled full-res commit, dialogs wired to coalesced liveUpdater
-- [ ] PERF P4: GPU Gaussian/motion blur and other filters, Camera Raw shader preview
-- [ ] PERF P5: compute() latest-wins queue + transferable ring, ROI preview when zoomed in
-- [ ] PERF P6: GPU setting toggle, sw.js precache, FEATURES/PLAN/help docs
+- [x] PERF P2.2: levels/curves via 256x4 LUT texture
+- [x] PERF P2.3: hueSaturation, vibrance, blackAndWhite, colorBalance, gradientMap
+- [x] PERF P2.4: lut 3D LUT (trilinear)
+- [x] PERF P2.5: grain/addNoise GPU preview (commit CPU-only)
+- [x] PERF P2.6: canRunOnGpu classification
+- [x] PERF P3: GpuLayerPipeline, render override layer.preview, PreviewSession rewrite (proxy + full-res commit)
+- [x] PERF P3: GPU selection mix, tiled full-res commit, dialogs wired to coalesced liveUpdater
+- [x] PERF P4: GPU Gaussian/motion blur and other filters, Camera Raw shader preview
+- [x] PERF P5: compute() latest-wins queue + transferable ring, ROI preview when zoomed in
+- [x] PERF P6: GPU setting toggle, sw.js precache, FEATURES/PLAN/help docs

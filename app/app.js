@@ -44,6 +44,7 @@ import { loadImage, baseName, kindOf, pickOpen, saveProject, exportDoc, flatCanv
 import { importPsd, psdToDoc, isPsd, PsdError } from './io/psd.js';
 import { addRecent, getRecents, saveRecovery, dropRecovery, listRecovery, clearRecents } from './io/store.js';
 import { writeProject } from './io/project.js';
+import { isGpuAvailable, gpuCaps } from './core/gpu/context.js';
 
 // Browsers cap canvas size; iOS is far stricter. Thin canvases test the side limit; the area limit follows the platform.
 function probeLimits() {
@@ -351,6 +352,7 @@ toggle('view.snap', 'Snap', ['Ctrl+Shift+;'], 'snap');
 toggle('view.lock', 'Lock Guides', ['Ctrl+Alt+;'], 'lockGuides');
 toggle('view.snapguides', 'Snap To Guides', [], 'snapGuides'); toggle('view.snapgrid', 'Snap To Grid', [], 'snapGrid'); toggle('view.snaplayers', 'Snap To Layers', [], 'snapLayers'); toggle('view.snapbounds', 'Snap To Document Bounds', [], 'snapBounds');
 C_('view.clearguides', 'Clear Guides', [], () => G.clearGuides(doc()), { enabled: () => !!app.doc?.guides.length });
+toggle('perf.gpu', 'GPU Acceleration (faster previews)', [], 'gpu', 'root');
 C_('help.guide', 'Pixoto Help', ['F1'], () => showHelp(() => showShortcuts()), { needsDoc: false, group: 'Help' });
 C_('help.about', 'About Pixoto', [], () => alertBox('About Pixoto', el('div', {}, el('p', {}, 'Made by Crowelian 2026.'), el('p', {}, 'In the October update, more features from Composa were added.'))), { needsDoc: false });
 
@@ -373,7 +375,7 @@ new MenuBar($('#menubar'), [
     { label: 'Layer Mask', items: ['layer.addmask', 'layer.addmaskblack', 'layer.delmask', 'layer.applymask', 'layer.invmask', 'layer.togglemask'] }, 'layer.clip', 'layer.group', 'layer.ungroup', '-', 'layer.transform',
     { label: 'Rotate / Flip Layer', items: ['layer.rotcw', 'layer.rotccw', 'layer.rot180', 'layer.fliph', 'layer.flipv'] }, '-', 'layer.up', 'layer.down', '-', 'layer.merge', 'layer.flatten'] },
   { label: 'Filter', items: ['filter.repeat', '-', 'filter.cameraRaw', '-', ...filterMenu] },
-  { label: 'View', items: ['view.fit', 'view.actual', 'view.in', 'view.out', 'view.rotcw', 'view.rotccw', 'view.rotreset', '-', 'view.controls', 'view.pixelgrid', '-', 'view.rulers', 'view.grid', 'view.guides', 'view.clearguides', 'view.lock', '-', 'view.snap', { label: 'Snap To', items: ['view.snapguides', 'view.snapgrid', 'view.snaplayers', 'view.snapbounds'] }] },
+  { label: 'View', items: ['view.fit', 'view.actual', 'view.in', 'view.out', 'view.rotcw', 'view.rotccw', 'view.rotreset', '-', 'view.controls', 'view.pixelgrid', '-', 'view.rulers', 'view.grid', 'view.guides', 'view.clearguides', 'view.lock', '-', 'view.snap', { label: 'Snap To', items: ['view.snapguides', 'view.snapgrid', 'view.snaplayers', 'view.snapbounds'] }, '-', 'perf.gpu'] },
   { label: 'Help', items: ['help.guide', 'edit.shortcuts', 'help.about'] },
 ]);
 $('#menubar').insertAdjacentHTML('beforeend', '<div class="spacer"></div>');
@@ -458,3 +460,11 @@ attach(null);
   }
 })();
 window.pixoto = app;
+
+// One-time startup diagnostic (see P6.1): report whether the GPU preview path is available.
+setTimeout(() => {
+  try {
+    const on = isGpuAvailable();
+    console.info(`[pixoto] WebGL2 ${on ? `available (max texture ${gpuCaps()?.maxTex})` : 'unavailable'} — GPU acceleration ${state.gpu === false ? 'disabled in settings' : 'on'}.`);
+  } catch { /* non-fatal */ }
+}, 0);

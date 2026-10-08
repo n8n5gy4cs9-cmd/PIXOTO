@@ -153,6 +153,22 @@ function lutsFor(a) {
 }
 const hexRgb = (h) => { const n = parseInt(h.slice(1, 7), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; };
 
+// Packed 256-entry RGBA lookup table (r/g/b channels in .r/.g/.b) for the GPU LUT-based adjustments:
+// levels, curves (from lutsFor) and gradientMap (linear blend of shadows/highlights). Same maths as applyAdjustment.
+export function packedLut(a) {
+  let r, g, b;
+  if (a.type === 'gradientMap') {
+    const dark = hexRgb(a.reversed ? a.highlights : a.shadows), light = hexRgb(a.reversed ? a.shadows : a.highlights);
+    r = new Uint8Array(256); g = new Uint8Array(256); b = new Uint8Array(256);
+    for (let i = 0; i < 256; i++) { const t = i / 255; r[i] = dark[0] + (light[0] - dark[0]) * t; g[i] = dark[1] + (light[1] - dark[1]) * t; b[i] = dark[2] + (light[2] - dark[2]) * t; }
+  } else {
+    [r, g, b] = lutsFor(a);
+  }
+  const out = new Uint8Array(256 * 4);
+  for (let i = 0; i < 256; i++) { const o = i * 4; out[o] = r[i]; out[o + 1] = g[i]; out[o + 2] = b[i]; out[o + 3] = 255; }
+  return out;
+}
+
 function rgbToHsl(r, g, b) {
   const max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2, d = max - min;
   if (d < 1e-9) return [0, 0, l];

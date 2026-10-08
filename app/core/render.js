@@ -37,7 +37,9 @@ class Tile {
 // ---- layer drawing -----------------------------------------------------------------------------
 // Draws a canvas through a distorted layer's mapping, as a mesh of small affine triangles.
 function drawDistorted(ctx, img, layer, fx) {
-  const t = layer.transform, sw = layer.canvas.width, sh = layer.canvas.height, map = transformMapper(t, sw, sh), N = 12;
+  const sw = layer.preview ? layer.preview.canvas.width : layer.canvas.width;
+  const sh = layer.preview ? layer.preview.canvas.height : layer.canvas.height;
+  const t = layer.transform, map = transformMapper(t, sw, sh), N = 12;
   const inset = fx ? fx.inset : 0, iw = img.width, ih = img.height;
   const sx = (u) => u / N * iw - inset, sy = (v) => v / N * ih - inset;
   for (let j = 0; j < N; j++) for (let i = 0; i < N; i++) {
@@ -56,11 +58,12 @@ function drawDistorted(ctx, img, layer, fx) {
 }
 
 function drawPixels(layer, ctx, opacity, blend, fx) {
-  const c = layer.canvas; if (!c) return;
+  const preview = layer.preview;
+  const c = preview ? preview.canvas : layer.canvas; if (!c) return;
   ctx.save();
   ctx.globalAlpha = opacity; ctx.globalCompositeOperation = isCustomBlend(blend) ? 'source-over' : canvasOp(blend);
-  const m = layer.matrix, exact = !layer.transform.distort && m[0] === 1 && m[3] === 1 && !m[1] && !m[2] && m[4] === Math.round(m[4]) && m[5] === Math.round(m[5]);
-  ctx.imageSmoothingEnabled = !exact; ctx.imageSmoothingQuality = 'high';
+  const m = preview ? preview.matrix : layer.matrix, exact = !layer.transform.distort && m[0] === 1 && m[3] === 1 && !m[1] && !m[2] && m[4] === Math.round(m[4]) && m[5] === Math.round(m[5]);
+  ctx.imageSmoothingEnabled = preview?.nearest ? false : !exact; ctx.imageSmoothingQuality = 'high';
   const img = fx ? fx.result : c;
   if (layer.transform.distort) drawDistorted(ctx, img, layer, fx);
   else {
@@ -145,7 +148,7 @@ function drawContent(layer, tile, fx) {
 
 function renderUnit(layer, clipped, tile) {
   if (layer.isAdjustment) { applyAdjustmentLayer(layer, tile); return; }
-  const fx = effectsOf(layer);
+  const fx = layer.preview ? null : effectsOf(layer);
   const hasMask = !!(layer.mask && layer.maskEnabled) && !fx;
   if (layer.isGroup && !hasMask && layer.opacity >= 1 && layer.blend === 'normal' && !clipped.length) { renderNodes(layer.children, tile); return; }
   if (layer.kind === 'raster' && !hasMask && !clipped.length && !isCustomBlend(layer.blend)) { drawPixels(layer, tile.ctx, layer.opacity, layer.blend, fx); return; }

@@ -1,4 +1,6 @@
 // Heavy pixel work off the main thread: filters, adjustments, content-aware fill, selections from the picture.
+// CPU-only by design: the GPU preview path runs on the main thread (see docs/PERF_PLAN.md §2.2). OffscreenCanvas decode
+// would help only the image-import resize, which lives in io/files.js, so it is left there (optional future work).
 import { runFilter } from '../core/filters/filters.js';
 import { applyAdjustment } from '../core/filters/adjust.js';
 import { inpaint } from '../core/paint/inpaint.js';

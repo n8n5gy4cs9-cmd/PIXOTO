@@ -112,6 +112,10 @@ PIXOTO/
 | 8 | **Guides/rulers/grid/snap**, shortcut remapping dialog, welcome screen | polish to Composa parity |
 | 9 | **PWA + mobile/tablet + icons PNG + DEPLOY.md** | installable on your server |
 
+### Real-time GPU previews (see `docs/PERF_PLAN.md`)
+
+Live adjustments and most filters preview through **WebGL2** on a downscaled proxy canvas (`core/gpu/*`, `core/ops/preview.js`): the compositor draws `layer.preview` instead of `layer.canvas`, and the full-resolution pass (one undo step) runs only on commit. Every GPU op has a CPU-worker fallback (the `gpu` setting in View ▸ GPU Acceleration disables it). Filters that preview on the GPU: Gaussian/Motion/Box blur and Emboss, plus the Camera Raw Light+Color stage; everything else previews on the CPU worker. Blur, grain and noise always commit on the CPU for byte-identical saved output.
+
 ## 8. Risks
 
 - **Performance**: Composa composites on CPU in native code; browsers are slower. Mitigation: per-layer canvases + dirty rects, `willReadFrequently` only where pixels are read, workers for filters/blend modes, tile-free until proven needed.

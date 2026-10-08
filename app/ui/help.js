@@ -84,7 +84,7 @@ const SECTIONS = [
   ['filters', 'Filters', 'blur', () => [
     p('The Filter menu holds destructive effects. Each opens a small dialog with a live preview on the canvas; ', el('b', {}, 'Preview'), ' toggles it, ', el('b', {}, 'Reset'), ' restores the defaults and OK applies it as one undo step. ', kbd('Ctrl+F'), ' repeats the last filter with the same settings.'),
     el('div', { class: 'hgrid' }, FILTER_GROUPS.map((g) => card(g, list(FILTERS.filter((f) => f.group === g).map((f) => f.name))))),
-    tip('Heavy filters run in a background worker, so the interface stays responsive. If a selection is active only the selected area changes.'),
+    tip('Adjustments and most filters preview through your graphics card (WebGL2) for instant response; full-resolution work happens once when you press OK. Heavy filters still run in a background worker, so the interface stays responsive. If a selection is active only the selected area changes.'),
   ]],
   ['view', 'View and navigation', 'zoom', () => [
     grid([
@@ -93,6 +93,7 @@ const SECTIONS = [
       card('Guides and rulers', p('Show rulers, drag guides out of them, and enable snapping to guides, the grid, layers or their bounds.')),
       card('Tabs', p('Every document has a tab. Unsaved changes are marked, and you are asked before closing.')),
     ]),
+    tip('View ▸ GPU Acceleration speeds up adjustment and filter previews with your graphics card. Turn it off if you see glitches; the app falls back to the CPU automatically.'),
   ]],
   ['files', 'Files', 'file-image', () => [
     grid([

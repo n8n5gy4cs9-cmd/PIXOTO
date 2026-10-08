@@ -1,5 +1,8 @@
 // Runs heavy pixel work in a worker (falling back to the main thread where workers are unavailable), so the UI never
-// freezes on a filter. `compute(op, args, buffer)` resolves { result, buffer }. Buffers are transferred, so pass copies.
+// freezes on a filter. `compute(op, args, buffer, opts)` resolves { result, buffer }. The input buffer is copied into
+// the worker unless `opts.transfer` is set (then it is transferred and the caller must give `opts.rebuild` so a failed
+// worker can be re-run from a fresh copy). `opts.key` tags jobs so a newer call supersedes an in-flight one: its result
+// is dropped before it is posted.
 import { runFilter } from './filters/filters.js';
 import { applyAdjustment } from './filters/adjust.js';
 import { inpaint } from './paint/inpaint.js';
@@ -15,6 +18,7 @@ function spawn() {
     worker.onmessage = (e) => {
       const p = pending.get(e.data.id); if (!p) return;
       pending.delete(e.data.id);
+      if (p.stale) return;
       if (e.data.error) p.reject(new Error(e.data.error)); else p.resolve({ result: e.data.result, buffer: e.data.buffer });
     };
     worker.onerror = () => {
@@ -38,14 +42,15 @@ function inline(op, args, buffer) {
   throw new Error('Unknown operation ' + op);
 }
 
-export function compute(op, args, buffer) {
-  const w = spawn();
+export function compute(op, args, buffer, opts = {}) {
+  const w = spawn(), key = opts.key;
   return new Promise((resolve, reject) => {
-    const run = () => setTimeout(() => { try { resolve(inline(op, args, buffer)); } catch (e) { reject(e); } }, 0);
-    if (!w) { run(); return; }
     const id = nextId++;
-    // The buffer is copied (not transferred) so the main thread can still run the job if the worker cannot load.
-    pending.set(id, { resolve, reject, rerun: run });
-    w.postMessage({ id, op, args, buffer });
+    const run = () => setTimeout(() => { try { resolve(inline(op, args, opts.rebuild ? opts.rebuild() : buffer)); } catch (e) { reject(e); } }, 0);
+    if (!w) { run(); return; }
+    pending.set(id, { resolve, reject, rerun: run, key });
+    if (key) for (const [pid, p] of pending) if (pid !== id && p.key === key) p.stale = true;
+    if (opts.transfer) w.postMessage({ id, op, args, buffer }, [buffer]);
+    else w.postMessage({ id, op, args, buffer });
   });
 }

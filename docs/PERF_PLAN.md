@@ -109,6 +109,19 @@ Order matters: 1 -> 2 -> 3 gives the biggest visible win (Brightness/Contrast, L
 - **Context loss:** listen for `webglcontextlost`; mark the pipeline dead; the session falls back to CPU for the rest of its life; recreate the context lazily next session.
 - **Shared hosting:** no new MIME types are needed; no SharedArrayBuffer (needs COOP/COEP headers, which we do not control), so use transferables only.
 
+## 4.5 Filter GPU preview audit (P4.2)
+
+Preview on GPU (`app/core/gpu/filter-gpu.js`); **commit is always on the CPU worker** so saved pixels stay identical:
+
+| Filter | GPU preview | Note |
+|---|---|---|
+| gaussianBlur | ✅ | separable Gaussian (downsample chain for large radii), premultiplied |
+| motionBlur | ✅ | line integral, ≤96 samples, premultiplied |
+| boxBlur | ✅ | separable box, premultiplied |
+| emboss | ✅ | 3×3 convolution |
+| cameraRaw | ⚠️ | Light+Color stage only; falls back to CPU when other groups are active |
+| radialBlur, surfaceBlur, tiltShift, sharpen, unsharpMask, highPass, addNoise, median, diffuse, vignette, bloom, tonalContrast, lensCorrection, wave, ripple, twirl, spherize, chromaticAberration, glitch, pixelate, findEdges, oilPaint, halftone, crystallize, minimum, maximum, outline, painterly, removeBackground | ❌ | CPU worker on the proxy |
+
 ## 5. Definition of done
 
 - Dragging any adjustment slider on a 24 MP photo on an M1 Max stays at 60 fps (frame time under 16 ms; GPU tick under 4 ms at the proxy size).
