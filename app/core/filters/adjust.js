@@ -86,6 +86,13 @@ function smoothNoise(x, y, sd) {
   return top + (bottom - top) * fy;
 }
 
+export function vignetteMask(px, py, w, h, midpoint, roundness, feather) {
+  const nx = px / w * 2 - 1, ny = py / h * 2 - 1, square = Math.max(Math.abs(nx), Math.abs(ny)), circle = Math.sqrt(nx * nx + ny * ny) / Math.SQRT2;
+  const dist = circle + (square - circle) * ((1 - roundness / 100) * 0.5), start = midpoint / 100 * 0.85, soft = Math.max(0.05, feather / 100), t = cl01((dist - start) / soft);
+  return t * t * (3 - 2 * t);
+}
+const cl01 = (v) => (v < 0 ? 0 : v > 1 ? 1 : v);
+
 // ---- tables -----------------------------------------------------------------------------------------
 function levelsMap(r, v) {
   const span = Math.max(1, r.inputWhite - r.inputBlack);

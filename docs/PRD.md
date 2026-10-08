@@ -17,7 +17,7 @@ Someone who wants Photoshop-style compositing without installing anything, on de
 
 ## Non-goals (v1)
 
-Camera RAW / HEIC / TIFF, CMYK, 16-bit, PSD export, MCP/AI agent control, auto-update, pixel-art studio, animation, server-side anything.
+RAW / HEIC / TIFF file import (the Camera Raw filter itself is in), CMYK, 16-bit, PSD export, MCP/AI agent control, auto-update, pixel-art studio, animation, server-side anything.
 
 ## Functional requirements
 

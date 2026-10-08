@@ -771,3 +771,9 @@ Remaining: test on the real shared host; real-browser pass for visual details (t
 ## 2026-10-08 — Help search and LUT help
 - Files: app/ui/help.js, app/css/app.css, tasks.md, docs/FEATURES.md.
 - What: search box in the Help bar filters cards, rows and paragraphs live and hides empty sections and nav links; new LUTs section.
+
+## 2026-10-08 — Camera Raw Filter
+- Files: app/core/filters/cameraraw.js (new), app/ui/camera-raw-dialog.js (new), app/core/filters/filters.js, app/core/filters/adjust.js (vignetteMask moved here), app/ui/tool-dialogs.js, app/ui/adjust-dialogs.js (curvesEditor exported), app/app.js, app/css/app.css, app/sw.js, docs/PLAN.md, docs/PRD.md, docs/FEATURES.md, tasks.md.
+- What: port of Composa's Camera Raw Filter (CameraRaw.cs, CameraRawPixels.cs, CameraRawDialog.cs). Filter > Camera Raw Filter (Ctrl+Shift+A) runs as the `cameraRaw` filter in the worker; all settings travel as one `settings` object. Panel groups: Light, Color, Color Grading, Effects, Curve, Color Mixer, Detail, Optics, Calibration, each with an eye. Histogram, thumbnail eyedropper, Auto white balance. Ctrl+F repeats the last grade.
+- Differences: slider tracks are plain (no gradient tracks); grain uses the Grain adjustment's field; chromatic aberration and distortion work on straight RGBA. Filter radii use layer pixels (scale 1).
+- Note: written without running anything (only `node --check`); untested. Large layers run the box-blur/curve passes on the whole layer in the worker, so the preview is debounced at 120 ms.

@@ -327,7 +327,7 @@ C_('layer.fliph', 'Flip Layer Horizontal', [], () => C.flipLayers(doc(), true), 
 C_('layer.flipv', 'Flip Layer Vertical', [], () => C.flipLayers(doc(), false), { enabled: act });
 for (const k of EFFECT_KINDS) C_('fx.' + k, effectName(k) + '…', [], () => app.editEffect(doc().active, k), { enabled: () => !!app.doc?.active?.canvas });
 
-for (const f of FILTERS) C_('filter.' + f.id, f.name + '…', [], () => runFilterDialog(app, f.id).catch((e) => app.problem(e.message)), { enabled: has });
+for (const f of FILTERS) C_('filter.' + f.id, f.name + '…', f.shortcut ? [f.shortcut] : [], () => runFilterDialog(app, f.id).catch((e) => app.problem(e.message)), { enabled: has });
 C_('filter.repeat', 'Repeat Last Filter', ['Ctrl+F'], () => runFilterDialog(app, lastFilter.id, { repeat: true }).catch((e) => app.problem(e.message)), { enabled: () => !!app.doc && !!lastFilter.id && editable() });
 
 C_('view.fit', 'Fit Canvas', ['Ctrl+0'], () => view.fit(), { enabled: has });
@@ -368,7 +368,7 @@ new MenuBar($('#menubar'), [
   { label: 'Layer', items: ['layer.new', 'layer.dup', 'layer.delete', 'layer.rename', '-', { label: 'New Adjustment Layer', items: ADJUSTMENT_TYPES.map((t) => 'newadj.' + t) }, { label: 'Layer Effects', items: EFFECT_KINDS.map((k) => 'fx.' + k) }, 'layer.editadj', 'layer.edittext', 'layer.raster', '-',
     { label: 'Layer Mask', items: ['layer.addmask', 'layer.addmaskblack', 'layer.delmask', 'layer.applymask', 'layer.invmask', 'layer.togglemask'] }, 'layer.clip', 'layer.group', 'layer.ungroup', '-', 'layer.transform',
     { label: 'Rotate / Flip Layer', items: ['layer.rotcw', 'layer.rotccw', 'layer.rot180', 'layer.fliph', 'layer.flipv'] }, '-', 'layer.up', 'layer.down', '-', 'layer.merge', 'layer.flatten'] },
-  { label: 'Filter', items: ['filter.repeat', '-', ...filterMenu] },
+  { label: 'Filter', items: ['filter.repeat', '-', 'filter.cameraRaw', '-', ...filterMenu] },
   { label: 'View', items: ['view.fit', 'view.actual', 'view.in', 'view.out', 'view.rotcw', 'view.rotccw', 'view.rotreset', '-', 'view.controls', 'view.pixelgrid', '-', 'view.rulers', 'view.grid', 'view.guides', 'view.clearguides', 'view.lock', '-', 'view.snap', { label: 'Snap To', items: ['view.snapguides', 'view.snapgrid', 'view.snaplayers', 'view.snapbounds'] }] },
   { label: 'Help', items: ['help.guide', 'edit.shortcuts', 'help.about'] },
 ]);

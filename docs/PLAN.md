@@ -125,6 +125,6 @@ PIXOTO/
 
 1. Pixel-art studio, animation timeline and GIF export from the old Pixoto are **out of scope** (Composa has none). Old code stays in `BACKUP/`.
 2. The new app replaces the old one under `app/`; the old `src/` is moved, not deleted.
-3. Camera RAW filter, HEIC/TIFF/RAW import, MCP/AI control, and auto-update are dropped.
+3. HEIC/TIFF/RAW import (the Camera Raw *filter* is ported as `core/filters/cameraraw.js`), MCP/AI control, and auto-update are dropped.
 4. Project format: Composa's `.cmps` (read its `ProjectFile.cs` first) so files are interchangeable with the desktop app where practical.
 5. CLAUDE.md will be updated: reference = Composa, PixiEditor rules removed, hosting rules added.

@@ -10,6 +10,7 @@ import { getData, isClear } from '../core/pixels.js';
 import { EFFECT_KINDS, DEFAULTS, effectName, effectKey, withEffect, withoutEffect, hasEffect, clampEffect, effectEnabled } from '../core/effects.js';
 import { state } from '../core/state.js';
 import { lastFilter } from './last-filter.js';
+import { runCameraRawDialog } from './camera-raw-dialog.js';
 
 const debounce = (fn, ms) => { let t = 0; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
 
@@ -22,6 +23,7 @@ function paramFields(f, holder) {
   });
 }
 export async function runFilterDialog(app, id, { repeat = false } = {}) {
+  if (id === 'cameraRaw' && !repeat) return runCameraRawDialog(app);
   const doc = app.doc, f = FILTER_BY_ID[id];
   const layer = doc.editableLayer;
   const fills = id === 'vignette' && !doc.isEditingMask && layer?.canvas && isClear(layer.canvas);

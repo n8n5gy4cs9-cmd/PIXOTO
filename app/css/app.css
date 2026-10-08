@@ -155,6 +155,23 @@ label.chk { display: flex; align-items: center; gap: 6px; }
 .dlg .foot .grow { flex: 1; }
 .dlg .foot .pv { color: var(--secondary); margin-right: auto; }
 canvas.histo, canvas.curve { width: 100%; max-width: 256px; background: #1b1b1b; border-radius: 4px; display: block; margin: 2px auto; touch-action: none; }
+/* Camera Raw Filter */
+.crdlg { width: 380px; }
+.crtop { justify-items: center; gap: 6px; }
+.crtop canvas.histo { max-width: 300px; }
+.crthumb { max-width: 100%; border-radius: 4px; cursor: crosshair; touch-action: none; }
+.crread { color: var(--secondary); font-size: 11px; font-variant-numeric: tabular-nums; }
+.crgroup { border-top: 1px solid var(--divider); }
+.crgroup > summary { display: flex; align-items: center; gap: 6px; padding: 8px 0; cursor: pointer; font-weight: 600; list-style: none; }
+.crgroup > summary::-webkit-details-marker { display: none; }
+.crgroup > summary::before { content: ''; width: 6px; height: 6px; border: solid var(--secondary); border-width: 0 2px 2px 0; transform: rotate(-45deg); transition: transform .12s; }
+.crgroup[open] > summary::before { transform: rotate(45deg); }
+.crgroup > summary .grow { flex: 1; }
+.crbody, .crbox { display: grid; gap: 6px; padding: 2px 0 10px 8px; }
+.crbox { padding: 0; }
+.crhead { color: var(--secondary); margin-top: 4px; font-size: 12px; }
+.crnote { color: var(--secondary); font-size: 11px; }
+@media (pointer: coarse) { .crgroup > summary { min-height: 40px; } .creye { min-width: 40px; min-height: 40px; } }
 canvas.curve { aspect-ratio: 1; cursor: crosshair; }
 
 .cp { width: min(420px, 100%); }

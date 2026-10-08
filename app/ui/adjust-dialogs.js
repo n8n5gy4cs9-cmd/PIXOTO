@@ -20,7 +20,7 @@ function histogramCanvas(hist, channel, w = 256, h = 80) {
   return c;
 }
 
-function curvesEditor(holder, onInput, hist, channelRef) {
+export function curvesEditor(holder, onInput, hist, channelRef) {
   const size = 256, c = el('canvas', { width: size, height: size, class: 'curve' }), ctx = c.getContext('2d');
   let drag = -1;
   const pts = () => holder.adj.channels[channelRef.value];

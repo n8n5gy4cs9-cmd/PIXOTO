@@ -118,3 +118,4 @@
 - [x] Filter worker fallback and visible preview errors
 - [x] LUT adjustment (built-in looks, .cube import)
 - [x] Help page search and LUT section
+- [x] Camera Raw Filter (Filter menu, grouped panel, histogram, white-balance eyedropper)

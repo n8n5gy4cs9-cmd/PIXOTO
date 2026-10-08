@@ -2,10 +2,11 @@
 // { id, name, group, params, run(img, p, env) } over straight RGBA bytes: img = { data, w, h }; env = { clampEdges, seed,
 // fillsClear, frame } supplied by the caller. `run` returns { data, w, h, growX, growY }. Pure: runs in the filter worker.
 import { gaussianBlur, blurRGBA, morph } from './blur.js';
-import { blurStraight, motionBlurStraight, noise, hash } from './adjust.js';
+import { blurStraight, motionBlurStraight, noise, hash, vignetteMask } from './adjust.js';
 import { backdropPlane } from '../select/wand.js';
 import { painterly, PAINTERLY_STYLES } from './painterly.js';
 import { rgbToHsl, hslToRgb } from '../pixels.js';
+import { cameraRaw, isIdentitySettings } from './cameraraw.js';
 
 const clamp = (v, lo, hi) => (v < lo ? lo : v > hi ? hi : v);
 const clamp01 = (v) => (v < 0 ? 0 : v > 1 ? 1 : v);
@@ -175,11 +176,6 @@ def('diffuse', 'Diffuse', 'Noise', [range('distance', 'Distance', 1, 50, 4)], (i
 });
 
 // ---- Light and tone ------------------------------------------------------------------------------------
-function vignetteMask(px, py, w, h, midpoint, roundness, feather) {
-  const nx = px / w * 2 - 1, ny = py / h * 2 - 1, square = Math.max(Math.abs(nx), Math.abs(ny)), circle = Math.sqrt(nx * nx + ny * ny) / Math.SQRT2;
-  const dist = circle + (square - circle) * ((1 - roundness / 100) * 0.5), start = midpoint / 100 * 0.85, soft = Math.max(0.05, feather / 100), t = clamp01((dist - start) / soft);
-  return t * t * (3 - 2 * t);
-}
 def('vignette', 'Vignette', 'Light', [range('amount', 'Amount', 0, 100, 35), color('color', 'Color', '#000000'), range('midpoint', 'Midpoint', 0, 100, 50), range('roundness', 'Roundness', -100, 100, 100), range('feather', 'Feather', 0, 100, 60), range('highlights', 'Highlights', 0, 100, 25)], (img, p, env) => {
   const d = new Uint8ClampedArray(img.data), { w, h } = img;
   if (p.amount <= 0) return same(img, d);
@@ -349,6 +345,9 @@ def('removeBackground', 'Remove Background', 'Other', [range('tolerance', 'Toler
   for (let i = 0; i < w * h; i++) out[i * 4 + 3] = s[i * 4 + 3] * (1 - bg[i] / 255);
   return same(img, out);
 });
+
+// Camera Raw Filter: all settings travel as one object (`p.settings`); the grouped dialog lives in ui/camera-raw-dialog.js. Its group is not in FILTER_GROUPS, so it sits at the top of the Filter menu.
+def('cameraRaw', 'Camera Raw Filter', 'Raw', [], (img, p, env) => same(img, cameraRaw(new Uint8ClampedArray(img.data), img.w, img.h, p.settings, { seed: env.seed || 1 })), { slow: true, shortcut: 'Ctrl+Shift+A', identity: (p) => isIdentitySettings(p.settings) });
 
 export const FILTER_BY_ID = Object.fromEntries(FILTERS.map((f) => [f.id, f]));
 export const FILTER_GROUPS = ['Blur', 'Sharpen', 'Noise', 'Light', 'Distort', 'Stylize', 'Other'];
