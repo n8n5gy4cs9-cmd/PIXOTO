@@ -777,3 +777,8 @@ Remaining: test on the real shared host; real-browser pass for visual details (t
 - What: port of Composa's Camera Raw Filter (CameraRaw.cs, CameraRawPixels.cs, CameraRawDialog.cs). Filter > Camera Raw Filter (Ctrl+Shift+A) runs as the `cameraRaw` filter in the worker; all settings travel as one `settings` object. Panel groups: Light, Color, Color Grading, Effects, Curve, Color Mixer, Detail, Optics, Calibration, each with an eye. Histogram, thumbnail eyedropper, Auto white balance. Ctrl+F repeats the last grade.
 - Differences: slider tracks are plain (no gradient tracks); grain uses the Grain adjustment's field; chromatic aberration and distortion work on straight RGBA. Filter radii use layer pixels (scale 1).
 - Note: written without running anything (only `node --check`); untested. Large layers run the box-blur/curve passes on the whole layer in the worker, so the preview is debounced at 120 ms.
+
+## 2026-10-08 — Open Recent fix
+- Files: app/app.js, app/io/store.js, app/io/files.js.
+- Why: recents only kept a File System Access handle, so files opened by drop, file input, non-Chromium browsers, or a download-saved project had none and Open Recent showed the file picker. Now such files are stored as a copy (<= 40 MB) in IndexedDB and reopened from it; a failed handle (moved/denied) also falls back to the copy. Entries made before this fix still ask for the file once.
+- Note: untested (node --check only).

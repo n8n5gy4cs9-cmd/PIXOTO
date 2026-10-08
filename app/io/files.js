@@ -63,6 +63,7 @@ export async function saveProject(doc, { saveAs = false } = {}) {
   const res = await saveBlob(blob, `${doc.name}${EXTENSION}`, 'cmps', saveAs ? null : doc.fileHandle);
   if (!res) return false;
   if (res.handle) doc.fileHandle = res.handle;
+  doc.savedBlob = blob;
   doc.name = baseName(res.name);
   doc.markSaved();
   return true;

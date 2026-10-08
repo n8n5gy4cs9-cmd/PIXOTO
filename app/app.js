@@ -166,7 +166,7 @@ app.openFiles = async (files) => {
         doc.layers.push(layer); doc.setActive(layer.id, false);
       }
       app.addDoc(doc);
-      addRecent(file.name, file.handle || null);
+      addRecent(file.name, file.handle || null, file.handle ? null : file);
     } catch (err) { await alertBox('Cannot open ' + file.name, err instanceof PsdError || err instanceof Error ? err.message : String(err)); }
   }
 };
@@ -190,7 +190,7 @@ async function saveDoc(doc, saveAs = false) {
   doc.finishInteraction();
   try {
     const ok = await saveProject(doc, { saveAs });
-    if (ok) { dropRecovery(doc.id); addRecent(doc.name + '.cmps', doc.fileHandle); tabs.refresh(); updateStatus(); }
+    if (ok) { dropRecovery(doc.id); addRecent(doc.name + '.cmps', doc.fileHandle, doc.fileHandle ? null : doc.savedBlob); tabs.refresh(); updateStatus(); }
     return ok;
   } catch (err) { await alertBox('Save failed', err.message); return false; }
 }
@@ -215,10 +215,14 @@ async function renderRecents() {
   box.replaceChildren(...(list.length ? [el('h3', {}, 'Recent'), ...list.slice(0, 8).map((r) => el('button', { class: 'btn recent', onClick: () => openRecent(r) }, r.name))] : []));
 }
 async function openRecent(r) {
-  try {
-    if (r.handle) { const p = (await r.handle.queryPermission?.({ mode: 'read' })) ?? 'granted'; if (p !== 'granted' && (await r.handle.requestPermission?.({ mode: 'read' })) !== 'granted') throw new Error('Permission to read the file was denied.'); const f = await r.handle.getFile(); app.openFiles([Object.assign(f, { handle: r.handle })]); return; }
-  } catch (e) { app.problem(e.message); return; }
-  app.problem('Pick the file again: this browser did not keep a link to it.'); pickFiles(false);
+  if (r.handle) {
+    try {
+      const p = (await r.handle.queryPermission?.({ mode: 'read' })) ?? 'granted';
+      if (p === 'granted' || (await r.handle.requestPermission?.({ mode: 'read' })) === 'granted') { app.openFiles([Object.assign(await r.handle.getFile(), { handle: r.handle })]); return; }
+    } catch { /* moved or deleted: fall back to the stored copy */ }
+  }
+  if (r.blob) { app.openFiles([new File([r.blob], r.name, { type: r.blob.type })]); return; }
+  app.problem('This browser did not keep a link to ' + r.name + '. Pick the file again.'); pickFiles(false);
 }
 
 // ---- status bar -----------------------------------------------------------------------------------------------

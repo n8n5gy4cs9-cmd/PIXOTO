@@ -23,9 +23,10 @@ export const all = async (store) => {
 export const clearStore = (store) => tx(store, 'readwrite', (s) => s.clear());
 
 // ---- recent files (Composa: the last twelve opened or saved) ----
-export async function addRecent(name, handle = null) {
+// Without a file handle (drops, plain file inputs, other browsers) the file itself is kept, up to 40 MB, so Open Recent still works.
+export async function addRecent(name, handle = null, blob = null) {
   const list = (await all('recents')).map((r) => r.value).filter((r) => r.name !== name);
-  list.unshift({ name, handle, time: Date.now() });
+  list.unshift({ name, handle, blob: !handle && blob && blob.size <= 40e6 ? blob.slice(0, blob.size, blob.type) : null, time: Date.now() });
   await clearStore('recents');
   await Promise.all(list.slice(0, 12).map((r, i) => put('recents', String(i).padStart(2, '0'), r)));
 }
