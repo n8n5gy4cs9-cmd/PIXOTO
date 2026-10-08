@@ -767,3 +767,7 @@ Remaining: test on the real shared host; real-browser pass for visual details (t
 - Files: app/core/filters/lut.js (new), app/core/filters/adjust.js, app/ui/adjust-dialogs.js, app/sw.js, docs/FEATURES.md, tasks.md.
 - What: new `lut` adjustment (Image menu and adjustment layer, so layer opacity, blend and mask apply). Four generated looks (Leiku Vivid, Leiku Natural, Leiku Standard, Cinematic) baked to a 33^3 table, trilinear lookup, Amount slider, .cube file import (3D only, stored as text in the layer).
 - Note: written without running anything; untested. The Look select does not refresh its label after loading a .cube until the dialog is reopened.
+
+## 2026-10-08 — Help search and LUT help
+- Files: app/ui/help.js, app/css/app.css, tasks.md, docs/FEATURES.md.
+- What: search box in the Help bar filters cards, rows and paragraphs live and hides empty sections and nav links; new LUTs section.

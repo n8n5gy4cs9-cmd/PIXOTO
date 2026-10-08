@@ -117,3 +117,4 @@
 - [x] Network-first service worker, auto update
 - [x] Filter worker fallback and visible preview errors
 - [x] LUT adjustment (built-in looks, .cube import)
+- [x] Help page search and LUT section

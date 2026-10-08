@@ -69,8 +69,17 @@ const SECTIONS = [
   ]],
   ['adjust', 'Adjustments', 'adjust', () => [
     p('Image ▸ Adjustments change the active layer permanently and show a live preview while you drag the sliders. The same dialogs create adjustment layers from Layer ▸ New Adjustment Layer.'),
-    list(['Brightness/Contrast, Levels, Curves, Exposure', 'Hue/Saturation, Vibrance, Colour Balance, Black & White', 'Gradient Map, Threshold, Posterize, Sepia, Solarize, Invert', 'Auto Levels for a one-click correction']),
+    list(['Brightness/Contrast, Levels, Curves, Exposure', 'Hue/Saturation, Vibrance, Colour Balance, Black & White', 'Gradient Map, LUT, Threshold, Posterize, Sepia, Solarize, Invert', 'Auto Levels for a one-click correction']),
     tip('Double-click any slider to reset it to its default. Untick Preview to compare with the original.'),
+  ]],
+  ['luts', 'LUTs (colour looks)', 'adjust', () => [
+    p('A LUT remaps every colour in one step, which is how photo looks and film grades are made. Add one with ', el('b', {}, 'Layer ▸ New Adjustment Layer ▸ LUT'), ' (editable later, with opacity, blend mode and mask), or apply it directly with ', el('b', {}, 'Image ▸ Adjustments ▸ LUT'), '.'),
+    grid([
+      card('Built-in looks', list(['Leiku Vivid: strong contrast and rich colour.', 'Leiku Natural: gentle contrast, true-to-life colour.', 'Leiku Standard: balanced, slightly punchy.', 'Cinematic: teal shadows, warm highlights, lifted blacks.'])),
+      card('Your own LUTs', p('Press ', el('b', {}, 'Load .cube file…'), ' to use any 3D .cube LUT. It is stored inside the layer, so projects keep it.')),
+      card('Control the strength', p('Use the Amount slider, or lower the adjustment layer’s opacity in the Layers panel. Paint on its mask to limit the look to part of the picture.')),
+    ]),
+    tip('Put the LUT layer at the top of the stack to grade the whole picture, and switch its eye on and off to compare.'),
   ]],
   ['filters', 'Filters', 'blur', () => [
     p('The Filter menu holds destructive effects. Each opens a small dialog with a live preview on the canvas; ', el('b', {}, 'Preview'), ' toggles it, ', el('b', {}, 'Reset'), ' restores the defaults and OK applies it as one undo step. ', kbd('Ctrl+F'), ' repeats the last filter with the same settings.'),
@@ -114,12 +123,30 @@ export function showHelp(onShortcuts) {
     nav.append(link); main.append(sec);
     return { sec, link };
   });
+  const none = el('p', { class: 'hnone', hidden: true }, 'Nothing found.');
+  const search = el('input', { type: 'search', class: 'hsearch', placeholder: 'Search help…', 'aria-label': 'Search help' });
+  search.addEventListener('input', () => {
+    const q = search.value.trim().toLowerCase(), has = (n) => n.textContent.toLowerCase().includes(q);
+    let found = false;
+    for (const { sec, link } of sections) {
+      const all = !q || has(sec.querySelector('h2'));
+      let any = all;
+      for (const u of sec.querySelectorAll(':scope > p, :scope > ul, :scope > .htip, .hcard, .htool')) {
+        const rows = u.querySelectorAll('.hrow');
+        let hit = all || has(u);
+        if (rows.length && !all) { let n = 0; for (const r of rows) { r.hidden = !(has(r) || has(u.querySelector('h4'))); n += !r.hidden; } hit = n > 0; } else for (const r of rows) r.hidden = false;
+        u.hidden = !hit; any ||= hit;
+      }
+      sec.hidden = link.hidden = !any; found ||= any;
+    }
+    none.hidden = found;
+  });
   const hero = el('header', { class: 'hhero' }, el('img', { src: 'assets/icon.svg', alt: '' }), el('div', {}, el('h1', {}, 'Pixoto Help'), p('Everything you need to know about the editor, its tools and its shortcuts.')));
   const close = () => { page.remove(); document.removeEventListener('keydown', onKey, true); };
   const onKey = (e) => { if (e.key === 'Escape' || e.key === 'F1') { e.preventDefault(); e.stopPropagation(); close(); } };
   const page = el('div', { class: 'helppage', role: 'dialog', 'aria-label': 'Help' },
-    el('div', { class: 'hbar' }, el('b', {}, 'Help'), el('span', { class: 'grow' }), onShortcuts ? el('button', { class: 'btn', onClick: () => { close(); onShortcuts(); } }, 'Edit shortcuts…') : null, el('button', { class: 'btn accent', onClick: close }, 'Close')),
-    el('div', { class: 'hwrap' }, nav, el('div', { class: 'hscroll' }, hero, main)));
+    el('div', { class: 'hbar' }, el('b', {}, 'Help'), el('span', { class: 'grow' }), search, onShortcuts ? el('button', { class: 'btn', onClick: () => { close(); onShortcuts(); } }, 'Edit shortcuts…') : null, el('button', { class: 'btn accent', onClick: close }, 'Close')),
+    el('div', { class: 'hwrap' }, nav, el('div', { class: 'hscroll' }, hero, none, main)));
   const scroller = page.querySelector('.hscroll');
   scroller.addEventListener('scroll', () => {
     let cur = sections[0];

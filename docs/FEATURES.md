@@ -34,3 +34,5 @@ Static folder, relative paths, offline service worker, installable PWA (PNG icon
 
 ## Help and updates
 Help page (F1 or Help ▸ Pixoto Help): full-screen guide with every tool and its icon and modes, selections, painting, layers, adjustments, filters, view, files, touch and a live shortcut table. The service worker is network-first, so uploaded code loads on the next visit and open pages reload once when a new worker takes over; it works on https and localhost and falls back to the cache offline.
+
+- Help (F1) has a search box that filters its sections live, and a section about LUTs.

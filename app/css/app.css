@@ -258,3 +258,7 @@ kbd { display: inline-block; min-width: 22px; padding: 1px 6px; border-radius: 5
   .hhero { padding: 22px 18px; } .hmain { padding: 4px 16px 60px; }
   .htools { grid-template-columns: 1fr; }
 }
+
+.helppage [hidden] { display: none !important; }
+.helppage .hsearch { width: min(280px, 40vw); }
+.hnone { padding: 24px; color: var(--secondary); }
