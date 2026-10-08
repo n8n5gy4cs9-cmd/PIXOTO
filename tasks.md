@@ -119,10 +119,14 @@
 - [x] LUT adjustment (built-in looks, .cube import)
 - [x] Help page search and LUT section
 - [x] Camera Raw Filter (Filter menu, grouped panel, histogram, white-balance eyedropper)
-- [ ] PERF P0: scheduler.js (coalescer, pickPreviewSize), bufpool.js, GPU setting flag
-- [ ] PERF P1: gpu/context.js (WebGL2, programs, texture/FBO pools, upload/readback)
-- [ ] PERF P2: GPU shaders for all per-pixel adjustments (levels/curves LUT, hue/sat, LUT 3D, gradient map, etc.)
-- [ ] PERF P2: canRunOnGpu classification, grain/noise preview-only
+- [x] PERF P0: scheduler.js (coalescer, pickPreviewSize), bufpool.js, GPU setting flag
+- [x] PERF P1: gpu/context.js (WebGL2, programs, texture/FBO pools, upload/readback)
+- [x] PERF P2.1: shaders + uniforms for brightnessContrast, exposure, invert, threshold, posterize, desaturate, sepia, solarize
+- [ ] PERF P2.2: levels/curves via 256x4 LUT texture
+- [ ] PERF P2.3: hueSaturation, vibrance, blackAndWhite, colorBalance, gradientMap
+- [ ] PERF P2.4: lut 3D LUT (trilinear)
+- [ ] PERF P2.5: grain/addNoise GPU preview (commit CPU-only)
+- [ ] PERF P2.6: canRunOnGpu classification
 - [ ] PERF P3: GpuLayerPipeline, render override layer.preview, PreviewSession rewrite (proxy + full-res commit)
 - [ ] PERF P3: GPU selection mix, tiled full-res commit, dialogs wired to coalesced liveUpdater
 - [ ] PERF P4: GPU Gaussian/motion blur and other filters, Camera Raw shader preview

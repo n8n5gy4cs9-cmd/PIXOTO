@@ -8,7 +8,7 @@ const defaults = {
   wandTolerance: 32, objectEdge: 0, cropRatio: 'Free', textDefaults: { fontFamily: 'Inter', size: 72, bold: false, italic: false, alignment: 'left', tracking: 0, leading: 0 }, wandContiguous: true, wandAllLayers: false, feather: 0,
   gradientToTransparent: false, gradientRadial: false, gradientOpacity: 1,
   shapeCornerRadius: 24, shapeLineWidth: 4,
-  cloneAligned: true, cloneAllLayers: false, autoSelect: true, transformControls: true,
+  cloneAligned: true, cloneAllLayers: false, autoSelect: true, transformControls: true, gpu: true,
   view: { rulers: false, grid: false, guides: true, snap: true, snapGuides: true, snapGrid: false, snapLayers: true, snapBounds: true, lockGuides: false, pixelGrid: true },
   shortcuts: {},
 };
@@ -21,6 +21,7 @@ const load = () => {
   } catch { return structuredClone(defaults); }
 };
 export const state = load();
+export const isGpuEnabled = () => state.gpu !== false;
 const listeners = new Set();
 export const subscribe = (fn) => { listeners.add(fn); return () => listeners.delete(fn); };
 let timer = 0;

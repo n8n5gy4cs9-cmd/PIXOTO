@@ -787,3 +787,11 @@ Remaining: test on the real shared host; real-browser pass for visual details (t
 - Added docs/PERF_PLAN.md, docs/PERF_PRD.json, docs/ai/PERF_AGENT_BRIEF.md, docs/ai/PERF_GLSL_SPEC.md, docs/ai/PERF_API_CONTRACTS.md; added PERF tasks to tasks.md.
 - Why: live previews copy and process the full-res layer on the CPU per slider tick. Fix is GPU proxy preview plus full-res commit.
 - Remaining: all phases P0 to P6.
+
+## 2026-10-08 — PERF P0 + P1 + P2.1 (plumbing, GPU core, first shaders)
+- Files: app/core/state.js (gpu flag + isGpuEnabled), app/core/gpu/shaders.js (new), app/core/gpu/adjust-gpu.js (new), app/sw.js (precache gpu files, VERSION pixoto-gpu1), tasks.md, progress.md. scheduler.js, bufpool.js, gpu/context.js were already written in a prior pass (P0.1/P0.2/P1.1–P1.4).
+- What: P0.3 adds a persisted `gpu` setting (default on) with `isGpuEnabled()` for core. P2.1 ports the eight simplest per-pixel adjustments to fragment shaders — brightnessContrast, exposure, invert, threshold, posterize, desaturate, sepia, solarize — each as a single fullscreen pass; `setupAdjustment` returns null for anything unported so the caller falls back to the CPU worker.
+- How the maths are ported line-by-line from core/filters/adjust.js: brightness/contrast slope+lift, exposure sRGB↔linear pow, invert 255−c, threshold luma (r*54+g*183+b*19)>>8, posterize round-to-levels, desaturate/sepia mix with luma/sepia matrix, solarize c<threshold?c:255−c. The wrapper mirrors the Uint8 domain (floor(x*255+0.5)) and the CPU's `if(!alpha) continue` guard; alpha is untouched; selection mix is declared (u_sel/u_useSel) but unused until P3.4.
+- Known deviation (accepted per GLSL spec): exposure computes the sRGB transfer in single-precision pow on the GPU vs double-precision in the CPU LUT, so a byte can differ by 1 at a rounding boundary; the deterministic tolerance (≤1/255) still holds.
+- Not verified by running: node --check only; parity is to be confirmed with the dev helper in P6.4.
+- Remaining: P2.2–P2.6, then P3 (PreviewSession rewrite + proxy pipeline) onward.

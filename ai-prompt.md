@@ -25,6 +25,8 @@ Files changed:
 | Task | Level | Why |
 |---|---|---|
 | P0 leftovers (settings flag), P6 docs, `sw.js` list | medium | Mechanical |
+| P1.1 to P1.3 context, program cache, texture/FBO pools | medium | `app/core/gpu/context.js` is already written. The task is to review it against the PRD and fix gaps |
+| P1.4 upload and readback round-trip (straight alpha, Y-flip) | **high** | Alpha and flip mistakes here break every later phase. Check it with an asymmetric, semi-transparent test image |
 | P2.1 simple shaders (invert, threshold, posterize, desaturate, sepia, solarize, brightness/contrast, exposure) | medium | Direct ports |
 | P2.2 levels, curves, gradient map tables | high | Lookup tables must match the CPU maths exactly |
 | P2.3 hue/saturation, colour balance, black & white, vibrance | high | Long formulas, easy to drift by one |
