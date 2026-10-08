@@ -18,6 +18,7 @@ const FILES = [
  "core/filters/adjust.js",
  "core/filters/blur.js",
  "core/filters/filters.js",
+ "core/filters/lut.js",
  "core/filters/painterly.js",
  "core/geom.js",
  "core/history.js",

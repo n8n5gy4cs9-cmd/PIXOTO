@@ -4,6 +4,7 @@ import { el } from './dom.js';
 import { liveDialog } from './live-dialog.js';
 import { createAdjustment, adjustmentName, curveValue, autoLevels, histogramOf, isIdentity } from '../core/filters/adjust.js';
 import { state } from '../core/state.js';
+import { LUT_PRESETS, parseCube } from '../core/filters/lut.js';
 
 const rep = (arr, i, v) => arr.map((x, k) => (k === i ? v : x));
 const R = (label, get, set, min, max, step = 1, def = 0, unit = '') => ({ type: 'range', label, get, set, min, max, step, def, unit });
@@ -70,6 +71,16 @@ export function adjustmentFields(holder, onInput, ctx = {}) {
         R('Cyan / Red', () => vals()[0], (v) => setV(0, v), -100, 100), R('Magenta / Green', () => vals()[1], (v) => setV(1, v), -100, 100), R('Yellow / Blue', () => vals()[2], (v) => setV(2, v), -100, 100),
         { type: 'check', label: 'Preserve luminosity', get: () => A().preserveLuminosity, set: (v) => set({ preserveLuminosity: v }) }];
     }
+    case 'lut': return [{ type: 'select', label: 'Look', string: true, options: [...Object.entries(LUT_PRESETS).map(([k, v]) => [k, v.name]), ['custom', A().cubeName ? 'Custom: ' + A().cubeName : 'Custom (.cube)']], get: () => A().preset, set: (v) => set({ preset: v }) },
+      R('Amount', () => A().amount, (v) => set({ amount: v }), 0, 100, 1, 100, '%'),
+      { type: 'button', label: 'Load .cube file…', run: () => {
+        const input = el('input', { type: 'file', accept: '.cube' });
+        input.addEventListener('change', async () => {
+          const file = input.files[0]; if (!file) return;
+          try { const text = await file.text(); parseCube(text); set({ preset: 'custom', cube: text, cubeName: file.name }); onInput(); } catch (e) { alert(e.message); }
+        });
+        input.click();
+      } }];
     case 'gradientMap': return [{ type: 'color', label: 'Shadows', get: () => A().shadows, set: (v) => set({ shadows: v }), buttons: [['FG', () => state.fg], ['BG', () => state.bg]] },
       { type: 'color', label: 'Highlights', get: () => A().highlights, set: (v) => set({ highlights: v }), buttons: [['FG', () => state.fg], ['BG', () => state.bg]] }, { type: 'check', label: 'Reverse', get: () => A().reversed, set: (v) => set({ reversed: v }) }];
     case 'grain': return [R('Amount', () => A().amount, (v) => set({ amount: v }), 0, 100, 1, 25), R('Size', () => A().size, (v) => set({ size: v }), 0.5, 20, 0.1, 1.5), R('Roughness', () => A().roughness, (v) => set({ roughness: v }), 0, 100, 1, 50), { type: 'button', label: 'New pattern', run: () => set({ seed: (Math.random() * 4294967296) >>> 0 }) }];

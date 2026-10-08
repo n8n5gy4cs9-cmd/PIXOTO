@@ -2,12 +2,13 @@
 // command and a live adjustment layer. Adjustments are plain objects { type, ...settings }, replaced rather than
 // mutated. `applyAdjustment` changes straight RGBA bytes in place and leaves alpha alone. Pure: runs in a worker too.
 import { gaussianBlur } from './blur.js';
+import { applyLut } from './lut.js';
 
-export const ADJUSTMENT_TYPES = ['brightnessContrast', 'levels', 'curves', 'hueSaturation', 'exposure', 'blackAndWhite', 'colorBalance', 'gradientMap', 'grain', 'invert',
+export const ADJUSTMENT_TYPES = ['brightnessContrast', 'levels', 'curves', 'hueSaturation', 'exposure', 'blackAndWhite', 'colorBalance', 'gradientMap', 'lut', 'grain', 'invert',
   'vibrance', 'threshold', 'posterize', 'desaturate', 'sepia', 'solarize', 'gaussianBlur', 'motionBlur', 'addNoise'];
 export const ADJUSTMENT_NAMES = {
   brightnessContrast: 'Brightness/Contrast', levels: 'Levels', curves: 'Curves', hueSaturation: 'Hue/Saturation', exposure: 'Exposure', blackAndWhite: 'Black & White',
-  colorBalance: 'Color Balance', gradientMap: 'Gradient Map', grain: 'Grain', invert: 'Invert', vibrance: 'Vibrance', threshold: 'Threshold', posterize: 'Posterize',
+  colorBalance: 'Color Balance', gradientMap: 'Gradient Map', lut: 'LUT', grain: 'Grain', invert: 'Invert', vibrance: 'Vibrance', threshold: 'Threshold', posterize: 'Posterize',
   desaturate: 'Desaturate', sepia: 'Sepia', solarize: 'Solarize', gaussianBlur: 'Gaussian Blur', motionBlur: 'Motion Blur', addNoise: 'Add Noise',
 };
 const seed = () => (Math.random() * 4294967296) >>> 0;
@@ -21,6 +22,7 @@ export function createAdjustment(type) {
     case 'curves': return { type, channels: [line(), line(), line(), line()] };
     case 'hueSaturation': return { type, shifts: Array.from({ length: 7 }, () => ({ hue: 0, saturation: 0, lightness: 0 })), colorize: false };
     case 'exposure': return { type, exposure: 0, offset: 0, gamma: 1 };
+    case 'lut': return { type, preset: 'leikuNatural', amount: 100, cube: null, cubeName: '' };
     case 'gradientMap': return { type, shadows: '#000000', highlights: '#ffffff', reversed: false };
     case 'grain': return { type, amount: 25, size: 1.5, roughness: 50, seed: seed() };
     case 'invert': return { type };
@@ -52,6 +54,7 @@ export function isIdentity(a) {
     case 'grain': case 'addNoise': return a.amount <= 0;
     case 'colorBalance': return [a.shadows, a.midtones, a.highlights].every((v) => v.every((x) => !x));
     case 'vibrance': return !a.amount && !a.saturation;
+    case 'lut': return a.amount <= 0 || (a.preset === 'custom' && !a.cube);
     case 'gaussianBlur': return a.radius <= 0;
     case 'motionBlur': return a.distance <= 0;
     case 'desaturate': case 'sepia': return a.amount <= 0;
@@ -216,6 +219,7 @@ export function applyAdjustment(a, d, w, h, ox = 0, oy = 0, step = 1) {
       }
       return;
     }
+    case 'lut': applyLut(a, d, n); return;
     case 'gradientMap': {
       const dark = hexRgb(a.reversed ? a.highlights : a.shadows), light = hexRgb(a.reversed ? a.shadows : a.highlights);
       const lr = new Uint8Array(256), lg = new Uint8Array(256), lb = new Uint8Array(256);
